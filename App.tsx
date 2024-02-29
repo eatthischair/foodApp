@@ -1,3 +1,7 @@
+import 'react-native-gesture-handler';
+import MapView, {Marker} from 'react-native-maps';
+import firestore from '@react-native-firebase/firestore';
+
 /**
  * Sample React Native App
  * https://github.com/facebook/react-native
@@ -6,10 +10,18 @@
  */
 
 // import * as React from 'react';
-import React, {createContext, useContext} from 'react';
+// import {Rating, AirbnbRating} from 'react-native-ratings';
+
+// import {View, Text, TextInput, Button, TouchableOpacity} from 'react-native';
+// import {TouchableOpacity} from 'react-native';
+// import {useFunction} from './FunctionContext'; // Import the custom hook
+
+import React, {createContext, useContext, useState, useEffect} from 'react';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import Ionicons from 'react-native-vector-icons/Ionicons'; // Import Ionicons
 
 import type {PropsWithChildren} from 'react';
 import {
@@ -37,49 +49,10 @@ import FindNewRestaurantScreen from './FindNewRestaurantScreen';
 import FriendsReviewsScreen from './FriendsReviewsScreen';
 import AddNewReviewScreen from './AddNewReviewScreen';
 import YetToReviewScreen from './YetToReviewScreen';
-import AddDish from './AddDish';
+// import AddDish from './AddDish';
 import {FunctionProvider} from './FunctionContext'; // Import the provider
 
 const {width, height} = Dimensions.get('window');
-
-// type SectionProps = PropsWithChildren<{
-//   title: string;
-// }>;
-
-// function Section({children, title}: SectionProps): React.JSX.Element {
-//   const isDarkMode = useColorScheme() === 'dark';
-//   return (
-//     <View style={styles.sectionContainer}>
-//       <Text
-//         style={[
-//           styles.sectionTitle,
-//           {
-//             color: isDarkMode ? Colors.white : Colors.black,
-//           },
-//         ]}>
-//         {title}
-//       </Text>
-//       <Text
-//         style={[
-//           styles.sectionDescription,
-//           {
-//             color: isDarkMode ? Colors.light : Colors.dark,
-//           },
-//         ]}>
-//         {children}
-//       </Text>
-//     </View>
-//   );
-// }
-
-// // Create a Context
-// const FunctionContext = createContext();
-
-// // Context Provider Component
-// const FunctionProvider = ({ children }) => {
-//   const yourFunction = () => {
-//     console.log('This is a passed function!');
-//   };
 
 const CustomTouchable = ({title, onPress}) => {
   return (
@@ -116,6 +89,7 @@ const HomeScreen = ({navigation}) => {
         title="Profile"
         onPress={() => handleNavigation('Profile')}
       />
+      <CustomTouchable title="Map" onPress={() => handleNavigation('Map')} />
     </View>
   );
 };
@@ -160,7 +134,98 @@ function ProfileScreen() {
   );
 }
 
+function AddDish() {
+  return (
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <Text>Add Dish Screen</Text>
+      <Text>Add A Photo Button (Later)</Text>
+    </View>
+  );
+}
+
+// function Map() {
+//   return (
+//     <View style={styles.container}>
+//       <MapView
+//         style={styles.map}
+//         initialRegion={{
+//           latitude: 32.7767,
+//           longitude: -96.797,
+//           latitudeDelta: 0.1,
+//           longitudeDelta: 0.1,
+//         }}
+//       >  {data.filter((marker, index) => (
+//           if (data[index].Coordinates !== ) {
+//           <Marker
+//             key={index}
+//             coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
+//             title={marker.title}
+//             description={marker.description}
+//           />
+//         }
+//       ))}</MapView>
+
+//     </View>
+//   );
+// }
+
+const Tab = createBottomTabNavigator();
+
 function App(): React.JSX.Element {
+  const [documents, setDocuments] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const querySnapshot = await firestore().collection('Restaurants').get();
+        let docs = querySnapshot.docs.map(doc => doc.data());
+        docs.map((place, index) => {
+          let coords = place.Coordinates.split(',');
+          let arr = [coords[0], coords[1]];
+          place.Coordinates = arr;
+        });
+        docs = docs.filter(places => places.Coordinates[0] !== '');
+        setDocuments(docs); // Update state with fetched data
+      } catch (error) {
+        console.error('Error fetching documents: ', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  function Map() {
+    return (
+      <View style={styles.container}>
+        <MapView
+          style={styles.map}
+          initialRegion={{
+            latitude: 32.7767,
+            longitude: -96.797,
+            latitudeDelta: 0.1,
+            longitudeDelta: 0.1,
+          }}>
+          {documents.map((marker, index) => (
+            <Marker
+              key={index}
+              coordinate={{
+                latitude: marker.Coordinates[0],
+                longitude: marker.Coordinates[1],
+              }}
+              // title={marker.title}
+              // description={marker.description}
+            />
+          ))}
+          {/* <Marker
+            coordinate={{latitude: 32.7991667, longitude: -96.7794444}}
+            title="Marker Title"
+            description="Marker Description"
+          /> */}
+        </MapView>
+      </View>
+    );
+  }
+
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
@@ -170,35 +235,59 @@ function App(): React.JSX.Element {
   const Stack = createNativeStackNavigator();
 
   return (
-    <FunctionProvider>
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="MyReviews" component={MyReviewsScreen} />
-          <Stack.Screen
-            name="FriendsReviews"
-            component={FriendsReviewsScreen}
-          />
-          <Stack.Screen
-            name="FindNewRestaurant"
-            component={FindNewRestaurantScreen}
-          />
-          <Stack.Screen name="Reviewed" component={Reviewed} />
-          <Stack.Screen name="YetToReview" component={YetToReviewScreen} />
-          <Stack.Screen name="AddNewReview" component={AddNewReviewScreen} />
-          <Stack.Screen name="Profile" component={ProfileScreen} />
-          <Stack.Screen name="AddDish" component={AddDish} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </FunctionProvider>
+    <Text>{JSON.stringify(documents)}</Text>
+
+    // <FunctionProvider>
+    //   <NavigationContainer>
+    //     <Tab.Navigator
+    //       screenOptions={({route}) => ({
+    //         tabBarIcon: ({focused, color, size}) => {
+    //           let iconName;
+
+    //           if (route.name === 'Home') {
+    //             iconName = 'home';
+    //           } else if (route.name === 'Map') {
+    //             iconName = 'map-outline';
+    //           } else if (route.name === 'AddNewReview') {
+    //             iconName = 'add-circle-outline';
+    //           } else if (route.name === 'Profile') {
+    //             iconName = 'person-outline';
+    //           }
+
+    //           // Return the icon component
+    //           return <Ionicons name={iconName} size={size} color={color} />;
+    //         },
+    //         tabBarActiveTintColor: 'blue',
+    //         tabBarInactiveTintColor: 'gray',
+    //       })}>
+    //       <Tab.Screen name="Home" component={HomeScreen} />
+    //       {/* <Tab.Screen name="MyReviews" component={MyReviewsScreen} />
+    //       <Tab.Screen name="FriendsReviews" component={FriendsReviewsScreen} /> */}
+    //       {/* <Tab.Screen
+    //         name="FindNewRestaurant"
+    //         component={FindNewRestaurantScreen}
+    //       /> */}
+    //       {/* <Tab.Screen name="Reviewed" component={Reviewed} /> */}
+    //       {/* <Tab.Screen name="YetToReview" component={YetToReviewScreen} /> */}
+    //       <Tab.Screen name="AddNewReview" component={AddNewReviewScreen} />
+    //       <Tab.Screen name="Profile" component={ProfileScreen} />
+    //       {/* <Tab.Screen name="AddDish" component={AddDish} /> */}
+    //       <Tab.Screen name="Map" component={Map} />
+    //     </Tab.Navigator>
+    //   </NavigationContainer>
+    // </FunctionProvider>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    ...StyleSheet.absoluteFillObject,
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  map: {
+    ...StyleSheet.absoluteFillObject,
   },
   sectionContainer: {
     marginTop: 32,

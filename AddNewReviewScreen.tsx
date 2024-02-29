@@ -3,42 +3,13 @@ import {Rating, AirbnbRating} from 'react-native-ratings';
 
 import {View, Text, TextInput, Button, TouchableOpacity} from 'react-native';
 // import {TouchableOpacity} from 'react-native';
-import { useFunction } from './FunctionContext'; // Import the custom hook
+// import { useFunction } from './FunctionContext'; // Import the custom hook
 
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-function AddNewReviewScreen(props) {
-  // const CustomTouchable = ({title, onPress}) => {
-  //   return (
-  //     <TouchableOpacity
-  //       style={styles.buttons}
-  //       onPress={onPress}
-  //       activeOpacity={0.8}>
-  //       <Text style={styles.buttonText}>{title}</Text>
-  //     </TouchableOpacity>
-  //   );
-  // };
-
-  // const handleSubmit = () => {
-  //   // Handle form submission logic here, such as sending data to a server
-  //   console.log('Name:', name);
-  //   console.log('Email:', email);
-  // };
-  const { yourFunction } = useFunction();
-
-  const ReviewDishScreen = () => {
-
-    const handleNavigation = screenName => {
-      navigation.navigate(screenName);
-    };
-
-    return (
-      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-        <CustomTouchable
-          title="Add New Review"
-          onPress={() => handleNavigation('AddNewReview')}
-        />
-      </View>
-    );
+function AddNewReviewScreen({navigation}) {
+  const handleNavigation = screenName => {
+    navigation.navigate(screenName);
   };
 
   return (
@@ -48,7 +19,6 @@ function AddNewReviewScreen(props) {
         value={name}
         onChangeText={handleNameChange}
       /> */}
-      {/* <Stack.Screen name="ReviewDishScreen" component={ReviewDishScreen} /> */}
 
       <Text>Overall Rating</Text>
       <AirbnbRating
