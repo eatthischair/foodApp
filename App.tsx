@@ -58,6 +58,7 @@ import data from './dbDataMONDAY';
 
 import auth from '@react-native-firebase/auth';
 import Login from './Login';
+import SignupScreen from './SignupScreen';
 
 const {width, height} = Dimensions.get('window');
 
@@ -231,12 +232,68 @@ function App(): React.JSX.Element {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
+  function MyTabs() {
+    return (
+      <Tab.Navigator
+        initialRouteName="Home"
+        screenOptions={({route}) => ({
+          tabBarIcon: ({focused, color, size}) => {
+            let iconName;
+
+            if (route.name === 'Home') {
+              iconName = 'home';
+            } else if (route.name === 'Map') {
+              iconName = 'map-outline';
+            } else if (route.name === 'AddNewReview') {
+              iconName = 'add-circle-outline';
+            } else if (route.name === 'Profile') {
+              iconName = 'person-outline';
+            } else if (route.name === 'Feed') {
+              iconName = 'reader-outline';
+            }
+
+            // Return the icon component
+            return <Ionicons name={iconName} size={size} color={color} />;
+          },
+          tabBarActiveTintColor: 'blue',
+          tabBarInactiveTintColor: 'gray',
+        })}>
+        {/* <Tab.Screen name="Home" component={HomeScreen} /> */}
+        <Tab.Screen name="Map" component={Map} />
+        <Tab.Screen name="AddNewReview" component={AddNewReviewScreen} />
+        <Tab.Screen name="Feed" component={Feed} />
+        <Tab.Screen name="Profile" component={ProfileScreen} />
+      </Tab.Navigator>
+    );
+  }
+
   const Stack = createNativeStackNavigator();
 
   return (
     <FunctionProvider>
       <NavigationContainer>
-        <Tab.Navigator
+        <Stack.Navigator initialRouteName="Home">
+          <Stack.Screen
+            name="Home"
+            component={MyTabs}
+            options={{headerShown: false}}
+          />
+          {/* <Tab.Screen name="Home" component={HomeScreen} /> */}
+
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Sign Up" component={SignupScreen} />
+          <Tab.Screen name="MyReviews" component={MyReviewsScreen} />
+          <Tab.Screen name="FriendsReviews" component={FriendsReviewsScreen} />
+          <Tab.Screen
+            name="FindNewRestaurant"
+            component={FindNewRestaurantScreen}
+          />
+          <Tab.Screen name="Reviewed" component={Reviewed} />
+          <Tab.Screen name="YetToReview" component={YetToReviewScreen} />
+          {/* Add other screens that you don't want to show in the tabs here */}
+        </Stack.Navigator>
+        {/* <Tab.Navigator
+          initialRouteName="Sign Up"
           screenOptions={({route}) => ({
             tabBarIcon: ({focused, color, size}) => {
               let iconName;
@@ -260,20 +317,25 @@ function App(): React.JSX.Element {
             tabBarInactiveTintColor: 'gray',
           })}>
           <Tab.Screen name="Home" component={HomeScreen} />
-          {/* <Tab.Screen name="MyReviews" component={MyReviewsScreen} />
-          <Tab.Screen name="FriendsReviews" component={FriendsReviewsScreen} /> */}
-          {/* <Tab.Screen
+          <Tab.Screen name="Map" component={Map} />
+          <Tab.Screen name="AddNewReview" component={AddNewReviewScreen} />
+          <Tab.Screen name="Feed" component={Feed} />
+          <Tab.Screen name="Profile" component={ProfileScreen} />
+          <Tab.Screen name="Login" component={Login} />
+          <Tab.Screen name="Sign Up" component={SignupScreen} /> */}
+
+        {/* <Tab.Screen name="Login" component={Login} /> */}
+
+        {/* <Tab.Screen name="MyReviews" component={MyReviewsScreen} />
+          <Tab.Screen name="FriendsReviews" component={FriendsReviewsScreen} />
+          <Tab.Screen
             name="FindNewRestaurant"
             component={FindNewRestaurantScreen}
-          /> */}
-          {/* <Tab.Screen name="Reviewed" component={Reviewed} /> */}
-          {/* <Tab.Screen name="YetToReview" component={YetToReviewScreen} /> */}
-          <Tab.Screen name="Feed" component={Feed} />
-          <Tab.Screen name="AddNewReview" component={AddNewReviewScreen} />
-          {/* <Tab.Screen name="AddDish" component={AddDish} /> */}
-          <Tab.Screen name="Map" component={Map} />
-          <Tab.Screen name="Profile" component={ProfileScreen} />
-        </Tab.Navigator>
+          />
+          <Tab.Screen name="Reviewed" component={Reviewed} />
+          <Tab.Screen name="YetToReview" component={YetToReviewScreen} />
+          <Tab.Screen name="AddDish" component={AddDish} /> */}
+        {/* </Tab.Navigator> */}
       </NavigationContainer>
     </FunctionProvider>
   );
