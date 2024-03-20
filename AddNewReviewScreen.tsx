@@ -21,6 +21,8 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import RestaurantNames from './RestaurantNames.tsx';
 
+// import Autocomplete from './Autocomplete.tsx';
+
 function AddNewReviewScreen({navigation}) {
   // let realData = data.map(place => {
   //   // place = place['Name of Restaurant'];
@@ -54,6 +56,8 @@ function AddNewReviewScreen({navigation}) {
   const [rating5, setRating5] = React.useState(0);
   const [rating6, setRating6] = React.useState(0);
   const [rating7, setRating7] = React.useState(0);
+
+  //service quality
 
   const {width, height} = Dimensions.get('window');
 
@@ -134,6 +138,7 @@ function AddNewReviewScreen({navigation}) {
         renderItem={({item}) => <Text>{item}</Text>}
         scrollEnabled={false}
       />
+      {/* <Autocomplete></Autocomplete> */}
       <Text style={styles.buttonText}>Overall Rating</Text>
       <RatingInput
         rating={rating}

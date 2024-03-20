@@ -60,6 +60,8 @@ import auth from '@react-native-firebase/auth';
 import Login from './Login';
 import SignupScreen from './SignupScreen';
 
+import Autocomplete from './Autocomplete';
+
 const {width, height} = Dimensions.get('window');
 
 const CustomTouchable = ({title, onPress}) => {
@@ -235,7 +237,7 @@ function App(): React.JSX.Element {
   function MyTabs() {
     return (
       <Tab.Navigator
-        initialRouteName="Home"
+        initialRouteName="Sign Up"
         screenOptions={({route}) => ({
           tabBarIcon: ({focused, color, size}) => {
             let iconName;
@@ -263,6 +265,8 @@ function App(): React.JSX.Element {
         <Tab.Screen name="AddNewReview" component={AddNewReviewScreen} />
         <Tab.Screen name="Feed" component={Feed} />
         <Tab.Screen name="Profile" component={ProfileScreen} />
+        <Tab.Screen name="AutoComplete" component={Autocomplete} />
+
       </Tab.Navigator>
     );
   }
@@ -272,7 +276,8 @@ function App(): React.JSX.Element {
   return (
     <FunctionProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home">
+        {/* <Stack.Navigator initialRouteName="Sign Up"> */}
+        <Stack.Navigator initialRouteName="Sign Up">
           <Stack.Screen
             name="Home"
             component={MyTabs}
@@ -290,6 +295,7 @@ function App(): React.JSX.Element {
           />
           <Tab.Screen name="Reviewed" component={Reviewed} />
           <Tab.Screen name="YetToReview" component={YetToReviewScreen} />
+
           {/* Add other screens that you don't want to show in the tabs here */}
         </Stack.Navigator>
         {/* <Tab.Navigator
@@ -357,6 +363,7 @@ const styles = StyleSheet.create({
   },
   map: {
     ...StyleSheet.absoluteFillObject,
+    flex: 1,
   },
   sectionContainer: {
     marginTop: 32,
