@@ -163,6 +163,37 @@ const Tab = createBottomTabNavigator();
 
 function App(): React.JSX.Element {
   const [documents, setDocuments] = useState([]);
+  const [documents2, setDocuments2] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const querySnapshot = await firestore()
+          .collection('Restaurants2')
+          .get();
+        let docs = querySnapshot.docs.map(doc => doc.data());
+        docs = docs.filter(place => place.Coordinates !== '');
+        docs.map(place => {
+          let [latitude, longitude] = place.Coordinates.split(',')
+            .slice(0, 16)
+            .map(Number);
+          place.Coordinates = {
+            latitude,
+            longitude,
+          };
+        });
+        docs = docs.filter(
+          place =>
+            !Number.isNaN(place.Coordinates.latitude) &&
+            !Number.isNaN(place.Coordinates.longitude),
+        );
+        setDocuments(docs); // Update state with fetched data
+      } catch (error) {
+        console.error('Error fetching documents: ', error);
+      }
+    };
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -178,19 +209,14 @@ function App(): React.JSX.Element {
             latitude,
             longitude,
           };
-          // place = {
-          //   name: place['Name of Restaurant'],
-          // };
-          // console.log('place', place);
         });
         docs = docs.filter(
           place =>
             !Number.isNaN(place.Coordinates.latitude) &&
             !Number.isNaN(place.Coordinates.longitude),
         );
-        // console.log('docs', docs);
-        setDocuments(docs); // Update state with fetched data
-        // setDocuments(data); // Update state with fetched data
+        console.log('DOCS2', docs);
+        setDocuments2(docs); // Update state with fetched data
       } catch (error) {
         console.error('Error fetching documents: ', error);
       }
@@ -199,6 +225,7 @@ function App(): React.JSX.Element {
   }, []);
 
   function Map() {
+    const image = require('./android/app/src/main/res/drawable/ProfilePics/green-dot.png');
     return (
       <View style={styles.container}>
         <MapView
@@ -218,9 +245,18 @@ function App(): React.JSX.Element {
               }}
               title={marker.Name}
               description={marker.Cuisine}
-              // icon={{
-              //   uri: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
-              // }}
+            />
+          ))}
+          {documents2.map((marker, index) => (
+            <Marker
+              key={index}
+              coordinate={{
+                latitude: marker.Coordinates.latitude,
+                longitude: marker.Coordinates.longitude,
+              }}
+              title={marker['Name of Restaurant']}
+              description={marker.Cuisine}
+              icon={image}
             />
           ))}
         </MapView>
@@ -265,8 +301,8 @@ function App(): React.JSX.Element {
         <Tab.Screen name="AddNewReview" component={AddNewReviewScreen} />
         <Tab.Screen name="Feed" component={Feed} />
         <Tab.Screen name="Profile" component={ProfileScreen} />
-        <Tab.Screen name="AutoComplete" component={Autocomplete} />
-
+        {/* <Tab.Screen name="AutoComplete" component={Autocomplete} /> */}
+        {/* <Tab.Screen name="AddReviewComposite" component={AddReviewComposite} /> */}
       </Tab.Navigator>
     );
   }
@@ -277,7 +313,8 @@ function App(): React.JSX.Element {
     <FunctionProvider>
       <NavigationContainer>
         {/* <Stack.Navigator initialRouteName="Sign Up"> */}
-        <Stack.Navigator initialRouteName="Sign Up">
+        {/* <Stack.Navigator initialRouteName="Sign Up"> */}
+        <Stack.Navigator initialRouteName="Home">
           <Stack.Screen
             name="Home"
             component={MyTabs}

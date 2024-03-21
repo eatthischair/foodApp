@@ -41,7 +41,7 @@ const Autocomplete = () => {
   }, [query]);
 
   return (
-    <View>
+
       <TextInput
         placeholder="Search for restaurants..."
         onChangeText={text => setQuery(text)}
@@ -69,7 +69,7 @@ const Autocomplete = () => {
           </TouchableOpacity>
         )}
       />
-    </View>
+
   );
 };
 

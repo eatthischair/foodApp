@@ -14,29 +14,22 @@ import {
 } from 'react-native';
 import {SearchBar} from 'react-native-elements';
 
-// import {TouchableOpacity} from 'react-native';
-// import { useFunction } from './FunctionContext'; // Import the custom hook
-
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import RestaurantNames from './RestaurantNames.tsx';
-
-// import Autocomplete from './Autocomplete.tsx';
+import axios from 'axios';
 
 function AddNewReviewScreen({navigation}) {
-  // let realData = data.map(place => {
-  //   // place = place['Name of Restaurant'];
-  //   // console.log('PLACE', place['Name of Restaurant']);
-  //   return place['Name of Restaurant']
-  // });
-  // console.log(realData);
-
-  // const handleNavigation = screenName => {
-  //   navigation.navigate(screenName);
-  // };
-
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredData, setFilteredData] = useState([]);
+
+  const [query, setQuery] = useState('');
+  const [results, setResults] = useState([]);
+  const [placeName, setPlaceName] = useState('');
+  const [coords, setCoords] = useState('');
+  console.log('placename', placeName);
+  const googlePlacesApiUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json`;
+
   useEffect(() => {
     // Filter the dataArray based on the searchQuery
     if (searchQuery.trim()) {
@@ -49,6 +42,56 @@ function AddNewReviewScreen({navigation}) {
     }
   }, [searchQuery]);
 
+  const fetchPlaces = async searchQuery => {
+    if (searchQuery.length < 3) return; // Don't search for too short strings
+
+    try {
+      const response = await axios.get(googlePlacesApiUrl, {
+        params: {
+          input: searchQuery,
+          types: 'establishment', // Search for places that are businesses.
+          location: '32.7767,-96.7970', // Central coordinates for Dallas
+          radius: 50000, // Define the search radius in meters
+          key: 'AIzaSyCvOCWqc-IOvr5C7FZo7IO8oIvSz5aR6Hk',
+        },
+      });
+
+      if (response.data && response.data.predictions) {
+        setResults(response.data.predictions);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      fetchPlaces(query);
+    }, 500); // Debounce the API call
+
+    return () => clearTimeout(timerId);
+  }, [query]);
+
+  const [placeId, setPlaceId] = useState('');
+
+  const apiKey = 'AIzaSyCvOCWqc-IOvr5C7FZo7IO8oIvSz5aR6Hk'; // API Key
+
+  const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=name,geometry&key=${apiKey}`;
+
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      if (data.status === 'OK') {
+        const placeDetails = data.result;
+        const coordinates = placeDetails.geometry.location;
+        console.log('Coordinates:', coordinates);
+        setCoords(coordinates);
+        // Use these coordinates to place a marker on the map
+      } else {
+        console.error('Place Details request failed:', data.status);
+      }
+    })
+    .catch(error => console.error('Error:', error));
   const [rating, setRating] = React.useState(0);
   const [rating2, setRating2] = React.useState(0);
   const [rating3, setRating3] = React.useState(0);
@@ -58,6 +101,12 @@ function AddNewReviewScreen({navigation}) {
   const [rating7, setRating7] = React.useState(0);
 
   //service quality
+
+  const handleOnPress = item => {
+    console.log('item', item.description, item.place_id);
+    setPlaceName(item.description);
+    setPlaceId(item.place_id);
+  };
 
   const {width, height} = Dimensions.get('window');
 
@@ -116,17 +165,6 @@ function AddNewReviewScreen({navigation}) {
       }}
       scrollEnabled={true}>
       {/* <TextInput
-        placeholder="Restaurant Name"
-        style={styles.textBox}
-        // value={name}
-        // onChangeText={handleNameChange}
-      /> */}
-      {/* <SearchBar
-        platform={'android'}
-        style={styles.searchBar}
-        placeholder="Restaurant Name"
-      /> */}
-      <TextInput
         style={styles.searchInput}
         placeholder="Search..."
         value={searchQuery}
@@ -137,8 +175,34 @@ function AddNewReviewScreen({navigation}) {
         keyExtractor={(item, index) => index.toString()}
         renderItem={({item}) => <Text>{item}</Text>}
         scrollEnabled={false}
+      /> */}
+      <TextInput
+        placeholder="Search for restaurants..."
+        onChangeText={text => setQuery(text)}
+        value={query}
       />
-      {/* <Autocomplete></Autocomplete> */}
+      <FlatList
+        data={results}
+        keyExtractor={item => item.place_id}
+        renderItem={(
+          {item}, // {({item}) => <Text onPress={setPlaceName(item.description)}>{item.description}</Text>}
+        ) => (
+          <TouchableOpacity
+            onPress={() => handleOnPress(item)}
+            style={
+              ({
+                padding: 20,
+                borderBottomWidth: 1,
+                borderBottomColor: '#ccc',
+              },
+              item.description === placeName
+                ? {backgroundColor: '#eaeaea'}
+                : {}) // Conditional background color
+            }>
+            <Text>{item.description}</Text>
+          </TouchableOpacity>
+        )}
+      />
       <Text style={styles.buttonText}>Overall Rating</Text>
       <RatingInput
         rating={rating}
