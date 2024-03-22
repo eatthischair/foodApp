@@ -18,6 +18,11 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import axios from 'axios';
 
+import firestore from '@react-native-firebase/firestore';
+
+const {width, height} = Dimensions.get('window');
+
+
 function AddNewReviewScreen({navigation}) {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredData, setFilteredData] = useState([]);
@@ -25,24 +30,17 @@ function AddNewReviewScreen({navigation}) {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [placeName, setPlaceName] = useState('');
+  const [placeId, setPlaceId] = useState('');
   const [coords, setCoords] = useState('');
-  console.log('placename', placeName);
-  const googlePlacesApiUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json`;
+  const [searchCompleted, setSearchCompleted] = useState(false);
 
-  // useEffect(() => {
-  //   // Filter the dataArray based on the searchQuery
-  //   if (searchQuery.trim()) {
-  //     const filtered = RestaurantNames.filter(line =>
-  //       line.toLowerCase().includes(searchQuery.toLowerCase()),
-  //     );
-  //     setFilteredData(filtered.slice(0, 10));
-  //   } else {
-  //     setFilteredData([]);
-  //   }
-  // }, [searchQuery]);
+  console.log('placename', placeName);
+
+  const googlePlacesApiUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json`;
 
   const fetchPlaces = async searchQuery => {
     if (searchQuery.length < 3) return; // Don't search for too short strings
+    //later add an error msg
 
     try {
       const response = await axios.get(googlePlacesApiUrl, {
@@ -63,34 +61,16 @@ function AddNewReviewScreen({navigation}) {
     }
   };
 
-  useEffect(() => {
-    const timerId = setTimeout(() => {
-      fetchPlaces(query);
-    }, 500); // Debounce the API call
+  // useEffect(() => {
+  //   if (query && query.length >= 3 && !searchCompleted) {
+  //     const timerId = setTimeout(() => {
+  //       fetchPlaces(query);
+  //     }, 500); // Debounce the API call
 
-    return () => clearTimeout(timerId);
-  }, [query]);
+  //     return () => clearTimeout(timerId);
+  //   }
+  // });
 
-  const [placeId, setPlaceId] = useState('');
-
-  const apiKey = 'AIzaSyCvOCWqc-IOvr5C7FZo7IO8oIvSz5aR6Hk'; // API Key
-
-  const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=name,geometry&key=${apiKey}`;
-
-  fetch(url)
-    .then(response => response.json())
-    .then(data => {
-      if (data.status === 'OK') {
-        const placeDetails = data.result;
-        const coordinates = placeDetails.geometry.location;
-        console.log('Coordinates:', coordinates);
-        setCoords(coordinates);
-        // Use these coordinates to place a marker on the map
-      } else {
-        console.error('Place Details request failed:', data.status);
-      }
-    })
-    .catch(error => console.error('Error:', error));
   const [rating, setRating] = React.useState(0);
   const [rating2, setRating2] = React.useState(0);
   const [rating3, setRating3] = React.useState(0);
@@ -98,13 +78,59 @@ function AddNewReviewScreen({navigation}) {
   const [rating5, setRating5] = React.useState(0);
   const [rating6, setRating6] = React.useState(0);
   const [rating7, setRating7] = React.useState(0);
+  const [text, setText] = useState('');
+
+  const handleSubmit = () => {
+    let sendObj = {
+      placeName,
+      placeId,
+      coords,
+      Overall: rating,
+      Service: rating2,
+      Cleanliness: rating3,
+      Price: rating4,
+      Taste: rating5,
+      Noise_Level: rating6,
+      Vibe: rating7,
+      Comments: text,
+    };
+    console.log('SENDOBJ', sendObj);
+
+    firestore()
+      .collection('test1')
+      .add(sendObj)
+      .then(() => {
+        console.log('success!!!!!!!');
+      });
+  };
+
+  const apiKey = 'AIzaSyCvOCWqc-IOvr5C7FZo7IO8oIvSz5aR6Hk'; // API Key
 
   //service quality
 
   const handleOnPress = item => {
-    console.log('item', item.description, item.place_id);
+    // console.log('item', item.description, item.place_id);
     setPlaceName(item.description);
     setPlaceId(item.place_id);
+    setSearchCompleted(true);
+    setResults('');
+    setQuery('');
+    const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=name,geometry&key=${apiKey}`;
+
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === 'OK') {
+          const placeDetails = data.result;
+          const coordinates = placeDetails.geometry.location;
+          console.log('Coordinates:', coordinates);
+          setCoords(coordinates);
+          // Use these coordinates to place a marker on the map
+        } else {
+          console.error('Place Details request failed:', data.status);
+        }
+      })
+      .catch(error => console.error('Error:', error));
   };
 
   const {width, height} = Dimensions.get('window');
@@ -155,6 +181,7 @@ function AddNewReviewScreen({navigation}) {
   });
   return (
     <ScrollView
+      // eslint-disable-next-line react-native/no-inline-styles
       contentContainerStyle={{
         // flex: 1,
         alignItems: 'center',
@@ -163,23 +190,15 @@ function AddNewReviewScreen({navigation}) {
         padding: 20, // Other styles for the content container can also go here
       }}
       scrollEnabled={true}>
-      {/* <TextInput
-        style={styles.searchInput}
-        placeholder="Search..."
-        value={searchQuery}
-        onChangeText={setSearchQuery}
-      />
-      <FlatList
-        data={filteredData}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({item}) => <Text>{item}</Text>}
-        scrollEnabled={false}
-      /> */}
       <TextInput
         placeholder="Search for restaurants..."
         onChangeText={text => setQuery(text)}
         value={query}
       />
+      <CustomTouchable
+        title="Search"
+        onPress={fetchPlaces(query)}></CustomTouchable>
+      <Text>{placeName}</Text>
       <FlatList
         data={results}
         keyExtractor={item => item.place_id}
@@ -262,16 +281,13 @@ function AddNewReviewScreen({navigation}) {
         style={styles.textBox}
         placeholder="Share details of your own experience of this place"
         // value={name}
-        // onChangeText={handleNameChange}
+        onChangeText={newText => setText(newText)}
       />
-      <CustomTouchable
+      {/* <CustomTouchable
         title="Finish Later"
         //  onPress={handleSubmit}
-      />
-      <CustomTouchable
-        title="Submit"
-        //  onPress={handleSubmit}
-      />
+      /> */}
+      <CustomTouchable title="Submit" onPress={handleSubmit} />
     </ScrollView>
   );
 }

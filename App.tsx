@@ -4,10 +4,8 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Import Ionicons
-
 // import type {PropsWithChildren} from 'react';
 import {StyleSheet, Text, TouchableOpacity, Dimensions} from 'react-native';
-
 import FindNewRestaurantScreen from './FindNewRestaurantScreen';
 import FriendsReviewsScreen from './FriendsReviewsScreen';
 import AddNewReviewScreen from './AddNewReviewScreen';
@@ -56,7 +54,6 @@ function App(): React.JSX.Element {
             } else if (route.name === 'Feed') {
               iconName = 'reader-outline';
             }
-            // Return the icon component
             return <Ionicons name={iconName} size={size} color={color} />;
           },
           tabBarActiveTintColor: 'blue',
@@ -82,8 +79,6 @@ function App(): React.JSX.Element {
             component={MyTabs}
             options={{headerShown: false}}
           />
-          {/* <Tab.Screen name="Home" component={HomeScreen} /> */}
-
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Sign Up" component={SignupScreen} />
           <Tab.Screen name="FriendsReviews" component={FriendsReviewsScreen} />
@@ -99,39 +94,6 @@ function App(): React.JSX.Element {
 }
 
 const styles = StyleSheet.create({
-  scrollView: {
-    flexGrow: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 50,
-  },
-  container: {
-    ...StyleSheet.absoluteFillObject,
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 50, // Adjust based on your UI
-  },
-  map: {
-    ...StyleSheet.absoluteFillObject,
-    flex: 1,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
   buttons: {
     justifyContent: 'center',
     alignItems: 'center',

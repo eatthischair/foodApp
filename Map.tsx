@@ -1,7 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import firestore from '@react-native-firebase/firestore';
 import MapView, {Marker} from 'react-native-maps';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, Dimensions, Text, Button} from 'react-native';
+
+const {width, height} = Dimensions.get('window');
 
 function Map() {
   const [documents, setDocuments] = useState([]);
@@ -40,6 +42,10 @@ function Map() {
     fetchData('YetToVisit', setDocuments2);
   }, []);
 
+  // useEffect(() => {
+  //   fetchData('test1', setDocuments);
+  // }, []);
+
   // eslint-disable-next-line react/no-unstable-nested-components
   const image = require('./android/app/src/main/res/drawable/ProfilePics/green-dot.png');
   return (
@@ -76,6 +82,28 @@ function Map() {
           />
         ))}
       </MapView>
+      <View style={styles.buttonContainer}>
+        <Button
+          style={styles.button}
+          onPress={() => console.log('Button pressed')}
+          title="Favorites"
+        />
+        <Button
+          style={styles.button}
+          onPress={() => console.log('Button pressed')}
+          title="Yet To Review"
+        />
+        <Button
+          style={styles.button}
+          onPress={() => console.log('Button pressed')}
+          title="Reviewed"
+        />
+                <Button
+          style={styles.button}
+          onPress={() => console.log('Button pressed')}
+          title="Add Marker"
+        />
+      </View>
     </View>
   );
 }
@@ -97,6 +125,14 @@ const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject,
     flex: 1,
+  },
+  buttonContainer: {
+    position: 'absolute',
+    top: 0, // Adjust based on your needs
+    left: 0, // Adjust based on your needs
+    flexDirection: 'row', // Align children horizontally
+    justifyContent: 'flex-start',
+    gap: 5,
   },
 });
 
