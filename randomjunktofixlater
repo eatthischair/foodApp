@@ -1,0 +1,73 @@
+const HomeScreen = ({navigation}) => {
+  const handleNavigation = screenName => {
+    navigation.navigate(screenName);
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text>Home Screen</Text>
+      <CustomTouchable
+        title="My Reviews"
+        onPress={() => handleNavigation('MyReviews')}
+      />
+      <CustomTouchable
+        title="Friends Reviews"
+        onPress={() => handleNavigation('FriendsReviews')}
+      />
+      <CustomTouchable
+        title="Find New Restaurant"
+        onPress={() => handleNavigation('FindNewRestaurant')}
+      />
+      <CustomTouchable
+        title="Profile"
+        onPress={() => handleNavigation('Profile')}
+      />
+      <CustomTouchable title="Map" onPress={() => handleNavigation('Map')} />
+    </View>
+  );
+};
+
+function MyReviewsScreen({navigation}) {
+  const handleNavigation = screenName => {
+    navigation.navigate(screenName);
+  };
+
+  return (
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <Text>My Reviews Screen</Text>
+      <CustomTouchable
+        title="Reviewed"
+        onPress={() => handleNavigation('Reviewed')}
+      />
+      <CustomTouchable
+        title="Yet To Review"
+        onPress={() => handleNavigation('YetToReview')}
+      />
+      <CustomTouchable
+        title="Add New Review"
+        onPress={() => handleNavigation('AddNewReview')}
+      />
+    </View>
+  );
+}
+
+function Reviewed() {
+  return (
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <Text>Reviewed Screen</Text>
+    </View>
+  );
+}
+
+function ProfileScreen() {
+  return <UserProfile />;
+}
+
+function AddDish() {
+  return (
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <Text>Add Dish Screen</Text>
+      <Text>Add A Photo Button (Later)</Text>
+    </View>
+  );
+}

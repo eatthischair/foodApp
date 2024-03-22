@@ -16,7 +16,6 @@ import {SearchBar} from 'react-native-elements';
 
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-import RestaurantNames from './RestaurantNames.tsx';
 import axios from 'axios';
 
 function AddNewReviewScreen({navigation}) {
@@ -30,17 +29,17 @@ function AddNewReviewScreen({navigation}) {
   console.log('placename', placeName);
   const googlePlacesApiUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json`;
 
-  useEffect(() => {
-    // Filter the dataArray based on the searchQuery
-    if (searchQuery.trim()) {
-      const filtered = RestaurantNames.filter(line =>
-        line.toLowerCase().includes(searchQuery.toLowerCase()),
-      );
-      setFilteredData(filtered.slice(0, 10));
-    } else {
-      setFilteredData([]);
-    }
-  }, [searchQuery]);
+  // useEffect(() => {
+  //   // Filter the dataArray based on the searchQuery
+  //   if (searchQuery.trim()) {
+  //     const filtered = RestaurantNames.filter(line =>
+  //       line.toLowerCase().includes(searchQuery.toLowerCase()),
+  //     );
+  //     setFilteredData(filtered.slice(0, 10));
+  //   } else {
+  //     setFilteredData([]);
+  //   }
+  // }, [searchQuery]);
 
   const fetchPlaces = async searchQuery => {
     if (searchQuery.length < 3) return; // Don't search for too short strings

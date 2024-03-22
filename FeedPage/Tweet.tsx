@@ -6,20 +6,20 @@ const Tweet = ({tweet}) => {
   const img =
     'https://www.smithsfoodanddrug.com/content/v2/binary/image/bl/health/what-is-healthy-food/what-is-healthy-food--3616981_2022_dx_content_kh_whatishealthyfood_hro_mbl_640x364.jpg';
 
-  let size = 12;
+  // let size = 12;
 
   return (
     <View style={styles.tweetContainer}>
       <View style={styles.user}>
         <Image
-          source={require('./android/app/src/main/res/drawable/ProfilePics/pic1.jpeg')}
+          source={require('../android/app/src/main/res/drawable/ProfilePics/pic1.jpeg')}
           style={styles.profileImage}
         />
         <Text style={styles.author}>{tweet.author}</Text>
       </View>
       <Text style={styles.content}>{tweet.content}</Text>
       <Image
-        source={require('./android/app/src/main/res/drawable/FoodPics/pic1.webp')}
+        source={require('../android/app/src/main/res/drawable/FoodPics/pic1.webp')}
         style={styles.image}
         resizeMode="contain"
       />

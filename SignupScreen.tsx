@@ -2,8 +2,7 @@ import React, {useState} from 'react';
 import {View, TextInput, Button, Text, Alert} from 'react-native';
 import auth from '@react-native-firebase/auth';
 
-import { useNavigation } from '@react-navigation/native';
-
+import {useNavigation} from '@react-navigation/native';
 
 const SignupScreen = () => {
   const navigation = useNavigation();
@@ -17,29 +16,16 @@ const SignupScreen = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  // const handleSignUp = () => {
-  //   auth()
-  //     .createUserWithEmailAndPassword(email, password)
-  //     .then(() => {
-  //       console.log('User account created & signed in!');
-  //     })
-  //     .catch(error => {
-  //       if (error.code === 'auth/email-already-in-use') {
-  //         setError('That email address is already in use!');
-  //       } else if (error.code === 'auth/invalid-email') {
-  //         setError('That email address is invalid!');
-  //       } else {
-  //         setError(error.message);
-  //       }
-  //     });
-  // };
-
   const handleSignUp = async () => {
     try {
       await auth().createUserWithEmailAndPassword(email, password);
       Alert.alert('Signup Success', 'You are successfully registered!', [
-        {text: 'OK', onPress: () => navigation.navigate('Login', { email: email })},
+        {
+          text: 'OK',
+          onPress: () => navigation.navigate('Login', {email: email}),
+        },
       ]);
+      // eslint-disable-next-line no-catch-shadow
     } catch (error) {
       console.error(error);
       Alert.alert('Signup Failed', error.message);
