@@ -15,12 +15,16 @@ function Map() {
       let docs = querySnapshot.docs.map(doc => doc.data());
       docs = docs.filter(place => place.Coordinates !== '');
       docs.map(place => {
-        let [latitude, longitude] = place.Coordinates.split(',')
-          .map(coord => coord.trim()) // Ensure coordinates are trimmed before conversion
-          .map(Number);
+        console.log('DOCS', place);
+        // let [latitude, longitude] = place.Coordinates.split(',')
+        // let [latitude, longitude] = place.coords
+        let {lat, lng} = place.coords;
+        console.log('latlng', lat, lng);
+        // .map(coord => coord.trim()) // Ensure coordinates are trimmed before conversion
+        // .map(Number);
         place.Coordinates = {
-          latitude,
-          longitude,
+          lat,
+          lng,
         };
       });
       docs = docs.filter(
@@ -34,17 +38,17 @@ function Map() {
     }
   };
 
-  useEffect(() => {
-    fetchData('Restaurants2', setDocuments);
-  }, []);
-
-  useEffect(() => {
-    fetchData('YetToVisit', setDocuments2);
-  }, []);
+  // useEffect(() => {
+  //   fetchData('Restaurants2', setDocuments);
+  // }, []);
 
   // useEffect(() => {
-  //   fetchData('test1', setDocuments);
+  //   fetchData('YetToVisit', setDocuments2);
   // }, []);
+
+  useEffect(() => {
+    fetchData('test1', setDocuments);
+  }, []);
 
   // eslint-disable-next-line react/no-unstable-nested-components
   const image = require('./android/app/src/main/res/drawable/ProfilePics/green-dot.png');
@@ -62,14 +66,14 @@ function Map() {
           <Marker
             key={index}
             coordinate={{
-              latitude: marker.Coordinates.latitude,
-              longitude: marker.Coordinates.longitude,
+              latitude: marker.coords.lat,
+              longitude: marker.coords.lng,
             }}
-            title={marker.Name}
+            title={marker.placeName}
             description={marker.Cuisine}
           />
         ))}
-        {documents2.map((marker, index) => (
+        {/* {documents2.map((marker, index) => (
           <Marker
             key={index}
             coordinate={{
@@ -80,7 +84,7 @@ function Map() {
             description={marker.Cuisine}
             icon={image}
           />
-        ))}
+        ))} */}
       </MapView>
       <View style={styles.buttonContainer}>
         <Button
@@ -98,7 +102,7 @@ function Map() {
           onPress={() => console.log('Button pressed')}
           title="Reviewed"
         />
-                <Button
+        <Button
           style={styles.button}
           onPress={() => console.log('Button pressed')}
           title="Add Marker"

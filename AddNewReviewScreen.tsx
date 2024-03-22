@@ -1,3 +1,4 @@
+/* eslint-disable react/self-closing-comp */
 import React, {useState, useEffect} from 'react';
 import {RatingInput} from 'react-native-stock-star-rating';
 
@@ -11,6 +12,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Dimensions,
+  Alert,
 } from 'react-native';
 import {SearchBar} from 'react-native-elements';
 
@@ -19,9 +21,6 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import axios from 'axios';
 
 import firestore from '@react-native-firebase/firestore';
-
-const {width, height} = Dimensions.get('window');
-
 
 function AddNewReviewScreen({navigation}) {
   const [searchQuery, setSearchQuery] = useState('');
@@ -33,8 +32,9 @@ function AddNewReviewScreen({navigation}) {
   const [placeId, setPlaceId] = useState('');
   const [coords, setCoords] = useState('');
   const [searchCompleted, setSearchCompleted] = useState(false);
+  const [text, setText] = useState('');
 
-  console.log('placename', placeName);
+  // console.log('placename', placeName);
 
   const googlePlacesApiUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json`;
 
@@ -61,37 +61,46 @@ function AddNewReviewScreen({navigation}) {
     }
   };
 
-  // useEffect(() => {
-  //   if (query && query.length >= 3 && !searchCompleted) {
-  //     const timerId = setTimeout(() => {
-  //       fetchPlaces(query);
-  //     }, 500); // Debounce the API call
+  useEffect(() => {
+    if (query && query.length >= 3 && !searchCompleted) {
+      const timerId = setTimeout(() => {
+        fetchPlaces(query);
+      }, 500); // Debounce the API call
 
-  //     return () => clearTimeout(timerId);
-  //   }
-  // });
+      return () => clearTimeout(timerId);
+    }
+  });
 
-  const [rating, setRating] = React.useState(0);
-  const [rating2, setRating2] = React.useState(0);
-  const [rating3, setRating3] = React.useState(0);
-  const [rating4, setRating4] = React.useState(0);
-  const [rating5, setRating5] = React.useState(0);
-  const [rating6, setRating6] = React.useState(0);
-  const [rating7, setRating7] = React.useState(0);
-  const [text, setText] = useState('');
+  const initialRatings = [
+    {label: 'Overall', value: 0},
+    {label: 'Server Helpfulness', value: 0},
+    {label: 'Timeliness of Service', value: 0},
+    {label: 'Eagerness to Revisit', value: 0},
+    {label: 'Cleanliness', value: 0},
+    {label: 'Bang for Buck', value: 0},
+    {label: 'Music', value: 0},
+    {label: 'Noise Level', value: 0},
+    {label: 'Crowd Management', value: 0},
+    {label: 'Vibe', value: 0},
+  ];
+  const [ratings, setRatings] = React.useState(initialRatings);
+
+  const updateRating = (index, newValue) => {
+    const newRatings = ratings.map((item, i) => {
+      if (i === index) {
+        return {...item, value: newValue};
+      }
+      return item;
+    });
+    setRatings(newRatings);
+  };
 
   const handleSubmit = () => {
     let sendObj = {
       placeName,
       placeId,
       coords,
-      Overall: rating,
-      Service: rating2,
-      Cleanliness: rating3,
-      Price: rating4,
-      Taste: rating5,
-      Noise_Level: rating6,
-      Vibe: rating7,
+      ratings,
       Comments: text,
     };
     console.log('SENDOBJ', sendObj);
@@ -100,7 +109,18 @@ function AddNewReviewScreen({navigation}) {
       .collection('test1')
       .add(sendObj)
       .then(() => {
-        console.log('success!!!!!!!');
+        // console.log('success!!!!!!!');
+        setPlaceName('');
+        setPlaceId('');
+        setCoords('');
+        setRatings(initialRatings);
+        setText('');
+        Alert.alert('Review Posted', 'Your Review Was Posted!!!!!', [
+          {
+            text: 'OK',
+            onPress: () => navigation.navigate('Map'),
+          },
+        ]);
       });
   };
 
@@ -109,13 +129,13 @@ function AddNewReviewScreen({navigation}) {
   //service quality
 
   const handleOnPress = item => {
-    // console.log('item', item.description, item.place_id);
+    console.log('item', item.description, item.place_id, item);
     setPlaceName(item.description);
     setPlaceId(item.place_id);
     setSearchCompleted(true);
     setResults('');
     setQuery('');
-    const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=name,geometry&key=${apiKey}`;
+    const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${item.place_id}&fields=name,geometry&key=${apiKey}`;
 
     fetch(url)
       .then(response => response.json())
@@ -178,6 +198,7 @@ function AddNewReviewScreen({navigation}) {
     searchBar: {
       width: width / 2,
     },
+    listBox: {},
   });
   return (
     <ScrollView
@@ -195,98 +216,55 @@ function AddNewReviewScreen({navigation}) {
         onChangeText={text => setQuery(text)}
         value={query}
       />
-      <CustomTouchable
+      {/* <CustomTouchable
         title="Search"
-        onPress={fetchPlaces(query)}></CustomTouchable>
+        onPress={fetchPlaces(query)}></CustomTouchable> */}
       <Text>{placeName}</Text>
-      <FlatList
-        data={results}
-        keyExtractor={item => item.place_id}
-        renderItem={(
-          {item}, // {({item}) => <Text onPress={setPlaceName(item.description)}>{item.description}</Text>}
-        ) => (
-          <TouchableOpacity
-            onPress={() => handleOnPress(item)}
-            style={
-              ({
-                padding: 20,
-                borderBottomWidth: 1,
-                borderBottomColor: '#ccc',
-              },
-              item.description === placeName
-                ? {backgroundColor: '#eaeaea'}
-                : {}) // Conditional background color
-            }>
-            <Text>{item.description}</Text>
-          </TouchableOpacity>
-        )}
-      />
-      <Text style={styles.buttonText}>Overall Rating</Text>
-      <RatingInput
-        rating={rating}
-        setRating={setRating}
-        size={40}
-        maxStars={5}
-        bordered={false}
-      />
-      <Text style={styles.buttonText}>Service</Text>
-      <RatingInput
-        rating={rating2}
-        setRating={setRating2}
-        size={40}
-        maxStars={5}
-        bordered={false}
-      />
-      <Text style={styles.buttonText}>Cleanliness</Text>
-      <RatingInput
-        rating={rating3}
-        setRating={setRating3}
-        size={40}
-        maxStars={5}
-        bordered={false}
-      />
-      <Text style={styles.buttonText}>Price</Text>
-      <RatingInput
-        rating={rating4}
-        setRating={setRating4}
-        size={40}
-        maxStars={5}
-        bordered={false}
-      />
-      <Text style={styles.buttonText}>Taste</Text>
-      <RatingInput
-        rating={rating5}
-        setRating={setRating5}
-        size={40}
-        maxStars={5}
-        bordered={false}
-      />
-      <Text style={styles.buttonText}>Noise Level</Text>
-      <RatingInput
-        rating={rating6}
-        setRating={setRating6}
-        size={40}
-        maxStars={5}
-        bordered={false}
-      />
-      <Text style={styles.buttonText}>Vibe</Text>
-      <RatingInput
-        rating={rating7}
-        setRating={setRating7}
-        size={40}
-        maxStars={5}
-        bordered={false}
-      />
+      {placeName ? (
+        ''
+      ) : (
+        <FlatList
+          data={results}
+          keyExtractor={item => item.place_id}
+          renderItem={(
+            {item}, // {({item}) => <Text onPress={setPlaceName(item.description)}>{item.description}</Text>}
+          ) => (
+            <TouchableOpacity
+              onPress={() => handleOnPress(item)}
+              style={
+                ({
+                  padding: 20,
+                  borderBottomWidth: 1,
+                  borderBottomColor: '#ccc',
+                },
+                item.description === placeName
+                  ? {backgroundColor: '#eaeaea'}
+                  : {}) // Conditional background color
+              }>
+              <Text>{item.description}</Text>
+            </TouchableOpacity>
+          )}
+        />
+      )}
+      {/* <Text style={styles.buttonText}>Overall Rating</Text> */}
+      {ratings.map((item, index) => (
+        <React.Fragment key={index}>
+          <Text style={styles.buttonText}>{item.label}</Text>
+          <RatingInput
+            rating={item.value}
+            setRating={newValue => updateRating(index, newValue)}
+            size={40}
+            maxStars={5}
+            bordered={false}
+          />
+        </React.Fragment>
+      ))}
       <TextInput
         style={styles.textBox}
         placeholder="Share details of your own experience of this place"
-        // value={name}
+        value={text}
         onChangeText={newText => setText(newText)}
       />
-      {/* <CustomTouchable
-        title="Finish Later"
-        //  onPress={handleSubmit}
-      /> */}
       <CustomTouchable title="Submit" onPress={handleSubmit} />
     </ScrollView>
   );
