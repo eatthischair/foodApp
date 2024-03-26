@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Button, TextInput, View, Alert} from 'react-native';
+import {Button, TextInput, View, Alert, Text} from 'react-native';
 import auth from '@react-native-firebase/auth';
 
 import {useNavigation} from '@react-navigation/native';
@@ -46,6 +46,8 @@ const Login = ({route, navigation}) => {
         secureTextEntry
       />
       <Button title="Login" onPress={handleLogin} />
+      <Text>Don't have a fuckin account bitch?</Text>
+      <Button title='Sign Up' onPress={() => navigation.navigate('Sign Up')}></Button>
     </View>
   );
 };

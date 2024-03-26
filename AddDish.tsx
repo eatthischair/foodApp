@@ -4,7 +4,7 @@ import {Rating, AirbnbRating} from 'react-native-ratings';
 import {View, Text, TextInput, Button, TouchableOpacity} from 'react-native';
 // import {TouchableOpacity} from 'react-native';
 
-function AddDish(props) {
+function AddDish({navigation}) {
   // const CustomTouchable = ({title, onPress}) => {
   //   return (
   //     <TouchableOpacity

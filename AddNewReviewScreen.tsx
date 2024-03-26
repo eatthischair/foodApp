@@ -1,7 +1,6 @@
 /* eslint-disable react/self-closing-comp */
 import React, {useState, useEffect} from 'react';
 import {RatingInput} from 'react-native-stock-star-rating';
-
 import {
   View,
   ScrollView,
@@ -14,12 +13,10 @@ import {
   Dimensions,
   Alert,
 } from 'react-native';
-import {SearchBar} from 'react-native-elements';
 
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-
+// import {SearchBar} from 'react-native-elements';
+// import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import axios from 'axios';
-
 import firestore from '@react-native-firebase/firestore';
 
 function AddNewReviewScreen({navigation}) {
@@ -37,6 +34,7 @@ function AddNewReviewScreen({navigation}) {
   // console.log('placename', placeName);
 
   const googlePlacesApiUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json`;
+  let placesList;
 
   const fetchPlaces = async searchQuery => {
     if (searchQuery.length < 3) return; // Don't search for too short strings
@@ -54,6 +52,7 @@ function AddNewReviewScreen({navigation}) {
       });
 
       if (response.data && response.data.predictions) {
+        placesList = response.data.predictions;
         setResults(response.data.predictions);
       }
     } catch (error) {
@@ -262,6 +261,12 @@ function AddNewReviewScreen({navigation}) {
       <TextInput
         style={styles.textBox}
         placeholder="Share details of your own experience of this place"
+        value={text}
+        onChangeText={newText => setText(newText)}
+      />
+            <TextInput
+        style={styles.textBox}
+        placeholder=""
         value={text}
         onChangeText={newText => setText(newText)}
       />

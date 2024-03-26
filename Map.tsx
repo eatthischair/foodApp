@@ -1,7 +1,20 @@
 import React, {useState, useEffect} from 'react';
 import firestore from '@react-native-firebase/firestore';
 import MapView, {Marker} from 'react-native-maps';
-import {View, StyleSheet, Dimensions, Text, Button} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Dimensions,
+  Text,
+  Button,
+  Modal,
+  Pressable,
+} from 'react-native';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
+
+import MapModal from './MapModal';
+// import {useUser} from './UserContext'; // Path to your UserContext
+import {useUser} from './UserContext'; // Path to your UserContext
 
 const {width, height} = Dimensions.get('window');
 
@@ -9,17 +22,26 @@ function Map() {
   const [documents, setDocuments] = useState([]);
   const [documents2, setDocuments2] = useState([]);
 
+  // const {docs1, setDocs1} = useUser();
+  // const {docs2, setDocs2} = useUser();
+  const {user1, setUser1} = useUser();
+
+  const [yetToReviewDocsCopy, setYetToReviewDocsCopy] = useState([]);
+  const [reviewedDocsCopy, setReviewedDocsCopy] = useState([]);
+  const [yetToReviewHidden, setYetToReviewHidden] = useState(false);
+  const [reviewedHidden, setReviewedHidden] = useState(false);
+
+  // let yetToReviewDocsCopyPlaceholder = yetToReviewDocsCopy;
+
   const fetchData = async (collectionName, setDocumentsFunction) => {
     try {
       const querySnapshot = await firestore().collection(collectionName).get();
       let docs = querySnapshot.docs.map(doc => doc.data());
       docs = docs.filter(place => place.Coordinates !== '');
       docs.map(place => {
-        console.log('DOCS', place);
         // let [latitude, longitude] = place.Coordinates.split(',')
         // let [latitude, longitude] = place.coords
         let {lat, lng} = place.coords;
-        console.log('latlng', lat, lng);
         // .map(coord => coord.trim()) // Ensure coordinates are trimmed before conversion
         // .map(Number);
         place.Coordinates = {
@@ -32,83 +54,127 @@ function Map() {
           !Number.isNaN(place.Coordinates.latitude) &&
           !Number.isNaN(place.Coordinates.longitude),
       );
-      setDocumentsFunction(docs); // Update state with fetched data
+      setDocumentsFunction(docs);
+      if (collectionName === 'test1') {
+        setReviewedDocsCopy(docs);
+        // setDocs1(docs);
+        setUser1(docs);
+      } else {
+        setYetToReviewDocsCopy(docs);
+        // setDocs2(docs);
+      }
+      // Update state with fetched data
     } catch (error) {
       console.error(`Error fetching documents from ${collectionName}: `, error);
     }
   };
 
-  // useEffect(() => {
-  //   fetchData('Restaurants2', setDocuments);
-  // }, []);
-
-  // useEffect(() => {
-  //   fetchData('YetToVisit', setDocuments2);
-  // }, []);
-
   useEffect(() => {
     fetchData('test1', setDocuments);
   }, []);
 
+  useEffect(() => {
+    fetchData('test2', setDocuments2);
+  }, []);
+
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const toggleYetToReview = () => {
+    if (!yetToReviewHidden) {
+      setDocuments2([]);
+    } else {
+      setDocuments2(yetToReviewDocsCopy);
+    }
+    setYetToReviewHidden(!yetToReviewHidden);
+  };
+
+  const toggleReviewed = () => {
+    if (!reviewedHidden) {
+      setDocuments([]);
+    } else {
+      setDocuments(reviewedDocsCopy);
+    }
+    setReviewedHidden(!reviewedHidden);
+  };
+
   // eslint-disable-next-line react/no-unstable-nested-components
   const image = require('./android/app/src/main/res/drawable/ProfilePics/green-dot.png');
   return (
-    <View style={styles.container}>
-      <MapView
-        style={styles.map}
-        initialRegion={{
-          latitude: 32.7767,
-          longitude: -96.797,
-          latitudeDelta: 0.1,
-          longitudeDelta: 0.1,
-        }}>
-        {documents.map((marker, index) => (
-          <Marker
-            key={index}
-            coordinate={{
-              latitude: marker.coords.lat,
-              longitude: marker.coords.lng,
-            }}
-            title={marker.placeName}
-            description={marker.Cuisine}
+    <GestureHandlerRootView style={{flex: 1}}>
+      <View style={styles.container}>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+            setModalVisible(!modalVisible);
+          }}>
+          <View style={styles.modalView}>
+            <MapModal></MapModal>
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => setModalVisible(!modalVisible)}>
+              <Text style={styles.textStyle}>Hide Modal</Text>
+            </Pressable>
+          </View>
+        </Modal>
+        <MapView
+          style={styles.map}
+          initialRegion={{
+            latitude: 32.7767,
+            longitude: -96.797,
+            latitudeDelta: 0.1,
+            longitudeDelta: 0.1,
+          }}>
+          {documents.map((marker, index) => (
+            <Marker
+              key={index}
+              coordinate={{
+                latitude: marker.coords.lat,
+                longitude: marker.coords.lng,
+              }}
+              title={marker.placeName}
+              description={marker.Cuisine}
+            />
+          ))}
+          {documents2.map((marker, index) => (
+            <Marker
+              key={index}
+              coordinate={{
+                latitude: marker.coords.lat,
+                longitude: marker.coords.lng,
+              }}
+              title={marker.placeName}
+              description={marker.Cuisine}
+              icon={image}
+            />
+          ))}
+        </MapView>
+        <View style={styles.buttonContainer}>
+          <Button
+            style={styles.button}
+            onPress={() => console.log('Button pressed')}
+            title="Favorites"
           />
-        ))}
-        {/* {documents2.map((marker, index) => (
-          <Marker
-            key={index}
-            coordinate={{
-              latitude: marker.Coordinates.latitude,
-              longitude: marker.Coordinates.longitude,
-            }}
-            title={marker['Name of Restaurant']}
-            description={marker.Cuisine}
-            icon={image}
+          <Button
+            style={styles.button}
+            onPress={() => toggleYetToReview()}
+            title="Yet To Review"
           />
-        ))} */}
-      </MapView>
-      <View style={styles.buttonContainer}>
-        <Button
-          style={styles.button}
-          onPress={() => console.log('Button pressed')}
-          title="Favorites"
-        />
-        <Button
-          style={styles.button}
-          onPress={() => console.log('Button pressed')}
-          title="Yet To Review"
-        />
-        <Button
-          style={styles.button}
-          onPress={() => console.log('Button pressed')}
-          title="Reviewed"
-        />
-        <Button
-          style={styles.button}
-          onPress={() => console.log('Button pressed')}
-          title="Add Marker"
-        />
+          <Button
+            style={styles.button}
+            onPress={() => toggleReviewed()}
+            title="Reviewed"
+          />
+          <Button
+            style={styles.button}
+            onPress={() => setModalVisible(!modalVisible)}
+            title="Add Marker"
+          />
+        </View>
       </View>
-    </View>
+    </GestureHandlerRootView>
   );
 }
 
@@ -137,6 +203,48 @@ const styles = StyleSheet.create({
     flexDirection: 'row', // Align children horizontally
     justifyContent: 'flex-start',
     gap: 5,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    height: height / 1.2,
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: '#F194FF',
+  },
+  buttonClose: {
+    backgroundColor: '#2196F3',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
   },
 });
 

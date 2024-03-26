@@ -8,9 +8,17 @@ import {
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
+
+import auth from '@react-native-firebase/auth';
+import {useNavigation} from '@react-navigation/native';
+
+import {useUser} from './UserContext'; // Path to your UserContext
+
 const {width, height} = Dimensions.get('window');
 
-const UserProfile = () => {
+const UserProfile = ({route, navigation}) => {
+  const {user1, setUser1} = useUser();
+
   // Placeholder user data
   const user = {
     name: 'Jane Doe',
@@ -19,6 +27,18 @@ const UserProfile = () => {
     email: 'johndoe@example.com',
     location: 'New York, USA',
     // Add more user fields as needed
+  };
+
+  // const navigation = useNavigation();
+
+  const handleLogout = async () => {
+    try {
+      await auth().signOut();
+      console.log('User signed out!');
+      navigation.navigate('Login');
+    } catch (error) {
+      console.error('Sign out error:', error);
+    }
   };
 
   const CustomTouchable = ({title, onPress}) => {
@@ -65,6 +85,11 @@ const UserProfile = () => {
         <CustomTouchable
           title="All Reviews"
           onPress={() => console.log('aa')}
+        />
+        <CustomTouchable title="Sign Out" onPress={() => handleLogout()} />
+        <CustomTouchable
+          title="Touch Me!!!"
+          onPress={() => console.log('user', user1)}
         />
       </View>
     </ScrollView>

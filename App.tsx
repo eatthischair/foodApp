@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -10,9 +10,9 @@ import FindNewRestaurantScreen from './FindNewRestaurantScreen';
 import FriendsReviewsScreen from './FriendsReviewsScreen';
 import AddNewReviewScreen from './AddNewReviewScreen';
 import YetToReviewScreen from './YetToReviewScreen';
-import {FunctionProvider} from './FunctionContext'; // Import the provider
+// import {UserProvider} from './UserContext'; // Import the provider
 import UserProfile from './UserProfile';
-// import auth from '@react-native-firebase/auth';
+import auth from '@react-native-firebase/auth';
 import Login from './Login';
 import SignupScreen from './SignupScreen';
 import Feed from './FeedPage/Feed';
@@ -33,6 +33,23 @@ const CustomTouchable = ({title, onPress}) => {
 const Tab = createBottomTabNavigator();
 
 function App(): React.JSX.Element {
+  const [user, setUser] = useState();
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
+
+  function onAuthStateChanged(user) {
+    if (user) {
+      // User is logged in
+      console.log('User is logged in', user);
+      setUser(user);
+    } else {
+      // User is not logged in
+      console.log('User is not logged in');
+    }
+  }
   // eslint-disable-next-line react/no-unstable-nested-components
   function MyTabs() {
     return (
@@ -70,26 +87,28 @@ function App(): React.JSX.Element {
   const Stack = createNativeStackNavigator();
 
   return (
-    <FunctionProvider>
-      <NavigationContainer>
-        {/* <Stack.Navigator initialRouteName="Sign Up"> */}
-        <Stack.Navigator initialRouteName="Home">
+    <NavigationContainer>
+      {/* <Stack.Navigator initialRouteName="Sign Up"> */}
+      <Stack.Navigator>
+        {user ? (
           <Stack.Screen
             name="Home"
             component={MyTabs}
             options={{headerShown: false}}
           />
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="Sign Up" component={SignupScreen} />
-          <Tab.Screen name="FriendsReviews" component={FriendsReviewsScreen} />
-          <Tab.Screen
-            name="FindNewRestaurant"
-            component={FindNewRestaurantScreen}
-          />
-          <Tab.Screen name="YetToReview" component={YetToReviewScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </FunctionProvider>
+        ) : (
+          <Stack.Screen name="SignUp" component={SignupScreen} />
+        )}
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Sign Up" component={SignupScreen} />
+        <Tab.Screen name="FriendsReviews" component={FriendsReviewsScreen} />
+        <Tab.Screen
+          name="FindNewRestaurant"
+          component={FindNewRestaurantScreen}
+        />
+        <Tab.Screen name="YetToReview" component={YetToReviewScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 

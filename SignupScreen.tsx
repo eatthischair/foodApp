@@ -8,9 +8,9 @@ const SignupScreen = () => {
   const navigation = useNavigation();
 
   // Now you can use navigation.navigate or other navigation functions
-  const handleSignUpSuccess = () => {
-    navigation.navigate('Login'); // Adjust 'Login' to your login screen's route name
-  };
+  // const handleSignUpSuccess = () => {
+  //   navigation.navigate('Login'); // Adjust 'Login' to your login screen's route name
+  // };
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
