@@ -17,6 +17,8 @@ import Login from './Login';
 import SignupScreen from './SignupScreen';
 import Feed from './FeedPage/Feed';
 import Map from './Map';
+import RenderList from './RenderList';
+
 const {width, height} = Dimensions.get('window');
 
 const CustomTouchable = ({title, onPress}) => {
@@ -92,7 +94,7 @@ function App(): React.JSX.Element {
       <Stack.Navigator>
         {user ? (
           <Stack.Screen
-            name="Home"
+            name="Tabs"
             component={MyTabs}
             options={{headerShown: false}}
           />
@@ -100,6 +102,8 @@ function App(): React.JSX.Element {
           <Stack.Screen name="SignUp" component={SignupScreen} />
         )}
         <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Reviews" component={RenderList} />
+
         <Stack.Screen name="Sign Up" component={SignupScreen} />
         <Tab.Screen name="FriendsReviews" component={FriendsReviewsScreen} />
         <Tab.Screen

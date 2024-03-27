@@ -13,11 +13,13 @@ import auth from '@react-native-firebase/auth';
 import {useNavigation} from '@react-navigation/native';
 
 import {useUser} from './UserContext'; // Path to your UserContext
+import RenderList from './RenderList';
 
 const {width, height} = Dimensions.get('window');
 
 const UserProfile = ({route, navigation}) => {
-  const {user1, setUser1} = useUser();
+  const {revs, setRevs} = useUser();
+  const {yets, setYets} = useUser();
 
   // Placeholder user data
   const user = {
@@ -80,16 +82,16 @@ const UserProfile = ({route, navigation}) => {
         <CustomTouchable title="Favorites" onPress={() => console.log('aa')} />
         <CustomTouchable
           title="Yet To Review"
-          onPress={() => console.log('aa')}
+          onPress={() => navigation.navigate('Reviews', {revs: yets})}
         />
         <CustomTouchable
-          title="All Reviews"
-          onPress={() => console.log('aa')}
+          title="Reviewed"
+          onPress={() => navigation.navigate('Reviews', {revs: revs})}
         />
         <CustomTouchable title="Sign Out" onPress={() => handleLogout()} />
         <CustomTouchable
           title="Touch Me!!!"
-          onPress={() => console.log('user', user1)}
+          onPress={() => console.log('revs and yets', revs, yets)}
         />
       </View>
     </ScrollView>

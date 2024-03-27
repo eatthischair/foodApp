@@ -24,7 +24,8 @@ function Map() {
 
   // const {docs1, setDocs1} = useUser();
   // const {docs2, setDocs2} = useUser();
-  const {user1, setUser1} = useUser();
+  const {revs, setRevs} = useUser();
+  const {yets, setYets} = useUser();
 
   const [yetToReviewDocsCopy, setYetToReviewDocsCopy] = useState([]);
   const [reviewedDocsCopy, setReviewedDocsCopy] = useState([]);
@@ -58,10 +59,10 @@ function Map() {
       if (collectionName === 'test1') {
         setReviewedDocsCopy(docs);
         // setDocs1(docs);
-        setUser1(docs);
+        setRevs(docs);
       } else {
         setYetToReviewDocsCopy(docs);
-        // setDocs2(docs);
+        setYets(docs);
       }
       // Update state with fetched data
     } catch (error) {
@@ -152,11 +153,11 @@ function Map() {
           ))}
         </MapView>
         <View style={styles.buttonContainer}>
-          <Button
+          {/* <Button
             style={styles.button}
             onPress={() => console.log('Button pressed')}
             title="Favorites"
-          />
+          /> */}
           <Button
             style={styles.button}
             onPress={() => toggleYetToReview()}
