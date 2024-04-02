@@ -93,6 +93,10 @@ const UserProfile = ({route, navigation}) => {
           title="Touch Me!!!"
           onPress={() => console.log('revs and yets', revs, yets)}
         />
+        <CustomTouchable
+          title="Edit Profile"
+          onPress={() => console.log('revs and yets', revs, yets)}
+        />
       </View>
     </ScrollView>
   );

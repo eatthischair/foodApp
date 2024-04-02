@@ -18,7 +18,7 @@ import SignupScreen from './SignupScreen';
 import Feed from './FeedPage/Feed';
 import Map from './Map';
 import RenderList from './RenderList';
-
+import HomeScreen from './HomeScreen';
 const {width, height} = Dimensions.get('window');
 
 const CustomTouchable = ({title, onPress}) => {
@@ -78,6 +78,8 @@ function App(): React.JSX.Element {
           tabBarActiveTintColor: 'blue',
           tabBarInactiveTintColor: 'gray',
         })}>
+        <Tab.Screen name="Home" component={HomeScreen} />
+
         <Tab.Screen name="Map" component={Map} />
         <Tab.Screen name="AddNewReview" component={AddNewReviewScreen} />
         <Tab.Screen name="Feed" component={Feed} />

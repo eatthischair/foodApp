@@ -17,6 +17,7 @@ import {
 // import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import axios from 'axios';
 import firestore from '@react-native-firebase/firestore';
+import {RatingInput} from 'react-native-stock-star-rating';
 
 function AddNewReviewScreen({navigation}) {
   const [searchQuery, setSearchQuery] = useState('');

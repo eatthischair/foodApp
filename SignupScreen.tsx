@@ -13,6 +13,8 @@ const SignupScreen = () => {
   // };
 
   const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
+
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
@@ -35,6 +37,8 @@ const SignupScreen = () => {
   return (
     <View>
       <TextInput placeholder="Email" value={email} onChangeText={setEmail} />
+      <TextInput placeholder="Username" value={username} onChangeText={setUsername} />
+
       <TextInput
         placeholder="Password"
         value={password}
