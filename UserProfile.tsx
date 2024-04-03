@@ -95,7 +95,7 @@ const UserProfile = ({route, navigation}) => {
         />
         <CustomTouchable
           title="Edit Profile"
-          onPress={() => console.log('revs and yets', revs, yets)}
+          onPress={() => navigation.navigate('Edit Profile')}
         />
       </View>
     </ScrollView>

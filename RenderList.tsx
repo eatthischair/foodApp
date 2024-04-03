@@ -44,10 +44,16 @@ const RenderList = ({route}) => {
             backgroundColor: '#eaeaea', // Conditional background color
           }}>
           <Text>{item.placeName}</Text>
+          <Text>
+            {item.dishes.map(dish => (
+              <Text>{dish}</Text>
+            ))}
+          </Text>
+
           {index === expandedIndex ? (
             <View style={styles.ratingsObj}>
               <RenderRatingsObj ratings={item.ratings}></RenderRatingsObj>
-              {item.Comments !== "" ? <Text>{item.Comments}</Text> : ''}
+              {item.Comments !== '' ? <Text>{item.Comments}</Text> : ''}
             </View>
           ) : (
             ''

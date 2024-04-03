@@ -19,7 +19,7 @@ import axios from 'axios';
 import firestore from '@react-native-firebase/firestore';
 import {RatingInput} from 'react-native-stock-star-rating';
 
-function AddNewReviewScreen({navigation}) {
+function AddNewReviewScreen({route, navigation}) {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredData, setFilteredData] = useState([]);
 
@@ -30,11 +30,16 @@ function AddNewReviewScreen({navigation}) {
   const [coords, setCoords] = useState('');
   const [searchCompleted, setSearchCompleted] = useState(false);
   const [text, setText] = useState('');
-
   // console.log('placename', placeName);
 
   const googlePlacesApiUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json`;
   let placesList;
+
+  const [dishes, setDishes] = useState([]);
+  const addDishCallback = newDishData => {
+    console.log('newidhsdata', newDishData, dishes);
+    setDishes(prevDishes => [...prevDishes, newDishData]);
+  };
 
   const fetchPlaces = async searchQuery => {
     if (searchQuery.length < 3) return; // Don't search for too short strings
@@ -93,7 +98,6 @@ function AddNewReviewScreen({navigation}) {
     });
     setRatings(newRatings);
   };
-
   const handleSubmit = () => {
     let sendObj = {
       placeName,
@@ -101,6 +105,7 @@ function AddNewReviewScreen({navigation}) {
       coords,
       ratings,
       Comments: text,
+      dishes,
     };
     console.log('SENDOBJ', sendObj);
 
@@ -215,9 +220,12 @@ function AddNewReviewScreen({navigation}) {
         onChangeText={text => setQuery(text)}
         value={query}
       />
-      {/* <CustomTouchable
-        title="Search"
-        onPress={fetchPlaces(query)}></CustomTouchable> */}
+      <CustomTouchable
+        title="Add Dish"
+        onPress={() =>
+          navigation.navigate('AddDish', {onAddDish: addDishCallback})
+        }></CustomTouchable>
+      <Text>Dishes</Text>
       <Text>{placeName}</Text>
       {placeName ? (
         ''
@@ -261,12 +269,6 @@ function AddNewReviewScreen({navigation}) {
       <TextInput
         style={styles.textBox}
         placeholder="Share details of your own experience of this place"
-        value={text}
-        onChangeText={newText => setText(newText)}
-      />
-      <TextInput
-        style={styles.textBox}
-        placeholder=""
         value={text}
         onChangeText={newText => setText(newText)}
       />

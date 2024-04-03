@@ -19,6 +19,8 @@ import Feed from './FeedPage/Feed';
 import Map from './Map';
 import RenderList from './RenderList';
 import HomeScreen from './HomeScreen';
+import AddDish from './AddDish';
+import EditProfile from './EditProfile';
 const {width, height} = Dimensions.get('window');
 
 const CustomTouchable = ({title, onPress}) => {
@@ -107,12 +109,16 @@ function App(): React.JSX.Element {
         <Stack.Screen name="Reviews" component={RenderList} />
 
         <Stack.Screen name="Sign Up" component={SignupScreen} />
+        <Stack.Screen name="Edit Profile" component={EditProfile} />
+
         <Tab.Screen name="FriendsReviews" component={FriendsReviewsScreen} />
         <Tab.Screen
           name="FindNewRestaurant"
           component={FindNewRestaurantScreen}
         />
         <Tab.Screen name="YetToReview" component={YetToReviewScreen} />
+        <Tab.Screen name="AddDish" component={AddDish} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
