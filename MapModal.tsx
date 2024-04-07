@@ -14,6 +14,7 @@ import {
   Alert,
 } from 'react-native';
 import axios from 'axios';
+import {useUser} from './UserContext'; // Path to your UserContext
 
 const MapModal = () => {
   const [query, setQuery] = useState('');
@@ -22,11 +23,15 @@ const MapModal = () => {
   const [placeId, setPlaceId] = useState('');
   const [coords, setCoords] = useState('');
 
+  const {username} = useUser();
+
+  console.log('USER ID IN EDIT PROFILE', username);
+
   const googlePlacesApiUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json`;
   let placesList;
   const fetchPlaces = async searchQuery => {
     if (searchQuery.length < 3) return; // Don't search for too short strings
-    //later add an error msg
+    //later add an error msgf
 
     try {
       const response = await axios.get(googlePlacesApiUrl, {
@@ -82,23 +87,12 @@ const MapModal = () => {
             placeName: item.description,
             placeId: item.place_id,
             coords: placeDetails.geometry.location,
+            username: username,
           };
           firestore()
             .collection('test2')
             .add(sendObj)
-            .then(() => {
-              // console.log('success!!!!!!!');
-              // setPlaceName('');
-              // setPlaceId('');
-              // setCoords('');
-              // setText('');
-              // Alert.alert('Review Posted', 'Your Review Was Posted!!!!!', [
-              //   {
-              //     text: 'OK',
-              //     onPress: () => navigation.navigate('Map'),
-              //   },
-              // ]);
-            });
+            .then(() => {});
         } else {
           console.error('Place Details request failed:', data.status);
         }

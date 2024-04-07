@@ -21,6 +21,9 @@ import RenderList from './RenderList';
 import HomeScreen from './HomeScreen';
 import AddDish from './AddDish';
 import EditProfile from './EditProfile';
+import {useUser} from './UserContext'; // Path to your UserContext
+import firestore from '@react-native-firebase/firestore';
+
 const {width, height} = Dimensions.get('window');
 
 const CustomTouchable = ({title, onPress}) => {
@@ -39,15 +42,34 @@ const Tab = createBottomTabNavigator();
 function App(): React.JSX.Element {
   const [user, setUser] = useState();
 
+  const {username, setUsername} = useUser();
+
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
     return subscriber; // unsubscribe on unmount
   }, []);
 
+  const findUsername = async email => {
+    const querySnapshot = await firestore()
+      .collection('users') // The name of the collection you're searching
+      .where('email', '==', email) // Replace 'username' with the field you're searching by
+      .get();
+
+    let foundDocuments = [];
+    querySnapshot.forEach(documentSnapshot => {
+      console.log(`Found document with ID ${documentSnapshot.id}`);
+      foundDocuments.push(documentSnapshot.data());
+    });
+    console.log('FOUND DOCUMENTS', foundDocuments);
+    setUsername(foundDocuments[0].username);
+    return foundDocuments;
+  };
+
   function onAuthStateChanged(user) {
     if (user) {
       // User is logged in
       console.log('User is logged in', user);
+      findUsername(user.email);
       setUser(user);
     } else {
       // User is not logged in
@@ -119,7 +141,6 @@ function App(): React.JSX.Element {
         />
         <Tab.Screen name="YetToReview" component={YetToReviewScreen} />
         <Tab.Screen name="AddDish" component={AddDish} />
-
       </Stack.Navigator>
     </NavigationContainer>
   );

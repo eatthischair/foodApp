@@ -13,7 +13,6 @@ import {
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 import MapModal from './MapModal';
-// import {useUser} from './UserContext'; // Path to your UserContext
 import {useUser} from './UserContext'; // Path to your UserContext
 
 const {width, height} = Dimensions.get('window');

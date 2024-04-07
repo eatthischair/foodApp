@@ -25,7 +25,7 @@ function AddNewReviewScreen({route, navigation}) {
   const [filteredData, setFilteredData] = useState([]);
 
   const {userId, setUserId} = useUser();
-
+  const {username} = useUser();
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [placeName, setPlaceName] = useState('');
@@ -80,6 +80,7 @@ function AddNewReviewScreen({route, navigation}) {
     }
   });
 
+  console.log('USERNAME IN ADD NEW REVIEW', username);
   const initialRatings = [
     {label: 'Overall', value: 0},
     {label: 'Server Helpfulness', value: 0},
@@ -112,7 +113,7 @@ function AddNewReviewScreen({route, navigation}) {
       Comments: text,
       dishes,
       favorite,
-      username: userId,
+      username,
     };
     console.log('SENDOBJ', sendObj);
 

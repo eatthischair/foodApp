@@ -17,23 +17,6 @@ import firestore from '@react-native-firebase/firestore';
 const {width, height} = Dimensions.get('window');
 
 const HomeScreen = ({route, navigation}) => {
-  const {username, setUsername} = useUser();
-
-  const findUsername = async email => {
-    const querySnapshot = await firestore()
-      .collection('users')
-      .where('email', '==', email)
-      .get();
-
-    let foundDocuments = [];
-    querySnapshot.forEach(documentSnapshot => {
-      console.log(`Found document with ID ${documentSnapshot.id}`);
-      foundDocuments.push(documentSnapshot.data());
-    });
-    console.log('FOUND DOCUMENTS', foundDocuments);
-    return foundDocuments;
-  };
-
   const handleNavigation = screenName => {
     navigation.navigate(screenName);
   };
@@ -44,10 +27,6 @@ const HomeScreen = ({route, navigation}) => {
       updateDisplayName(route.params?.username);
     }
   }, [route.params]);
-
-  useEffect(() => {
-    findUsername(route.params?.email);
-  });
 
   function updateDisplayName(newDisplayName) {
     const user = auth().currentUser;
