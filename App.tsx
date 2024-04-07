@@ -54,6 +54,7 @@ function App(): React.JSX.Element {
       console.log('User is not logged in');
     }
   }
+
   // eslint-disable-next-line react/no-unstable-nested-components
   function MyTabs() {
     return (

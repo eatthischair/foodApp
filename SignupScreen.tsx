@@ -3,14 +3,33 @@ import {View, TextInput, Button, Text, Alert} from 'react-native';
 import auth from '@react-native-firebase/auth';
 
 import {useNavigation} from '@react-navigation/native';
+import firestore from '@react-native-firebase/firestore';
+import {useUser} from './UserContext'; // Path to your UserContext
 
 const SignupScreen = () => {
   const navigation = useNavigation();
 
-  // Now you can use navigation.navigate or other navigation functions
-  // const handleSignUpSuccess = () => {
-  //   navigation.navigate('Login'); // Adjust 'Login' to your login screen's route name
-  // };
+  const {userId, setUserId} = useUser();
+
+  const handleSubmit = () => {
+    let sendObj = {
+      username,
+      email,
+    };
+    const addNewUser = async userData => {
+      try {
+        const documentReference = await firestore()
+          .collection('users')
+          .add(userData);
+        console.log('Document added with ID: ', documentReference.id);
+        setUserId(documentReference.id);
+        return documentReference.id; // This is the auto-generated document ID
+      } catch (error) {
+        console.error('Error adding document: ', error);
+      }
+    };
+    addNewUser(sendObj);
+  };
 
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
@@ -21,10 +40,12 @@ const SignupScreen = () => {
   const handleSignUp = async () => {
     try {
       await auth().createUserWithEmailAndPassword(email, password);
+      handleSubmit();
       Alert.alert('Signup Success', 'You are successfully registered!', [
         {
           text: 'OK',
-          onPress: () => navigation.navigate('Login', {email: email}),
+          onPress: () =>
+            navigation.navigate('Login', {email: email, username: username}),
         },
       ]);
       // eslint-disable-next-line no-catch-shadow
@@ -37,7 +58,11 @@ const SignupScreen = () => {
   return (
     <View>
       <TextInput placeholder="Email" value={email} onChangeText={setEmail} />
-      <TextInput placeholder="Username" value={username} onChangeText={setUsername} />
+      <TextInput
+        placeholder="Username"
+        value={username}
+        onChangeText={setUsername}
+      />
 
       <TextInput
         placeholder="Password"

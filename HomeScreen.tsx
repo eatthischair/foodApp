@@ -6,24 +6,77 @@ import {
   Button,
   Modal,
   Pressable,
-  TouchableOpacity
+  TouchableOpacity,
 } from 'react-native';
+
+import auth from '@react-native-firebase/auth';
+import {useEffect} from 'react';
+import {useUser} from './UserContext'; // Path to your UserContext
+import firestore from '@react-native-firebase/firestore';
+
 const {width, height} = Dimensions.get('window');
 
-const HomeScreen = ({navigation}) => {
+const HomeScreen = ({route, navigation}) => {
+  const {username, setUsername} = useUser();
+
+  const findUsername = async email => {
+    const querySnapshot = await firestore()
+      .collection('users')
+      .where('email', '==', email)
+      .get();
+
+    let foundDocuments = [];
+    querySnapshot.forEach(documentSnapshot => {
+      console.log(`Found document with ID ${documentSnapshot.id}`);
+      foundDocuments.push(documentSnapshot.data());
+    });
+    console.log('FOUND DOCUMENTS', foundDocuments);
+    return foundDocuments;
+  };
+
   const handleNavigation = screenName => {
     navigation.navigate(screenName);
   };
-const CustomTouchable = ({title, onPress}) => {
-  return (
-    <TouchableOpacity
-      style={styles.buttons}
-      onPress={onPress}
-      activeOpacity={0.8}>
-      <Text style={styles.buttonText}>{title}</Text>
-    </TouchableOpacity>
-  );
-};
+
+  useEffect(() => {
+    console.log('route in home', route, route.params);
+    if (route.params?.username) {
+      updateDisplayName(route.params?.username);
+    }
+  }, [route.params]);
+
+  useEffect(() => {
+    findUsername(route.params?.email);
+  });
+
+  function updateDisplayName(newDisplayName) {
+    const user = auth().currentUser;
+
+    if (user) {
+      user
+        .updateProfile({
+          displayName: newDisplayName,
+        })
+        .then(() => {
+          console.log('Display name updated!', route.params.username);
+          // Optionally, update the local state or perform other actions after the update
+        })
+        .catch(error => {
+          console.error('Error updating display name:', error);
+        });
+    }
+  }
+
+  const CustomTouchable = ({title, onPress}) => {
+    return (
+      <TouchableOpacity
+        style={styles.buttons}
+        onPress={onPress}
+        activeOpacity={0.8}>
+        <Text style={styles.buttonText}>{title}</Text>
+      </TouchableOpacity>
+    );
+  };
   return (
     <View style={styles.container}>
       <Text>Home Screen</Text>
@@ -34,10 +87,6 @@ const CustomTouchable = ({title, onPress}) => {
       <CustomTouchable
         title="Friends Reviews"
         onPress={() => handleNavigation('FriendsReviews')}
-      />
-      <CustomTouchable
-        title="Find New Restaurant"
-        onPress={() => handleNavigation('FindNewRestaurant')}
       />
       <CustomTouchable
         title="Profile"

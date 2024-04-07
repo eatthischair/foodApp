@@ -5,22 +5,59 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  ScrollView,
+  Dimensions,
 } from 'react-native';
+import firestore from '@react-native-firebase/firestore';
+
 // import { Picker } from '@react-native-picker/picker';
 import DropDownPicker from 'react-native-dropdown-picker';
 import RadioGroup from 'react-native-radio-buttons-group';
 
 import Slider from '@react-native-community/slider';
 
+const {width, height} = Dimensions.get('window');
+
+import {useUser} from './UserContext'; // Path to your UserContext
+
 const EditProfile = () => {
+  const CustomTouchable = ({title, onPress}) => {
+    return (
+      <TouchableOpacity
+        style={styles.buttons}
+        onPress={onPress}
+        activeOpacity={0.8}>
+        <Text style={styles.buttonText}>{title}</Text>
+      </TouchableOpacity>
+    );
+  };
+
+  const {userId, setUserId} = useUser();
+  console.log('USER ID IN EDIT PROFILE', userId);
+
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [ageRange, setAgeRange] = useState('');
   const [incomeRange, setIncomeRange] = useState('');
   const [diningFrequency, setDiningFrequency] = useState('');
   const [profileVisibility, setProfileVisibility] = useState('Public');
-  const [sliderValue, setSliderValue] = useState(0);
 
+  const updateUserData = async () => {
+    const userRef = firestore().collection('users').doc(userId);
+
+    try {
+      await userRef.update({
+        // Fields you want to update
+        firstName: firstName,
+        lastName: lastName,
+        profileVisibility,
+        // Add other fields you want to update here
+      });
+      console.log('User updated!');
+    } catch (error) {
+      console.error('Error updating user:', error);
+    }
+  };
   //radio button values
   const radioButtons = useMemo(
     () => [
@@ -84,7 +121,7 @@ const EditProfile = () => {
   ]);
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <TextInput
         value={firstName}
         onChangeText={setFirstName}
@@ -97,23 +134,31 @@ const EditProfile = () => {
         placeholder="Last Name"
         style={styles.input}
       />
-      <DropDownPicker
-        open={open}
-        value={value}
-        items={items}
-        setOpen={setOpen}
-        setValue={setValue}
-        setItems={setItems}
-      />
-      <DropDownPicker
-        open={open1}
-        value={value1}
-        items={items1}
-        setOpen={setOpen1}
-        setValue={setValue1}
-        setItems={setItems1}
-      />
-      <View>
+      {/* <Text>Age Range</Text>
+      <View style={styles.box}>
+        <DropDownPicker
+          open={open}
+          value={value}
+          items={items}
+          setOpen={setOpen}
+          setValue={setValue}
+          setItems={setItems}
+          modal={true}
+        />
+      </View>
+      <Text>Income Range</Text>
+      <View style={styles.box}>
+        <DropDownPicker
+          open={open1}
+          value={value1}
+          items={items1}
+          setOpen={setOpen1}
+          setValue={setValue1}
+          setItems={setItems1}
+          modal={true}
+        />
+      </View>
+      <View style={styles.box}>
         <Text>How often do you dine out?</Text>
         <DropDownPicker
           open={open2}
@@ -122,8 +167,9 @@ const EditProfile = () => {
           setOpen={setOpen2}
           setValue={setValue2}
           setItems={setItems2}
+          modal={true}
         />
-      </View>
+      </View> */}
       <View>
         <Text>Profile Visibility</Text>
         <RadioGroup
@@ -133,13 +179,17 @@ const EditProfile = () => {
         />
       </View>
       <View>
+        <Text>Level of Chewology</Text>
         <RadioGroup
           radioButtons={radioButtons2}
           onPress={setSelectedId1}
           selectedId={selectedId1}
         />
       </View>
-    </View>
+      <CustomTouchable
+        title="Submit"
+        onPress={() => updateUserData()}></CustomTouchable>
+    </ScrollView>
   );
 };
 
@@ -147,6 +197,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+  },
+  box: {
+    margin: 40,
   },
   input: {
     borderWidth: 1,
@@ -184,6 +237,21 @@ const styles = StyleSheet.create({
     height: 12,
     borderRadius: 6,
     backgroundColor: '#000',
+  },
+  buttons: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: 'white',
+    borderRadius: 8,
+    height: height / 10,
+    width: width,
+    textAlign: 'center',
+    backgroundColor: '#000000',
+    marginVertical: 3,
+  },
+  buttonText: {
+    fontSize: 20,
+    color: '#ffffff',
   },
 });
 

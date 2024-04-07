@@ -9,6 +9,8 @@ import {
   Dimensions,
 } from 'react-native';
 
+import {useEffect, useState} from 'react';
+
 import auth from '@react-native-firebase/auth';
 import {useNavigation} from '@react-navigation/native';
 
@@ -20,6 +22,21 @@ const {width, height} = Dimensions.get('window');
 const UserProfile = ({route, navigation}) => {
   const {revs, setRevs} = useUser();
   const {yets, setYets} = useUser();
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
+
+  function onAuthStateChanged(user) {
+    if (user) {
+      // User is logged in
+      console.log('User is logged in', user);
+    } else {
+      // User is not logged in
+      console.log('User is not logged in');
+    }
+  }
 
   // Placeholder user data
   const user = {

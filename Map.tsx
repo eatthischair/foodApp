@@ -22,8 +22,6 @@ function Map() {
   const [documents, setDocuments] = useState([]);
   const [documents2, setDocuments2] = useState([]);
 
-  // const {docs1, setDocs1} = useUser();
-  // const {docs2, setDocs2} = useUser();
   const {revs, setRevs} = useUser();
   const {yets, setYets} = useUser();
 
@@ -32,6 +30,9 @@ function Map() {
   const [yetToReviewHidden, setYetToReviewHidden] = useState(false);
   const [reviewedHidden, setReviewedHidden] = useState(false);
 
+  const [favoritesHidden, setFavoritesHidden] = useState(false);
+  const [favorites, setFavorites] = useState([]);
+  const [favoritesCopy, setFavoritesCopy] = useState([]);
   // let yetToReviewDocsCopyPlaceholder = yetToReviewDocsCopy;
 
   const fetchData = async (collectionName, setDocumentsFunction) => {
@@ -60,6 +61,9 @@ function Map() {
         setReviewedDocsCopy(docs);
         // setDocs1(docs);
         setRevs(docs);
+        let favs = docs.filter(item => item.favorite === true);
+        setFavorites(favs);
+        setFavoritesCopy(favs);
       } else {
         setYetToReviewDocsCopy(docs);
         setYets(docs);
@@ -96,6 +100,15 @@ function Map() {
       setDocuments(reviewedDocsCopy);
     }
     setReviewedHidden(!reviewedHidden);
+  };
+
+  const toggleFavorites = () => {
+    if (!favoritesHidden) {
+      setFavorites([]);
+    } else {
+      setFavorites(favoritesCopy);
+    }
+    setFavoritesHidden(!favoritesHidden);
   };
 
   // eslint-disable-next-line react/no-unstable-nested-components
@@ -158,6 +171,11 @@ function Map() {
             onPress={() => console.log('Button pressed')}
             title="Favorites"
           /> */}
+          <Button
+            style={styles.button}
+            onPress={() => toggleFavorites()}
+            title="Favorites"
+          />
           <Button
             style={styles.button}
             onPress={() => toggleYetToReview()}

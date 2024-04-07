@@ -18,10 +18,13 @@ import {
 import axios from 'axios';
 import firestore from '@react-native-firebase/firestore';
 import {RatingInput} from 'react-native-stock-star-rating';
+import {useUser} from './UserContext'; // Path to your UserContext
 
 function AddNewReviewScreen({route, navigation}) {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredData, setFilteredData] = useState([]);
+
+  const {userId, setUserId} = useUser();
 
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
@@ -30,6 +33,8 @@ function AddNewReviewScreen({route, navigation}) {
   const [coords, setCoords] = useState('');
   const [searchCompleted, setSearchCompleted] = useState(false);
   const [text, setText] = useState('');
+  const [favorite, setFavorite] = useState(false);
+
   // console.log('placename', placeName);
 
   const googlePlacesApiUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json`;
@@ -106,6 +111,8 @@ function AddNewReviewScreen({route, navigation}) {
       ratings,
       Comments: text,
       dishes,
+      favorite,
+      username: userId,
     };
     console.log('SENDOBJ', sendObj);
 
@@ -271,6 +278,10 @@ function AddNewReviewScreen({route, navigation}) {
         placeholder="Share details of your own experience of this place"
         value={text}
         onChangeText={newText => setText(newText)}
+      />
+      <CustomTouchable
+        title="Add to Favorites"
+        onPress={() => setFavorite(true)}
       />
       <CustomTouchable title="Submit" onPress={handleSubmit} />
     </ScrollView>
