@@ -73,13 +73,13 @@ function Map() {
     }
   };
 
-  useEffect(() => {
-    fetchData('test1', setDocuments);
-  }, []);
+  // useEffect(() => {
+  //   fetchData('test1', setDocuments);
+  // }, []);
 
-  useEffect(() => {
-    fetchData('test2', setDocuments2);
-  }, []);
+  // useEffect(() => {
+  //   fetchData('test2', setDocuments2);
+  // }, []);
 
   const [modalVisible, setModalVisible] = useState(false);
 

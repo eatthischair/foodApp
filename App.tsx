@@ -23,7 +23,7 @@ import AddDish from './AddDish';
 import EditProfile from './EditProfile';
 import {useUser} from './UserContext'; // Path to your UserContext
 import firestore from '@react-native-firebase/firestore';
-
+import FindFriends from './FindFriends';
 const {width, height} = Dimensions.get('window');
 
 const CustomTouchable = ({title, onPress}) => {
@@ -133,6 +133,7 @@ function App(): React.JSX.Element {
 
         <Stack.Screen name="Sign Up" component={SignupScreen} />
         <Stack.Screen name="Edit Profile" component={EditProfile} />
+        <Stack.Screen name="Find Friends" component={FindFriends} />
 
         <Tab.Screen name="FriendsReviews" component={FriendsReviewsScreen} />
         <Tab.Screen
