@@ -18,7 +18,7 @@ import {
 import axios from 'axios';
 import firestore from '@react-native-firebase/firestore';
 import {RatingInput} from 'react-native-stock-star-rating';
-import {useUser} from './UserContext'; // Path to your UserContext
+import {useUser} from '../UserContext'; // Path to your UserContext
 
 function AddNewReviewScreen({route, navigation}) {
   const [searchQuery, setSearchQuery] = useState('');

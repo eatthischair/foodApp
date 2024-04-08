@@ -11,7 +11,7 @@ import {
 
 import auth from '@react-native-firebase/auth';
 import {useEffect} from 'react';
-import {useUser} from './UserContext'; // Path to your UserContext
+import {useUser} from '../UserContext'; // Path to your UserContext
 import firestore from '@react-native-firebase/firestore';
 
 const {width, height} = Dimensions.get('window');
@@ -62,10 +62,6 @@ const HomeScreen = ({route, navigation}) => {
       <CustomTouchable
         title="Find Friends"
         onPress={() => handleNavigation('Find Friends')}
-      />
-      <CustomTouchable
-        title="Friends Reviews"
-        onPress={() => handleNavigation('FriendsReviews')}
       />
       <CustomTouchable
         title="Profile"

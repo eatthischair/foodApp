@@ -18,7 +18,7 @@ import Slider from '@react-native-community/slider';
 
 const {width, height} = Dimensions.get('window');
 
-import {useUser} from './UserContext'; // Path to your UserContext
+import {useUser} from '../UserContext'; // Path to your UserContext
 
 const EditProfile = () => {
   const CustomTouchable = ({title, onPress}) => {

@@ -1,10 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import {View, TextInput, FlatList, Text, StyleSheet} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
+import {useNavigation} from '@react-navigation/native';
 
-const FindFriends = () => {
+const FindFriends = ({route}) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [results, setResults] = useState([]);
+  const navigation = useNavigation();
 
   useEffect(() => {
     if (searchQuery && searchQuery.length >= 3) {
@@ -45,9 +47,8 @@ const FindFriends = () => {
       <FlatList
         data={results}
         keyExtractor={(item, index) => index.toString()}
-        renderItem={({item}) => (
-          <Text style={styles.itemText}>{item}</Text>
-        )}
+        renderItem={({item}) => <Text         onPress={() => navigation.navigate('Profile')}
+         style={styles.itemText}>{item}</Text>}
       />
     </View>
   );

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import firestore from '@react-native-firebase/firestore';
 import MapView, {Marker} from 'react-native-maps';
 import {
@@ -13,7 +13,7 @@ import {
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 import MapModal from './MapModal';
-import {useUser} from './UserContext'; // Path to your UserContext
+import {useUser} from '../UserContext'; // Path to your UserContext
 
 const {width, height} = Dimensions.get('window');
 
@@ -30,21 +30,17 @@ function Map() {
   const [reviewedHidden, setReviewedHidden] = useState(false);
 
   const [favoritesHidden, setFavoritesHidden] = useState(false);
-  const [favorites, setFavorites] = useState([]);
-  const [favoritesCopy, setFavoritesCopy] = useState([]);
+  // const [favorites, setFavorites] = useState([]);
+  // const [favoritesCopy, setFavoritesCopy] = useState([]);
   // let yetToReviewDocsCopyPlaceholder = yetToReviewDocsCopy;
 
-  const fetchData = async (collectionName, setDocumentsFunction) => {
+  const fetchData = async (collectionName, setDocumentsFunction, setCopy) => {
     try {
       const querySnapshot = await firestore().collection(collectionName).get();
       let docs = querySnapshot.docs.map(doc => doc.data());
       docs = docs.filter(place => place.Coordinates !== '');
       docs.map(place => {
-        // let [latitude, longitude] = place.Coordinates.split(',')
-        // let [latitude, longitude] = place.coords
         let {lat, lng} = place.coords;
-        // .map(coord => coord.trim()) // Ensure coordinates are trimmed before conversion
-        // .map(Number);
         place.Coordinates = {
           lat,
           lng,
@@ -56,30 +52,34 @@ function Map() {
           !Number.isNaN(place.Coordinates.longitude),
       );
       setDocumentsFunction(docs);
-      if (collectionName === 'test1') {
-        setReviewedDocsCopy(docs);
-        // setDocs1(docs);
-        setRevs(docs);
-        let favs = docs.filter(item => item.favorite === true);
-        setFavorites(favs);
-        setFavoritesCopy(favs);
-      } else {
-        setYetToReviewDocsCopy(docs);
-        setYets(docs);
-      }
+      setCopy(docs);
       // Update state with fetched data
     } catch (error) {
       console.error(`Error fetching documents from ${collectionName}: `, error);
     }
   };
 
-  // useEffect(() => {
-  //   fetchData('test1', setDocuments);
-  // }, []);
+  //maybe separate useeffects for setting contexts revs and yets??
 
-  // useEffect(() => {
-  //   fetchData('test2', setDocuments2);
-  // }, []);
+  useEffect(() => {
+    fetchData('test1', setDocuments, setReviewedDocsCopy);
+  }, []);
+
+  useEffect(() => {
+    fetchData('test2', setDocuments2, setYetToReviewDocsCopy);
+  }, []);
+
+  useEffect(() => {
+    if (revs === null && documents !== null) {
+      setRevs(documents);
+    }
+  }, [documents]);
+
+  useEffect(() => {
+    if (yets === null && documents2 !== null) {
+      setYets(documents2);
+    }
+  }, [documents2]);
 
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -101,17 +101,17 @@ function Map() {
     setReviewedHidden(!reviewedHidden);
   };
 
-  const toggleFavorites = () => {
-    if (!favoritesHidden) {
-      setFavorites([]);
-    } else {
-      setFavorites(favoritesCopy);
-    }
-    setFavoritesHidden(!favoritesHidden);
-  };
+  // const toggleFavorites = () => {
+  //   if (!favoritesHidden) {
+  //     setFavorites([]);
+  //   } else {
+  //     setFavorites(favoritesCopy);
+  //   }
+  //   setFavoritesHidden(!favoritesHidden);
+  // };
 
   // eslint-disable-next-line react/no-unstable-nested-components
-  const image = require('./android/app/src/main/res/drawable/ProfilePics/green-dot.png');
+  const image = require('../android/app/src/main/res/drawable/ProfilePics/green-dot.png');
   return (
     <GestureHandlerRootView style={{flex: 1}}>
       <View style={styles.container}>
@@ -128,7 +128,7 @@ function Map() {
             <Pressable
               style={[styles.button, styles.buttonClose]}
               onPress={() => setModalVisible(!modalVisible)}>
-              <Text style={styles.textStyle}>Hide Modal</Text>
+              <Text style={styles.textStyle}>Go Back</Text>
             </Pressable>
           </View>
         </Modal>
@@ -148,7 +148,7 @@ function Map() {
                 longitude: marker.coords.lng,
               }}
               title={marker.placeName}
-              description={marker.Cuisine}
+              // description={marker.Cuisine}
             />
           ))}
           {documents2.map((marker, index) => (
@@ -170,11 +170,11 @@ function Map() {
             onPress={() => console.log('Button pressed')}
             title="Favorites"
           /> */}
-          <Button
+          {/* <Button
             style={styles.button}
             onPress={() => toggleFavorites()}
             title="Favorites"
-          />
+          /> */}
           <Button
             style={styles.button}
             onPress={() => toggleYetToReview()}

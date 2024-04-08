@@ -4,7 +4,7 @@ import auth from '@react-native-firebase/auth';
 
 import {useNavigation} from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
-import {useUser} from './UserContext'; // Path to your UserContext
+import {useUser} from '../../UserContext'; // Path to your UserContext
 
 const SignupScreen = () => {
   const navigation = useNavigation();

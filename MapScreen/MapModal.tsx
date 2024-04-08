@@ -14,7 +14,7 @@ import {
   Alert,
 } from 'react-native';
 import axios from 'axios';
-import {useUser} from './UserContext'; // Path to your UserContext
+import {useUser} from '../UserContext'; // Path to your UserContext
 
 const MapModal = () => {
   const [query, setQuery] = useState('');
@@ -25,11 +25,10 @@ const MapModal = () => {
 
   const {username} = useUser();
 
-  console.log('USER ID IN EDIT PROFILE', username);
-
   const googlePlacesApiUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json`;
   let placesList;
   const fetchPlaces = async searchQuery => {
+    console.log('fetchplaces in mapmodal running');
     if (searchQuery.length < 3) return; // Don't search for too short strings
     //later add an error msgf
 
@@ -67,7 +66,6 @@ const MapModal = () => {
   const handleOnPress = item => {
     const apiKey = 'AIzaSyCvOCWqc-IOvr5C7FZo7IO8oIvSz5aR6Hk'; // API Key
 
-    console.log('item', item.place_id);
     setPlaceName(item.description);
     setPlaceId(item.place_id);
     setResults('');
@@ -80,7 +78,6 @@ const MapModal = () => {
         if (data.status === 'OK') {
           const placeDetails = data.result;
           const coordinates = placeDetails.geometry.location;
-          console.log('Coordinates:', coordinates);
           setCoords(coordinates);
           // Use these coordinates to place a marker on the map
           let sendObj = {

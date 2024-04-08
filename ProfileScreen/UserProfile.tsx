@@ -14,7 +14,7 @@ import {useEffect, useState} from 'react';
 import auth from '@react-native-firebase/auth';
 import {useNavigation} from '@react-navigation/native';
 
-import {useUser} from './UserContext'; // Path to your UserContext
+import {useUser} from '../UserContext'; // Path to your UserContext
 import RenderList from './RenderList';
 
 const {width, height} = Dimensions.get('window');
@@ -74,7 +74,7 @@ const UserProfile = ({route, navigation}) => {
     <ScrollView style={styles.container}>
       <View style={styles.profileHeader}>
         <Image
-          source={require('./android/app/src/main/res/drawable/ProfilePics/pic2.jpeg')}
+          source={require('../android/app/src/main/res/drawable/ProfilePics/pic2.jpeg')}
           style={styles.profileImage}
         />
         <Text style={styles.name}>{user.name}</Text>

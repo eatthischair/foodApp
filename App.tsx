@@ -6,24 +6,22 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Import Ionicons
 // import type {PropsWithChildren} from 'react';
 import {StyleSheet, Text, TouchableOpacity, Dimensions} from 'react-native';
-import FindNewRestaurantScreen from './FindNewRestaurantScreen';
-import FriendsReviewsScreen from './FriendsReviewsScreen';
-import AddNewReviewScreen from './AddNewReviewScreen';
+import AddNewReviewScreen from './AddReviewScreen/AddNewReviewScreen';
 import YetToReviewScreen from './YetToReviewScreen';
 // import {UserProvider} from './UserContext'; // Import the provider
-import UserProfile from './UserProfile';
+import UserProfile from './ProfileScreen/UserProfile';
 import auth from '@react-native-firebase/auth';
-import Login from './Login';
-import SignupScreen from './SignupScreen';
+import Login from './Login/Signup/Login';
+import SignupScreen from './Login/Signup/SignupScreen';
 import Feed from './FeedPage/Feed';
-import Map from './Map';
-import RenderList from './RenderList';
-import HomeScreen from './HomeScreen';
-import AddDish from './AddDish';
-import EditProfile from './EditProfile';
+import Map from './MapScreen/Map';
+import RenderList from './ProfileScreen/RenderList';
+import HomeScreen from './HomePage/HomeScreen';
+import AddDish from './AddReviewScreen/AddDish';
+import EditProfile from './ProfileScreen/EditProfile';
 import {useUser} from './UserContext'; // Path to your UserContext
 import firestore from '@react-native-firebase/firestore';
-import FindFriends from './FindFriends';
+import FindFriends from './HomePage/FindFriends';
 const {width, height} = Dimensions.get('window');
 
 const CustomTouchable = ({title, onPress}) => {
@@ -135,11 +133,6 @@ function App(): React.JSX.Element {
         <Stack.Screen name="Edit Profile" component={EditProfile} />
         <Stack.Screen name="Find Friends" component={FindFriends} />
 
-        <Tab.Screen name="FriendsReviews" component={FriendsReviewsScreen} />
-        <Tab.Screen
-          name="FindNewRestaurant"
-          component={FindNewRestaurantScreen}
-        />
         <Tab.Screen name="YetToReview" component={YetToReviewScreen} />
         <Tab.Screen name="AddDish" component={AddDish} />
       </Stack.Navigator>
