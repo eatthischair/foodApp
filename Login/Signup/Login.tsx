@@ -29,8 +29,7 @@ const Login = ({route}) => {
         Alert.alert('Signup Success', 'You are successfully signed in!', [
           {
             text: 'OK',
-            onPress: () =>
-              navigation.navigate('Home', {username: route.params.username, email: email}),
+            onPress: () => navigation.navigate('Home', {email: email}),
           },
         ]);
       })

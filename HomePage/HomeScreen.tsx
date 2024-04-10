@@ -64,8 +64,12 @@ const HomeScreen = ({route, navigation}) => {
         onPress={() => handleNavigation('Find Friends')}
       />
       <CustomTouchable
-        title="Profile"
+        title="My Chew"
         onPress={() => handleNavigation('Profile')}
+      />
+      <CustomTouchable
+        title="Friends Chew"
+        onPress={() => handleNavigation('Feed')}
       />
       <CustomTouchable title="Map" onPress={() => handleNavigation('Map')} />
     </View>

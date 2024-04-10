@@ -7,6 +7,7 @@ import {
   StyleSheet,
   ScrollView,
   Dimensions,
+  Alert,
 } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 
@@ -19,8 +20,10 @@ import Slider from '@react-native-community/slider';
 const {width, height} = Dimensions.get('window');
 
 import {useUser} from '../UserContext'; // Path to your UserContext
+import {useNavigation} from '@react-navigation/native';
 
-const EditProfile = () => {
+const EditProfile = ({route}) => {
+  const navigation = useNavigation();
   const CustomTouchable = ({title, onPress}) => {
     return (
       <TouchableOpacity
@@ -33,7 +36,7 @@ const EditProfile = () => {
   };
 
   const {userId, setUserId} = useUser();
-  console.log('USER ID IN EDIT PROFILE', userId);
+  // console.log('USER ID IN EDIT PROFILE', userId);
 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -43,6 +46,16 @@ const EditProfile = () => {
   const [profileVisibility, setProfileVisibility] = useState('Public');
 
   const updateUserData = async () => {
+    Alert.alert(
+      'Profile Updates',
+      'Your profile has been successfully updated!',
+      [
+        {
+          text: 'OK',
+          onPress: () => navigation.navigate('Profile'),
+        },
+      ],
+    );
     const userRef = firestore().collection('users').doc(userId);
 
     try {

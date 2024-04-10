@@ -114,6 +114,7 @@ function AddNewReviewScreen({route, navigation}) {
       dishes,
       favorite,
       username,
+      createdAt: new Date(),
     };
     console.log('SENDOBJ', sendObj);
 

@@ -14,15 +14,22 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 import MapModal from './MapModal';
 import {useUser} from '../UserContext'; // Path to your UserContext
+import GetCurrentUser from '../MiscFuns/GetCurrentUser';
+import ReviewCaller from '../DatabaseCalls/ReviewCaller';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 
 const {width, height} = Dimensions.get('window');
 
-function Map() {
+function Map({route}) {
   const [documents, setDocuments] = useState([]);
   const [documents2, setDocuments2] = useState([]);
 
-  const {revs, setRevs} = useUser();
-  const {yets, setYets} = useUser();
+  const [revs, setRevs] = useState(route.params?.revs);
+  const [yets, setYets] = useState(route.params?.yets);
+
+  // console.log('REVS AND YETS FROM FRIENDSPROFILE', route.params?.revs, route.params?.yets);
+  // const {revs, setRevs} = useUser();
+  // const {yets, setYets} = useUser();
 
   const [yetToReviewDocsCopy, setYetToReviewDocsCopy] = useState([]);
   const [reviewedDocsCopy, setReviewedDocsCopy] = useState([]);
@@ -35,51 +42,79 @@ function Map() {
   // let yetToReviewDocsCopyPlaceholder = yetToReviewDocsCopy;
 
   const fetchData = async (collectionName, setDocumentsFunction, setCopy) => {
-    try {
-      const querySnapshot = await firestore().collection(collectionName).get();
-      let docs = querySnapshot.docs.map(doc => doc.data());
-      docs = docs.filter(place => place.Coordinates !== '');
-      docs.map(place => {
-        let {lat, lng} = place.coords;
-        place.Coordinates = {
-          lat,
-          lng,
-        };
-      });
-      docs = docs.filter(
-        place =>
-          !Number.isNaN(place.Coordinates.latitude) &&
-          !Number.isNaN(place.Coordinates.longitude),
-      );
-      setDocumentsFunction(docs);
-      setCopy(docs);
-      // Update state with fetched data
-    } catch (error) {
-      console.error(`Error fetching documents from ${collectionName}: `, error);
-    }
+    const docs = await ReviewCaller(collectionName, GetCurrentUser());
+    // try {
+    //   const querySnapshot = await firestore().collection(collectionName).get();
+    //   let docs = querySnapshot.docs.map(doc => doc.data());
+    //   docs = docs.filter(place => place.Coordinates !== '');
+    //   docs.map(place => {
+    //     let {lat, lng} = place.coords;
+    //     place.Coordinates = {
+    //       lat,
+    //       lng,
+    //     };
+    //   });
+    //   docs = docs.filter(
+    //     place =>
+    //       !Number.isNaN(place.Coordinates.latitude) &&
+    //       !Number.isNaN(place.Coordinates.longitude),
+    //   );
+    setDocumentsFunction(docs);
+    setCopy(docs);
+    // Update state with fetched data
+    // } catch (error) {
+    //   console.error(`Error fetching documents from ${collectionName}: `, error);
+    // }
   };
 
   //maybe separate useeffects for setting contexts revs and yets??
 
+  // useEffect(() => {
+  //   if (!revs && !yets) {
+  //     fetchData('test1', setDocuments, setReviewedDocsCopy);
+  //   } else {
+  //     setDocuments(revs);
+  //     setReviewedDocsCopy(revs);
+  //   }
+  // }, []);
+
   useEffect(() => {
-    fetchData('test1', setDocuments, setReviewedDocsCopy);
+    if (!revs && !yets) {
+      // Fetch data if `revs` and `yets` are not provided
+      const fetchData = async () => {
+        const docs = await ReviewCaller('test1', GetCurrentUser());
+        setDocuments(docs);
+        setReviewedDocsCopy(docs);
+      };
+      fetchData();
+    } else {
+      // Use provided `revs` and `yets` to set state
+      setDocuments(revs);
+      setReviewedDocsCopy(revs); // Assuming you wanted to set the same data to both
+      // For `yets`, consider how you want to use it as it's not used in the current setup
+    }
+  }, [revs, yets]);
+
+  useEffect(() => {
+    if (!revs && !yets) {
+      fetchData('test2', setDocuments2, setYetToReviewDocsCopy);
+    } else {
+      setDocuments2(yets);
+      setYetToReviewDocsCopy(yets);
+    }
   }, []);
 
-  useEffect(() => {
-    fetchData('test2', setDocuments2, setYetToReviewDocsCopy);
-  }, []);
+  // useEffect(() => {
+  //   if (revs === null && documents !== null) {
+  //     setRevs(documents);
+  //   }
+  // }, [documents]);
 
-  useEffect(() => {
-    if (revs === null && documents !== null) {
-      setRevs(documents);
-    }
-  }, [documents]);
-
-  useEffect(() => {
-    if (yets === null && documents2 !== null) {
-      setYets(documents2);
-    }
-  }, [documents2]);
+  // useEffect(() => {
+  //   if (yets === null && documents2 !== null) {
+  //     setYets(documents2);
+  //   }
+  // }, [documents2]);
 
   const [modalVisible, setModalVisible] = useState(false);
 

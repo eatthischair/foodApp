@@ -16,23 +16,21 @@ import {useNavigation} from '@react-navigation/native';
 
 import {useUser} from '../UserContext'; // Path to your UserContext
 import RenderList from './RenderList';
-// import UserCaller from '../DatabaseCalls/UserCaller';
 import firestore from '@react-native-firebase/firestore';
+
+// import UserCaller from '../DatabaseCalls/UserCaller';
 import ReviewCaller from '../DatabaseCalls/ReviewCaller';
+import {AddFollower} from '../DatabaseCalls';
+console.log('Imported AddFollower:', AddFollower);
+
+import GetCurrentUser from '../MiscFuns/GetCurrentUser';
+console.log('Imported GetCurrentUser:', GetCurrentUser);
 
 const {width, height} = Dimensions.get('window');
 
-const UserProfile = ({route, navigation}) => {
-  // const {revs, setRevs} = useUser();
-  // const {yets, setYets} = useUser();
-
-  const [revs, setRevs] = useState(null);
-  const [yets, setYets] = useState(null);
-  const [favs, setFavs] = useState(null);
-
+const ViewFriendsProfile = ({route, navigation}) => {
   const [userInfo, setUserInfo] = useState({
-    firstName: 'Jane',
-    lastName: 'Doe',
+    name: 'Jane Doe',
     bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus.',
     profileImage: 'https://via.placeholder.com/150',
     email: 'johndoe@example.com',
@@ -40,8 +38,10 @@ const UserProfile = ({route, navigation}) => {
     followers: 1,
     following: 1,
     reviews: 1,
-    // Add more user fields as needed
+    username: 'placeholder',
   });
+  const [revs, setRevs] = useState(null);
+  const [yets, setYets] = useState(null);
 
   const UserCaller = async username => {
     try {
@@ -62,76 +62,61 @@ const UserProfile = ({route, navigation}) => {
     }
   };
 
-  const getCurrentUser = () => {
-    const user = auth().currentUser;
-    if (user) {
-      console.log('User is logged in', user);
-      return user;
-    }
-  };
+  console.log('VIEWFRIENDSPROF', route.params);
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        let user = getCurrentUser()?.displayName;
-        const userData = await UserCaller(user);
-        console.log('User data:', userData);
-        setUserInfo(userData);
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      }
-    };
-    fetchUser();
-  }, []);
-
-  useEffect(() => {
-    const fetchRevs = async () => {
-      try {
-        let revss = await ReviewCaller('test1', getCurrentUser()?.displayName);
-        console.log('User revs in userprofile:', revss);
-        setRevs(revss);
-        let favss = revss?.filter(rev => rev.favorite === true);
-        setFavs(favss);
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      }
-    };
-    fetchRevs();
-  }, []);
-
-  useEffect(() => {
-    const fetchYets = async () => {
-      try {
-        let yetss = await ReviewCaller('test2', getCurrentUser()?.displayName);
-        console.log('User yetss in userprofile:', yetss);
-        setYets(yetss);
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      }
-    };
-    fetchYets();
-  }, []);
-
-  // Placeholder user data
-  const user = {
-    firstName: 'Jane',
-    lastName: 'Doe',
+  let user = {
+    name: 'Jane Doe',
     bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus.',
     profileImage: 'https://via.placeholder.com/150',
     email: 'johndoe@example.com',
     location: 'New York, USA',
     // Add more user fields as needed
   };
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const userData = await UserCaller(route.params.username);
+        console.log('User data:', userData);
+        setUserInfo(userData);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
 
-  const handleLogout = async () => {
-    try {
-      await auth().signOut();
-      console.log('User signed out!');
-      navigation.navigate('Login');
-    } catch (error) {
-      console.error('Sign out error:', error);
-    }
-  };
+    fetchUser();
+  }, [route.params.username]);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const userData = await ReviewCaller('test1', route.params.username);
+        console.log('review data:', userData);
+        // setUserInfo(userData);
+        setRevs(userData);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchUser();
+  }, [route.params.username]);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const userData = await ReviewCaller('test2', route.params.username);
+        console.log('review2 data:', userData);
+        // setUserInfo(userData);
+        setYets(userData);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchUser();
+  }, [route.params.username]);
+
+  // Placeholder user data
 
   const CustomTouchable = ({title, onPress}) => {
     return (
@@ -150,15 +135,14 @@ const UserProfile = ({route, navigation}) => {
           source={require('../android/app/src/main/res/drawable/ProfilePics/pic2.jpeg')}
           style={styles.profileImage}
         />
-        <Text style={styles.name}>
-          {userInfo ? `${userInfo.firstName} ${userInfo.lastName}` : ''}
-        </Text>
+        <Text
+          style={
+            styles.name
+          }>{`${userInfo.firstName} ${userInfo.lastName}`}</Text>
       </View>
       <View style={styles.profileDetails}>
         <Text style={styles.bio}>{user.bio}</Text>
-        <Text style={styles.detail}>
-          Email: {userInfo ? userInfo.email : ''}
-        </Text>
+        <Text style={styles.detail}>Email: {userInfo.email}</Text>
         <Text style={styles.detail}>Location: {user.location}</Text>
         {/* Add more user details here */}
       </View>
@@ -168,19 +152,12 @@ const UserProfile = ({route, navigation}) => {
         <Text style={styles.gridItem}>Following</Text>
       </View>
       <View style={styles.grid}>
-        <Text style={styles.BigNums}>{revs ? revs.length : 0}</Text>
-        <Text style={styles.BigNums}>
-          {userInfo ? userInfo.followers.length : 0}
-        </Text>
-        <Text style={styles.BigNums}>
-          {userInfo ? userInfo.following.length : 0}
-        </Text>
+        <Text style={styles.BigNums}>{userInfo.reviews}</Text>
+        <Text style={styles.BigNums}>{userInfo.followers.length}</Text>
+        <Text style={styles.BigNums}>{userInfo.following.length}</Text>
       </View>
       <View style={styles.favorites}>
-        <CustomTouchable
-          title="Favorites"
-          onPress={() => navigation.navigate('Reviews', {revs: favs})}
-        />
+        <CustomTouchable title="Favorites" onPress={() => console.log('aa')} />
         <CustomTouchable
           title="Yet To Review"
           onPress={() => navigation.navigate('Reviews', {revs: yets})}
@@ -189,10 +166,14 @@ const UserProfile = ({route, navigation}) => {
           title="Reviewed"
           onPress={() => navigation.navigate('Reviews', {revs: revs})}
         />
-        <CustomTouchable title="Sign Out" onPress={() => handleLogout()} />
         <CustomTouchable
-          title="Edit Profile"
-          onPress={() => navigation.navigate('Edit Profile')}
+          title="Show Reviews on Map"
+          onPress={() => navigation.navigate('Map', {revs: revs, yets: yets})}
+        />
+        <CustomTouchable
+          title="Follow"
+          // onPress={() => navigation.navigate('Map', {revs: revs, yets: yets})}
+          onPress={() => AddFollower(GetCurrentUser(), userInfo.username)}
         />
       </View>
     </ScrollView>
@@ -267,4 +248,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default UserProfile;
+export default ViewFriendsProfile;

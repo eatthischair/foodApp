@@ -44,11 +44,9 @@ const RenderList = ({route}) => {
             backgroundColor: '#eaeaea', // Conditional background color
           }}>
           <Text>{item.placeName}</Text>
-          <Text>
-            {item.dishes.map(dish => (
-              <Text>{dish}</Text>
-            ))}
-          </Text>
+          {/* <Text>
+            {item.dishes ? item.dishes.map(dish => <Text>{dish}</Text>) : ''}
+          </Text> */}
 
           {index === expandedIndex ? (
             <View style={styles.ratingsObj}>

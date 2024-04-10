@@ -47,8 +47,15 @@ const FindFriends = ({route}) => {
       <FlatList
         data={results}
         keyExtractor={(item, index) => index.toString()}
-        renderItem={({item}) => <Text         onPress={() => navigation.navigate('Profile')}
-         style={styles.itemText}>{item}</Text>}
+        renderItem={({item}) => (
+          <Text
+            onPress={() =>
+              navigation.navigate('FriendsProfile', {username: item})
+            }
+            style={styles.itemText}>
+            {item}
+          </Text>
+        )}
       />
     </View>
   );

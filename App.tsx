@@ -5,7 +5,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Import Ionicons
 // import type {PropsWithChildren} from 'react';
-import {StyleSheet, Text, TouchableOpacity, Dimensions} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, Dimensions, View} from 'react-native';
 import AddNewReviewScreen from './AddReviewScreen/AddNewReviewScreen';
 import YetToReviewScreen from './YetToReviewScreen';
 // import {UserProvider} from './UserContext'; // Import the provider
@@ -22,6 +22,8 @@ import EditProfile from './ProfileScreen/EditProfile';
 import {useUser} from './UserContext'; // Path to your UserContext
 import firestore from '@react-native-firebase/firestore';
 import FindFriends from './HomePage/FindFriends';
+import ViewFriendsProfile from './ProfileScreen/ViewFriendsProfile';
+
 const {width, height} = Dimensions.get('window');
 
 const CustomTouchable = ({title, onPress}) => {
@@ -130,6 +132,8 @@ function App(): React.JSX.Element {
         <Stack.Screen name="Reviews" component={RenderList} />
 
         <Stack.Screen name="Sign Up" component={SignupScreen} />
+        <Stack.Screen name="FriendsProfile" component={ViewFriendsProfile} />
+
         <Stack.Screen name="Edit Profile" component={EditProfile} />
         <Stack.Screen name="Find Friends" component={FindFriends} />
 
