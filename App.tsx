@@ -23,6 +23,7 @@ import {useUser} from './UserContext'; // Path to your UserContext
 import firestore from '@react-native-firebase/firestore';
 import FindFriends from './HomePage/FindFriends';
 import ViewFriendsProfile from './ProfileScreen/ViewFriendsProfile';
+import RenderFollowList from './ProfileScreen/RenderFollowList';
 
 const {width, height} = Dimensions.get('window');
 
@@ -136,6 +137,7 @@ function App(): React.JSX.Element {
 
         <Stack.Screen name="Edit Profile" component={EditProfile} />
         <Stack.Screen name="Find Friends" component={FindFriends} />
+        <Stack.Screen name="Followers/Following" component={RenderFollowList} />
 
         <Tab.Screen name="YetToReview" component={YetToReviewScreen} />
         <Tab.Screen name="AddDish" component={AddDish} />

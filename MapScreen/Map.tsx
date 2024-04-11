@@ -16,7 +16,7 @@ import MapModal from './MapModal';
 import {useUser} from '../UserContext'; // Path to your UserContext
 import GetCurrentUser from '../MiscFuns/GetCurrentUser';
 import ReviewCaller from '../DatabaseCalls/ReviewCaller';
-import { useFocusEffect, useIsFocused } from '@react-navigation/native';
+import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 
 const {width, height} = Dimensions.get('window');
 
@@ -37,8 +37,8 @@ function Map({route}) {
   const [reviewedHidden, setReviewedHidden] = useState(false);
 
   const [favoritesHidden, setFavoritesHidden] = useState(false);
-  // const [favorites, setFavorites] = useState([]);
-  // const [favoritesCopy, setFavoritesCopy] = useState([]);
+  const [favorites, setFavorites] = useState([]);
+  const [favoritesCopy, setFavoritesCopy] = useState([]);
   // let yetToReviewDocsCopyPlaceholder = yetToReviewDocsCopy;
 
   const fetchData = async (collectionName, setDocumentsFunction, setCopy) => {
@@ -85,6 +85,8 @@ function Map({route}) {
         const docs = await ReviewCaller('test1', GetCurrentUser());
         setDocuments(docs);
         setReviewedDocsCopy(docs);
+        let favs = docs?.filter(item => item.favorite);
+        setFavorites(favs);
       };
       fetchData();
     } else {
@@ -136,14 +138,17 @@ function Map({route}) {
     setReviewedHidden(!reviewedHidden);
   };
 
-  // const toggleFavorites = () => {
-  //   if (!favoritesHidden) {
-  //     setFavorites([]);
-  //   } else {
-  //     setFavorites(favoritesCopy);
-  //   }
-  //   setFavoritesHidden(!favoritesHidden);
-  // };
+  const toggleFavorites = () => {
+    if (!favoritesHidden) {
+      //if favs are showing
+      // setFavorites([]);
+      //set docs back to docs
+      setDocuments(favorites);
+    } else {
+      setDocuments(reviewedDocsCopy);
+    }
+    setFavoritesHidden(!favoritesHidden);
+  };
 
   // eslint-disable-next-line react/no-unstable-nested-components
   const image = require('../android/app/src/main/res/drawable/ProfilePics/green-dot.png');
@@ -200,16 +205,11 @@ function Map({route}) {
           ))}
         </MapView>
         <View style={styles.buttonContainer}>
-          {/* <Button
-            style={styles.button}
-            onPress={() => console.log('Button pressed')}
-            title="Favorites"
-          /> */}
-          {/* <Button
+          <Button
             style={styles.button}
             onPress={() => toggleFavorites()}
             title="Favorites"
-          /> */}
+          />
           <Button
             style={styles.button}
             onPress={() => toggleYetToReview()}

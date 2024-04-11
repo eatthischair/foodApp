@@ -21,10 +21,11 @@ import firestore from '@react-native-firebase/firestore';
 // import UserCaller from '../DatabaseCalls/UserCaller';
 import ReviewCaller from '../DatabaseCalls/ReviewCaller';
 import {AddFollower} from '../DatabaseCalls';
-console.log('Imported AddFollower:', AddFollower);
+// console.log('Imported AddFollower:', AddFollower);
 
 import GetCurrentUser from '../MiscFuns/GetCurrentUser';
-console.log('Imported GetCurrentUser:', GetCurrentUser);
+// console.log('Imported GetCurrentUser:', GetCurrentUser);
+import RenderFollowList from './RenderFollowList';
 
 const {width, height} = Dimensions.get('window');
 
@@ -62,7 +63,7 @@ const ViewFriendsProfile = ({route, navigation}) => {
     }
   };
 
-  console.log('VIEWFRIENDSPROF', route.params);
+  // console.log('VIEWFRIENDSPROF', route.params);
 
   let user = {
     name: 'Jane Doe',
@@ -153,8 +154,24 @@ const ViewFriendsProfile = ({route, navigation}) => {
       </View>
       <View style={styles.grid}>
         <Text style={styles.BigNums}>{userInfo.reviews}</Text>
-        <Text style={styles.BigNums}>{userInfo.followers.length}</Text>
-        <Text style={styles.BigNums}>{userInfo.following.length}</Text>
+        <Text
+          style={styles.BigNums}
+          onPress={() => {
+            navigation.navigate('Followers/Following', {
+              follow: userInfo.followers,
+            });
+          }}>
+          {userInfo ? userInfo.followers.length : 0}
+        </Text>
+        <Text
+          style={styles.BigNums}
+          onPress={() => {
+            navigation.navigate('Followers/Following', {
+              follow: userInfo.following,
+            });
+          }}>
+          {userInfo ? userInfo.following.length : 0}
+        </Text>
       </View>
       <View style={styles.favorites}>
         <CustomTouchable title="Favorites" onPress={() => console.log('aa')} />

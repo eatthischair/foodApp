@@ -19,7 +19,7 @@ import RenderList from './RenderList';
 // import UserCaller from '../DatabaseCalls/UserCaller';
 import firestore from '@react-native-firebase/firestore';
 import ReviewCaller from '../DatabaseCalls/ReviewCaller';
-
+import RenderFollowList from './RenderFollowList';
 const {width, height} = Dimensions.get('window');
 
 const UserProfile = ({route, navigation}) => {
@@ -169,10 +169,22 @@ const UserProfile = ({route, navigation}) => {
       </View>
       <View style={styles.grid}>
         <Text style={styles.BigNums}>{revs ? revs.length : 0}</Text>
-        <Text style={styles.BigNums}>
+        <Text
+          style={styles.BigNums}
+          onPress={() => {
+            navigation.navigate('Followers/Following', {
+              follow: userInfo.followers,
+            });
+          }}>
           {userInfo ? userInfo.followers.length : 0}
         </Text>
-        <Text style={styles.BigNums}>
+        <Text
+          style={styles.BigNums}
+          onPress={() => {
+            navigation.navigate('Followers/Following', {
+              follow: userInfo.following,
+            });
+          }}>
           {userInfo ? userInfo.following.length : 0}
         </Text>
       </View>
