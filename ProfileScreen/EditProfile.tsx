@@ -117,6 +117,8 @@ const EditProfile = ({route}) => {
   const [items, setItems] = useState([
     {label: '18-25', value: '18-25'},
     {label: '26-35', value: '26-35'},
+    {label: '36-45', value: '36-45'},
+    {label: '46-55', value: '46-55'},
   ]);
 
   const [open1, setOpen1] = useState(false);
@@ -147,7 +149,7 @@ const EditProfile = ({route}) => {
         placeholder="Last Name"
         style={styles.input}
       />
-      {/* <Text>Age Range</Text>
+      <Text>Age Range</Text>
       <View style={styles.box}>
         <DropDownPicker
           open={open}
@@ -182,7 +184,7 @@ const EditProfile = ({route}) => {
           setItems={setItems2}
           modal={true}
         />
-      </View> */}
+      </View>
       <View>
         <Text>Profile Visibility</Text>
         <RadioGroup
