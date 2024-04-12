@@ -35,8 +35,6 @@ function AddNewReviewScreen({route, navigation}) {
   const [text, setText] = useState('');
   const [favorite, setFavorite] = useState(false);
 
-  // console.log('placename', placeName);
-
   const googlePlacesApiUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json`;
   let placesList;
 
@@ -122,7 +120,6 @@ function AddNewReviewScreen({route, navigation}) {
       .collection('test1')
       .add(sendObj)
       .then(() => {
-        // console.log('success!!!!!!!');
         setPlaceName('');
         setPlaceId('');
         setCoords('');
@@ -182,7 +179,7 @@ function AddNewReviewScreen({route, navigation}) {
   const styles = StyleSheet.create({
     buttonText: {
       color: 'black',
-      fontSize: 20,
+      fontSize: 30,
       justifyContent: 'center',
       alignItems: 'center',
     },
@@ -194,7 +191,7 @@ function AddNewReviewScreen({route, navigation}) {
       borderRadius: 5,
       color: 'blue',
       height: height / 15,
-      width: width / 2,
+      width: width / 1.5,
       // textAlign: 'center',
       backgroundColor: '#03a9fc',
       marginVertical: 3,
@@ -202,11 +199,12 @@ function AddNewReviewScreen({route, navigation}) {
     textBox: {
       // display: 'flex',
       height: height / 8,
-      width: width / 2,
+      width: width / 1.5,
       borderColor: 'black',
       borderWidth: 2,
       justifyContent: 'center',
       alignItems: 'center',
+      fontSize: 20,
     },
     searchBar: {
       width: width / 2,
@@ -269,7 +267,7 @@ function AddNewReviewScreen({route, navigation}) {
           <RatingInput
             rating={item.value}
             setRating={newValue => updateRating(index, newValue)}
-            size={40}
+            size={60}
             maxStars={5}
             bordered={false}
           />

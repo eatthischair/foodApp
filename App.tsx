@@ -58,10 +58,10 @@ function App(): React.JSX.Element {
 
     let foundDocuments = [];
     querySnapshot.forEach(documentSnapshot => {
-      console.log(`Found document with ID ${documentSnapshot.id}`);
+      // console.log(`Found document with ID ${documentSnapshot.id}`);
       foundDocuments.push(documentSnapshot.data());
     });
-    console.log('FOUND DOCUMENTS', foundDocuments);
+    // console.log('FOUND DOCUMENTS', foundDocuments);
     setUsername(foundDocuments[0].username);
     return foundDocuments;
   };

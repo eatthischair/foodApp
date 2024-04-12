@@ -83,15 +83,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     color: 'blue',
     borderRadius: 8,
-    height: height / 15,
-    width: width / 2,
+    height: height / 10,
+    width: width / 1.5,
     textAlign: 'center',
     backgroundColor: '#03a9fc',
     marginVertical: 3,
   },
   buttonText: {
     color: 'white',
-    fontSize: 20,
+    fontSize: 30,
   },
   container: {
     ...StyleSheet.absoluteFillObject,

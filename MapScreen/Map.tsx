@@ -17,6 +17,7 @@ import {useUser} from '../UserContext'; // Path to your UserContext
 import GetCurrentUser from '../MiscFuns/GetCurrentUser';
 import ReviewCaller from '../DatabaseCalls/ReviewCaller';
 import {useFocusEffect, useIsFocused} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 const {width, height} = Dimensions.get('window');
 
@@ -27,10 +28,6 @@ function Map({route}) {
   const [revs, setRevs] = useState(route.params?.revs);
   const [yets, setYets] = useState(route.params?.yets);
 
-  // console.log('REVS AND YETS FROM FRIENDSPROFILE', route.params?.revs, route.params?.yets);
-  // const {revs, setRevs} = useUser();
-  // const {yets, setYets} = useUser();
-
   const [yetToReviewDocsCopy, setYetToReviewDocsCopy] = useState([]);
   const [reviewedDocsCopy, setReviewedDocsCopy] = useState([]);
   const [yetToReviewHidden, setYetToReviewHidden] = useState(false);
@@ -39,84 +36,85 @@ function Map({route}) {
   const [favoritesHidden, setFavoritesHidden] = useState(false);
   const [favorites, setFavorites] = useState([]);
   const [favoritesCopy, setFavoritesCopy] = useState([]);
-  // let yetToReviewDocsCopyPlaceholder = yetToReviewDocsCopy;
 
   const fetchData = async (collectionName, setDocumentsFunction, setCopy) => {
     const docs = await ReviewCaller(collectionName, GetCurrentUser());
-    // try {
-    //   const querySnapshot = await firestore().collection(collectionName).get();
-    //   let docs = querySnapshot.docs.map(doc => doc.data());
-    //   docs = docs.filter(place => place.Coordinates !== '');
-    //   docs.map(place => {
-    //     let {lat, lng} = place.coords;
-    //     place.Coordinates = {
-    //       lat,
-    //       lng,
-    //     };
-    //   });
-    //   docs = docs.filter(
-    //     place =>
-    //       !Number.isNaN(place.Coordinates.latitude) &&
-    //       !Number.isNaN(place.Coordinates.longitude),
-    //   );
     setDocumentsFunction(docs);
     setCopy(docs);
-    // Update state with fetched data
-    // } catch (error) {
-    //   console.error(`Error fetching documents from ${collectionName}: `, error);
-    // }
   };
 
   //maybe separate useeffects for setting contexts revs and yets??
+  const isFocused = useIsFocused();
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    if (isFocused) {
+      if (!revs && !yets) {
+        // Fetch data if `revs` and `yets` are not provided
+        const fetchData = async () => {
+          const docs = await ReviewCaller('test1', GetCurrentUser());
+          setDocuments(docs);
+          setReviewedDocsCopy(docs);
+          let favs = docs?.filter(item => item.favorite);
+          setFavorites(favs);
+        };
+        fetchData();
+      } else {
+        // Use provided `revs` and `yets` to set state
+        setDocuments(revs);
+        setReviewedDocsCopy(revs); // Assuming you wanted to set the same data to both
+        // For `yets`, consider how you want to use it as it's not used in the current setup
+      }
+    }
+  }, [isFocused, revs, yets]);
+
+  useEffect(() => {
+    if (isFocused) {
+      if (!revs && !yets) {
+        fetchData('test2', setDocuments2, setYetToReviewDocsCopy);
+      } else {
+        setDocuments2(yets);
+        setYetToReviewDocsCopy(yets);
+      }
+    }
+  }, [isFocused, revs, yets]);
+
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     // Do something when the screen is focused
+  //     console.log('Screen is focused');
+  //     return () => {
+  //       // Do something when the screen is unfocused
+  //       console.log('Screen is unfocused');
+
+  //       setRevs(null);
+  //       setYets(null);
+  //     };
+  //   }, []),
+  // );
 
   // useEffect(() => {
-  //   if (!revs && !yets) {
-  //     fetchData('test1', setDocuments, setReviewedDocsCopy);
+  //   if (isFocused) {
+  //     console.log('Screen just got focused');
   //   } else {
-  //     setDocuments(revs);
-  //     setReviewedDocsCopy(revs);
+  //     console.log('Screen just lost focus');
+  //     setRevs(null);
+  //     setYets(null);
+  //     route.params = null;
   //   }
-  // }, []);
+  // }, [isFocused]);
 
   useEffect(() => {
-    if (!revs && !yets) {
-      // Fetch data if `revs` and `yets` are not provided
-      const fetchData = async () => {
-        const docs = await ReviewCaller('test1', GetCurrentUser());
-        setDocuments(docs);
-        setReviewedDocsCopy(docs);
-        let favs = docs?.filter(item => item.favorite);
-        setFavorites(favs);
-      };
-      fetchData();
-    } else {
-      // Use provided `revs` and `yets` to set state
-      setDocuments(revs);
-      setReviewedDocsCopy(revs); // Assuming you wanted to set the same data to both
-      // For `yets`, consider how you want to use it as it's not used in the current setup
-    }
-  }, [revs, yets]);
+    const unsubscribe = navigation.addListener('blur', () => {
+      // Reset state when navigating away from the screen
+      console.log('LOST FOCUS BOSS');
+      setRevs(null);
+      setYets(null);
+    });
 
-  useEffect(() => {
-    if (!revs && !yets) {
-      fetchData('test2', setDocuments2, setYetToReviewDocsCopy);
-    } else {
-      setDocuments2(yets);
-      setYetToReviewDocsCopy(yets);
-    }
-  }, []);
+    return unsubscribe;
+  }, [navigation]);
 
-  // useEffect(() => {
-  //   if (revs === null && documents !== null) {
-  //     setRevs(documents);
-  //   }
-  // }, [documents]);
-
-  // useEffect(() => {
-  //   if (yets === null && documents2 !== null) {
-  //     setYets(documents2);
-  //   }
-  // }, [documents2]);
 
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -213,7 +211,7 @@ function Map({route}) {
           <Button
             style={styles.button}
             onPress={() => toggleYetToReview()}
-            title="Yet To Review"
+            title="Want to go"
           />
           <Button
             style={styles.button}
@@ -255,7 +253,9 @@ const styles = StyleSheet.create({
     left: 0, // Adjust based on your needs
     flexDirection: 'row', // Align children horizontally
     justifyContent: 'flex-start',
-    gap: 5,
+    gap: 10,
+    height: height / 25,
+    width: width / 3,
   },
   centeredView: {
     flex: 1,
@@ -280,9 +280,10 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   button: {
-    borderRadius: 20,
+    borderRadius: 50,
     padding: 10,
     elevation: 2,
+    fontSize: 30,
   },
   buttonOpen: {
     backgroundColor: '#F194FF',
@@ -294,6 +295,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
+    fontSize: 30,
   },
   modalText: {
     marginBottom: 15,
