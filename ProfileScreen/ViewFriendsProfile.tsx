@@ -52,7 +52,7 @@ const ViewFriendsProfile = ({route, navigation}) => {
         .get();
 
       if (documentSnapshot.exists) {
-        console.log('User document:', documentSnapshot.data());
+        // console.log('User document:', documentSnapshot.data());
         return documentSnapshot.data(); // Returns the document data
       } else {
         console.log('No document found with username:', username);
@@ -77,7 +77,7 @@ const ViewFriendsProfile = ({route, navigation}) => {
     const fetchUser = async () => {
       try {
         const userData = await UserCaller(route.params.username);
-        console.log('User data:', userData);
+        // console.log('User data:', userData);
         setUserInfo(userData);
       } catch (error) {
         console.error('Error fetching user data:', error);

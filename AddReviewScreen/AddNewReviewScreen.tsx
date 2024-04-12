@@ -47,7 +47,7 @@ function AddNewReviewScreen({route, navigation}) {
   const fetchPlaces = async searchQuery => {
     if (searchQuery.length < 3) return; // Don't search for too short strings
     //later add an error msg
-
+    console.log('inside fetchplaces boss', searchQuery);
     try {
       const response = await axios.get(googlePlacesApiUrl, {
         params: {
@@ -60,11 +60,12 @@ function AddNewReviewScreen({route, navigation}) {
       });
 
       if (response.data && response.data.predictions) {
+        console.log('RESTAURANT RESULTS', response.data.predictions);
         placesList = response.data.predictions;
         setResults(response.data.predictions);
       }
     } catch (error) {
-      console.error(error);
+      console.error('error boss', error);
     }
   };
 

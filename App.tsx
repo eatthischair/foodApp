@@ -69,12 +69,12 @@ function App(): React.JSX.Element {
   function onAuthStateChanged(user) {
     if (user) {
       // User is logged in
-      console.log('User is logged in', user);
+      // console.log('User is logged in', user);
       findUsername(user.email);
       setUser(user);
     } else {
       // User is not logged in
-      console.log('User is not logged in');
+      // console.log('User is not logged in');
     }
   }
 

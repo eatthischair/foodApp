@@ -26,10 +26,10 @@ const RenderList = ({route}) => {
   const [expandedIndex, setExpandedIndex] = useState(toggleExpanded);
 
   const expandRev = index => {
-    console.log('INDEX', index);
     setExpandedIndex(prevIndex => (prevIndex === index ? null : index));
   };
-  console.log('RENDERLIST REVS', revs);
+
+  // console.log('RENDERLIST REVS', revs);
   return (
     <FlatList
       data={revs}

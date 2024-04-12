@@ -99,7 +99,7 @@ const MapModal = () => {
 
   return (
     <View>
-      <TextInput
+      <TextInput style={{fontSize: 20}}
         placeholder="Search for restaurants..."
         onChangeText={text => setQuery(text)}
         value={query}
@@ -121,12 +121,14 @@ const MapModal = () => {
                   padding: 20,
                   borderBottomWidth: 1,
                   borderBottomColor: '#ccc',
+                  margin: 40,
+                  fontSize: 20,
                 },
                 item.description === placeName
                   ? {backgroundColor: '#eaeaea'}
                   : {}) // Conditional background color
               }>
-              <Text>{item.description}</Text>
+              <Text style={{fontSize: 20, margin: 20}}>{item.description}</Text>
             </TouchableOpacity>
           )}
         />

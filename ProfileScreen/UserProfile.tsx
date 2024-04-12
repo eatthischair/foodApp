@@ -51,7 +51,7 @@ const UserProfile = ({route, navigation}) => {
         .get();
 
       if (documentSnapshot.exists) {
-        console.log('User document:', documentSnapshot.data());
+        // console.log('User document:', documentSnapshot.data());
         return documentSnapshot.data(); // Returns the document data
       } else {
         console.log('No document found with username:', username);
@@ -65,7 +65,7 @@ const UserProfile = ({route, navigation}) => {
   const getCurrentUser = () => {
     const user = auth().currentUser;
     if (user) {
-      console.log('User is logged in', user);
+      // console.log('User is logged in', user);
       return user;
     }
   };
@@ -75,7 +75,7 @@ const UserProfile = ({route, navigation}) => {
       try {
         let user = getCurrentUser()?.displayName;
         const userData = await UserCaller(user);
-        console.log('User data:', userData);
+        // console.log('User data:', userData);
         setUserInfo(userData);
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -88,7 +88,7 @@ const UserProfile = ({route, navigation}) => {
     const fetchRevs = async () => {
       try {
         let revss = await ReviewCaller('test1', getCurrentUser()?.displayName);
-        console.log('User revs in userprofile:', revss);
+        // console.log('User revs in userprofile:', revss);
         setRevs(revss);
         let favss = revss?.filter(rev => rev.favorite === true);
         setFavs(favss);
@@ -103,7 +103,7 @@ const UserProfile = ({route, navigation}) => {
     const fetchYets = async () => {
       try {
         let yetss = await ReviewCaller('test2', getCurrentUser()?.displayName);
-        console.log('User yetss in userprofile:', yetss);
+        // console.log('User yetss in userprofile:', yetss);
         setYets(yetss);
       } catch (error) {
         console.error('Error fetching user data:', error);

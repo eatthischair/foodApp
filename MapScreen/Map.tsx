@@ -37,84 +37,61 @@ function Map({route}) {
   const [favorites, setFavorites] = useState([]);
   const [favoritesCopy, setFavoritesCopy] = useState([]);
 
-  const fetchData = async (collectionName, setDocumentsFunction, setCopy) => {
-    const docs = await ReviewCaller(collectionName, GetCurrentUser());
-    setDocumentsFunction(docs);
-    setCopy(docs);
-  };
+  // const fetchData = async (collectionName, setDocumentsFunction, setCopy) => {
+  //   const docs = await ReviewCaller(collectionName, GetCurrentUser());
+  //   setDocumentsFunction(docs);
+  //   setCopy(docs);
+  // };
 
   //maybe separate useeffects for setting contexts revs and yets??
   const isFocused = useIsFocused();
   const navigation = useNavigation();
 
-  useEffect(() => {
-    if (isFocused) {
-      if (!revs && !yets) {
-        // Fetch data if `revs` and `yets` are not provided
-        const fetchData = async () => {
-          const docs = await ReviewCaller('test1', GetCurrentUser());
-          setDocuments(docs);
-          setReviewedDocsCopy(docs);
-          let favs = docs?.filter(item => item.favorite);
-          setFavorites(favs);
-        };
-        fetchData();
-      } else {
-        // Use provided `revs` and `yets` to set state
+  useFocusEffect(
+    useCallback(() => {
+      console.log('im in boss');
+      const fetchData = async () => {
+        let revs = await ReviewCaller('test1', GetCurrentUser());
+        let yets = await ReviewCaller('test2', GetCurrentUser());
+        console.log('DATATOSET', revs);
+        if (route.params?.revs) {
+          revs = route.params.revs;
+          yets = route.params.yets;
+        }
         setDocuments(revs);
-        setReviewedDocsCopy(revs); // Assuming you wanted to set the same data to both
-        // For `yets`, consider how you want to use it as it's not used in the current setup
-      }
-    }
-  }, [isFocused, revs, yets]);
-
-  useEffect(() => {
-    if (isFocused) {
-      if (!revs && !yets) {
-        fetchData('test2', setDocuments2, setYetToReviewDocsCopy);
-      } else {
+        setReviewedDocsCopy(revs);
         setDocuments2(yets);
         setYetToReviewDocsCopy(yets);
-      }
+        let favs = revs?.filter(item => item.favorite);
+        setFavorites(favs);
+      };
+      fetchData();
+    }, [route.params]), // Depend on route.params
+  );
+
+  useEffect(() => {
+    if (isFocused) {
+      console.log('Screen just got focused', revs, yets);
+    } else {
+      console.log('Screen just lost focus', revs, yets);
+      // setRevs(null);
+      // setYets(null);
+      setDocuments(null);
+      setDocuments2(null);
+      route.params = null;
     }
-  }, [isFocused, revs, yets]);
-
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     // Do something when the screen is focused
-  //     console.log('Screen is focused');
-  //     return () => {
-  //       // Do something when the screen is unfocused
-  //       console.log('Screen is unfocused');
-
-  //       setRevs(null);
-  //       setYets(null);
-  //     };
-  //   }, []),
-  // );
-
-  // useEffect(() => {
-  //   if (isFocused) {
-  //     console.log('Screen just got focused');
-  //   } else {
-  //     console.log('Screen just lost focus');
-  //     setRevs(null);
-  //     setYets(null);
-  //     route.params = null;
-  //   }
-  // }, [isFocused]);
+  }, [isFocused]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('blur', () => {
       // Reset state when navigating away from the screen
-      console.log('LOST FOCUS BOSS');
+      // console.log('LOST FOCUS BOSS');
       setRevs(null);
       setYets(null);
     });
 
     return unsubscribe;
   }, [navigation]);
-
 
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -178,29 +155,33 @@ function Map({route}) {
             latitudeDelta: 0.1,
             longitudeDelta: 0.1,
           }}>
-          {documents.map((marker, index) => (
-            <Marker
-              key={index}
-              coordinate={{
-                latitude: marker.coords.lat,
-                longitude: marker.coords.lng,
-              }}
-              title={marker.placeName}
-              // description={marker.Cuisine}
-            />
-          ))}
-          {documents2.map((marker, index) => (
-            <Marker
-              key={index}
-              coordinate={{
-                latitude: marker.coords.lat,
-                longitude: marker.coords.lng,
-              }}
-              title={marker.placeName}
-              description={marker.Cuisine}
-              icon={image}
-            />
-          ))}
+          {documents
+            ? documents.map((marker, index) => (
+                <Marker
+                  key={index}
+                  coordinate={{
+                    latitude: marker.coords.lat,
+                    longitude: marker.coords.lng,
+                  }}
+                  title={marker.placeName}
+                  // description={marker.Cuisine}
+                />
+              ))
+            : ''}
+          {documents2
+            ? documents2.map((marker, index) => (
+                <Marker
+                  key={index}
+                  coordinate={{
+                    latitude: marker.coords.lat,
+                    longitude: marker.coords.lng,
+                  }}
+                  title={marker.placeName}
+                  description={marker.Cuisine}
+                  icon={image}
+                />
+              ))
+            : ''}
         </MapView>
         <View style={styles.buttonContainer}>
           <Button
