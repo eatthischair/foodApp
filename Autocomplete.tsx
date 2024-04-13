@@ -6,8 +6,6 @@ const Autocomplete = () => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [placeName, setPlaceName] = useState('');
-
-  console.log('placename', placeName);
   const googlePlacesApiUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json`;
 
   const fetchPlaces = async searchQuery => {

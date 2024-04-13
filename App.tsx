@@ -27,17 +27,6 @@ import RenderFollowList from './ProfileScreen/RenderFollowList';
 
 const {width, height} = Dimensions.get('window');
 
-const CustomTouchable = ({title, onPress}) => {
-  return (
-    <TouchableOpacity
-      style={styles.buttons}
-      onPress={onPress}
-      activeOpacity={0.8}>
-      <Text style={styles.buttonText}>{title}</Text>
-    </TouchableOpacity>
-  );
-};
-
 const Tab = createBottomTabNavigator();
 
 function App(): React.JSX.Element {
@@ -108,7 +97,7 @@ function App(): React.JSX.Element {
 
         <Tab.Screen name="Map" component={Map} />
         <Tab.Screen name="AddNewReview" component={AddNewReviewScreen} />
-        <Tab.Screen name="Feed" component={Feed} />
+        {/* <Tab.Screen name="Feed" component={Feed} /> */}
         <Tab.Screen name="Profile" component={UserProfile} />
       </Tab.Navigator>
     );
@@ -131,7 +120,6 @@ function App(): React.JSX.Element {
         )}
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Reviews" component={RenderList} />
-
         <Stack.Screen name="Sign Up" component={SignupScreen} />
         <Stack.Screen name="FriendsProfile" component={ViewFriendsProfile} />
 

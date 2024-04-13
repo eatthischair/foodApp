@@ -1,4 +1,4 @@
-package com.foodapp
+package com.newcompanyname.foodapp
 import android.os.Bundle;
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

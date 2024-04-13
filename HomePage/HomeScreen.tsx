@@ -67,10 +67,10 @@ const HomeScreen = ({route, navigation}) => {
         title="My Chew"
         onPress={() => handleNavigation('Profile')}
       />
-      <CustomTouchable
+      {/* <CustomTouchable
         title="Friends Chew"
         onPress={() => handleNavigation('Feed')}
-      />
+      /> */}
       {/* <CustomTouchable title="Verified Chewologists" /> */}
       <CustomTouchable title="Map" onPress={() => handleNavigation('Map')} />
     </View>

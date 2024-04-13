@@ -40,14 +40,13 @@ function AddNewReviewScreen({route, navigation}) {
 
   const [dishes, setDishes] = useState([]);
   const addDishCallback = newDishData => {
-    console.log('newidhsdata', newDishData, dishes);
+    // console.log('newidhsdata', newDishData, dishes);
     setDishes(prevDishes => [...prevDishes, newDishData]);
   };
 
   const fetchPlaces = async searchQuery => {
     if (searchQuery.length < 3) return; // Don't search for too short strings
     //later add an error msg
-    console.log('inside fetchplaces boss', searchQuery);
     try {
       const response = await axios.get(googlePlacesApiUrl, {
         params: {

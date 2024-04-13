@@ -149,7 +149,7 @@ const EditProfile = ({route}) => {
         placeholder="Last Name"
         style={styles.input}
       />
-      <Text>Age Range</Text>
+      {/* <Text>Age Range</Text>
       <View style={styles.box}>
         <DropDownPicker
           open={open}
@@ -184,7 +184,7 @@ const EditProfile = ({route}) => {
           setItems={setItems2}
           modal={true}
         />
-      </View>
+      </View> */}
       <View>
         <Text>Profile Visibility</Text>
         <RadioGroup

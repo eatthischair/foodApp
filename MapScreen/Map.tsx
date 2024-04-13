@@ -74,8 +74,6 @@ function Map({route}) {
       console.log('Screen just got focused', revs, yets);
     } else {
       console.log('Screen just lost focus', revs, yets);
-      // setRevs(null);
-      // setYets(null);
       setDocuments(null);
       setDocuments2(null);
       route.params = null;
@@ -84,8 +82,6 @@ function Map({route}) {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('blur', () => {
-      // Reset state when navigating away from the screen
-      // console.log('LOST FOCUS BOSS');
       setRevs(null);
       setYets(null);
     });

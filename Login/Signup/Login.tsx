@@ -29,7 +29,8 @@ const Login = ({route}) => {
         Alert.alert('Signup Success', 'You are successfully signed in!', [
           {
             text: 'OK',
-            onPress: () => navigation.navigate('Home', {email: email}),
+            onPress: () => navigation.navigate('Tabs', {email: email}),
+            // onPress: () => console.log(navigation.getState()),
           },
         ]);
       })
@@ -48,7 +49,7 @@ const Login = ({route}) => {
         secureTextEntry
       />
       <Button title="Login" onPress={handleLogin} />
-      <Text>Don't have a fuckin account bitch?</Text>
+      <Text>Don't have an account?</Text>
       <Button
         title="Sign Up"
         onPress={() => navigation.navigate('Sign Up')}></Button>

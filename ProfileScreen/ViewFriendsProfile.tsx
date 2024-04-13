@@ -43,6 +43,7 @@ const ViewFriendsProfile = ({route, navigation}) => {
   });
   const [revs, setRevs] = useState(null);
   const [yets, setYets] = useState(null);
+  const [favs, setFavs] = useState(null);
 
   const UserCaller = async username => {
     try {
@@ -71,8 +72,8 @@ const ViewFriendsProfile = ({route, navigation}) => {
     profileImage: 'https://via.placeholder.com/150',
     email: 'johndoe@example.com',
     location: 'New York, USA',
-    // Add more user fields as needed
   };
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -91,9 +92,11 @@ const ViewFriendsProfile = ({route, navigation}) => {
     const fetchUser = async () => {
       try {
         const userData = await ReviewCaller('test1', route.params.username);
-        console.log('review data:', userData);
+        // console.log('review data:', userData);
         // setUserInfo(userData);
         setRevs(userData);
+        let favs = userData?.filter(rev => rev.favorite);
+        setFavs(favs);
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
@@ -106,7 +109,7 @@ const ViewFriendsProfile = ({route, navigation}) => {
     const fetchUser = async () => {
       try {
         const userData = await ReviewCaller('test2', route.params.username);
-        console.log('review2 data:', userData);
+        // console.log('review2 data:', userData);
         // setUserInfo(userData);
         setYets(userData);
       } catch (error) {
@@ -174,7 +177,10 @@ const ViewFriendsProfile = ({route, navigation}) => {
         </Text>
       </View>
       <View style={styles.favorites}>
-        <CustomTouchable title="Favorites" onPress={() => console.log('aa')} />
+        <CustomTouchable
+          title="Favorites"
+          onPress={() => navigation.navigate('Reviews', {revs: favs})}
+        />
         <CustomTouchable
           title="Yet To Review"
           onPress={() => navigation.navigate('Reviews', {revs: yets})}

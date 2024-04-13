@@ -86,6 +86,10 @@ const SignupScreen = () => {
       />
       {error ? <Text>{error}</Text> : null}
       <Button title="Sign Up" onPress={handleSignUp} />
+      <Text>Already have an account?</Text>
+      <Button
+        title="Login"
+        onPress={() => navigation.navigate('Login')}></Button>
     </View>
   );
 };

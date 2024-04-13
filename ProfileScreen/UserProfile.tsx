@@ -155,11 +155,11 @@ const UserProfile = ({route, navigation}) => {
         </Text>
       </View>
       <View style={styles.profileDetails}>
-        <Text style={styles.bio}>{user.bio}</Text>
+        {/* <Text style={styles.bio}>{user.bio}</Text> */}
         <Text style={styles.detail}>
           Email: {userInfo ? userInfo.email : ''}
         </Text>
-        <Text style={styles.detail}>Location: {user.location}</Text>
+        {/* <Text style={styles.detail}>Location: {user.location}</Text> */}
         {/* Add more user details here */}
       </View>
       <View style={styles.grid}>
