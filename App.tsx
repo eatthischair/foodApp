@@ -5,7 +5,13 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Import Ionicons
 // import type {PropsWithChildren} from 'react';
-import {StyleSheet, Text, TouchableOpacity, Dimensions, View} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Dimensions,
+  View,
+} from 'react-native';
 import AddNewReviewScreen from './AddReviewScreen/AddNewReviewScreen';
 import YetToReviewScreen from './YetToReviewScreen';
 // import {UserProvider} from './UserContext'; // Import the provider
@@ -32,7 +38,7 @@ const Tab = createBottomTabNavigator();
 function App(): React.JSX.Element {
   const [user, setUser] = useState();
 
-  const {username, setUsername} = useUser();
+  const {setUsername} = useUser();
 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
@@ -149,6 +155,12 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     fontSize: 20,
+  },
+  container: {
+    flex: 1,
+    backgroundColor: '#ADD8E6', // Example color: Light Blue
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 

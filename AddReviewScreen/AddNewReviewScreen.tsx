@@ -17,10 +17,14 @@ import {
 // import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import axios from 'axios';
 import firestore from '@react-native-firebase/firestore';
-import {RatingInput} from 'react-native-stock-star-rating';
 import {useUser} from '../UserContext'; // Path to your UserContext
+import {Rating, AirbnbRating} from 'react-native-ratings';
+import {RatingInput} from 'react-native-stock-star-rating';
+import Stars from 'react-native-stars';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 function AddNewReviewScreen({route, navigation}) {
+  const {CustomTouchable} = useUser();
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredData, setFilteredData] = useState([]);
 
@@ -59,7 +63,7 @@ function AddNewReviewScreen({route, navigation}) {
       });
 
       if (response.data && response.data.predictions) {
-        console.log('RESTAURANT RESULTS', response.data.predictions);
+        // console.log('RESTAURANT RESULTS', response.data.predictions);
         placesList = response.data.predictions;
         setResults(response.data.predictions);
       }
@@ -78,7 +82,7 @@ function AddNewReviewScreen({route, navigation}) {
     }
   });
 
-  console.log('USERNAME IN ADD NEW REVIEW', username);
+  // console.log('USERNAME IN ADD NEW REVIEW', username);
   const initialRatings = [
     {label: 'Overall', value: 0},
     {label: 'Server Helpfulness', value: 0},
@@ -114,7 +118,7 @@ function AddNewReviewScreen({route, navigation}) {
       username,
       createdAt: new Date(),
     };
-    console.log('SENDOBJ', sendObj);
+    // console.log('SENDOBJ', sendObj);
 
     firestore()
       .collection('test1')
@@ -139,7 +143,7 @@ function AddNewReviewScreen({route, navigation}) {
   //service quality
 
   const handleOnPress = item => {
-    console.log('item', item.description, item.place_id, item);
+    // console.log('item', item.description, item.place_id, item);
     setPlaceName(item.description);
     setPlaceId(item.place_id);
     setSearchCompleted(true);
@@ -153,7 +157,7 @@ function AddNewReviewScreen({route, navigation}) {
         if (data.status === 'OK') {
           const placeDetails = data.result;
           const coordinates = placeDetails.geometry.location;
-          console.log('Coordinates:', coordinates);
+          // console.log('Coordinates:', coordinates);
           setCoords(coordinates);
           // Use these coordinates to place a marker on the map
         } else {
@@ -165,16 +169,16 @@ function AddNewReviewScreen({route, navigation}) {
 
   const {width, height} = Dimensions.get('window');
 
-  const CustomTouchable = ({title, onPress}) => {
-    return (
-      <TouchableOpacity
-        style={styles.buttons}
-        onPress={onPress}
-        activeOpacity={0.8}>
-        <Text style={styles.buttonText}>{title}</Text>
-      </TouchableOpacity>
-    );
-  };
+  // const CustomTouchable = ({title, onPress}) => {
+  //   return (
+  //     <TouchableOpacity
+  //       style={styles.buttons}
+  //       onPress={onPress}
+  //       activeOpacity={0.8}>
+  //       <Text style={styles.buttonText}>{title}</Text>
+  //     </TouchableOpacity>
+  //   );
+  // };
 
   const styles = StyleSheet.create({
     buttonText: {
@@ -210,7 +214,22 @@ function AddNewReviewScreen({route, navigation}) {
       width: width / 2,
     },
     listBox: {},
+    myStarStyle: {
+      // color: 'yellow',
+      backgroundColor: 'transparent',
+      textShadowColor: 'black',
+      textShadowOffset: {width: 1, height: 1},
+      textShadowRadius: 2,
+      height: 300,
+    },
+    myEmptyStarStyle: {
+      color: 'white',
+    },
   });
+
+  const ratingCompleted = rating => {
+    console.log('Rating is: ' + rating);
+  };
   return (
     <ScrollView
       // eslint-disable-next-line react-native/no-inline-styles
@@ -260,16 +279,45 @@ function AddNewReviewScreen({route, navigation}) {
           )}
         />
       )}
-      {/* <Text style={styles.buttonText}>Overall Rating</Text> */}
+      {/* <Rating
+        showRating
+        type={'custom'}
+        ratingBackgroundColor={'#ffffff'}
+        ratingColor={'#000000'}
+        minValue={1}
+        fractions={1}
+        onFinishRating={() => ratingCompleted()}></Rating> */}
       {ratings.map((item, index) => (
         <React.Fragment key={index}>
           <Text style={styles.buttonText}>{item.label}</Text>
-          <RatingInput
-            rating={item.value}
-            setRating={newValue => updateRating(index, newValue)}
-            size={60}
-            maxStars={5}
-            bordered={false}
+          <Stars
+            half={true}
+            default={2.5}
+            update={newValue => updateRating(index, newValue)}
+            spacing={4}
+            starSize={40}
+            count={5}
+            fullStar={require('../android/app/src/main/res/drawable/Stars/starFilled.png')}
+            emptyStar={require('../android/app/src/main/res/drawable/Stars/starEmpty.png')}
+            halfStar={require('../android/app/src/main/res/drawable/Stars/starHalf.png')}
+          />
+        </React.Fragment>
+      ))}
+
+      <Text style={styles.buttonText}>Overall Rating</Text>
+      {ratings.map((item, index) => (
+        <React.Fragment key={index}>
+          <Text style={styles.buttonText}>{item.label}</Text>
+          <Stars
+            half={true}
+            default={2.5}
+            update={newValue => updateRating(index, newValue)}
+            spacing={4}
+            starSize={40}
+            count={5}
+            fullStar={require('../android/app/src/main/res/drawable/Stars/starFilled.png')}
+            emptyStar={require('../android/app/src/main/res/drawable/Stars/starEmpty.png')}
+            halfStar={require('../android/app/src/main/res/drawable/Stars/starHalf.png')}
           />
         </React.Fragment>
       ))}
@@ -279,10 +327,7 @@ function AddNewReviewScreen({route, navigation}) {
         value={text}
         onChangeText={newText => setText(newText)}
       />
-      <CustomTouchable
-        title="Add to Favorites"
-        onPress={() => setFavorite(true)}
-      />
+      <CustomTouchable title=" + Chewiest" onPress={() => setFavorite(true)} />
       <CustomTouchable title="Submit" onPress={handleSubmit} />
     </ScrollView>
   );

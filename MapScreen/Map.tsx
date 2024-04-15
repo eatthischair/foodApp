@@ -49,11 +49,10 @@ function Map({route}) {
 
   useFocusEffect(
     useCallback(() => {
-      console.log('im in boss');
       const fetchData = async () => {
         let revs = await ReviewCaller('test1', GetCurrentUser());
         let yets = await ReviewCaller('test2', GetCurrentUser());
-        console.log('DATATOSET', revs);
+        // console.log('DATATOSET', revs);
         if (route.params?.revs) {
           revs = route.params.revs;
           yets = route.params.yets;
@@ -71,9 +70,9 @@ function Map({route}) {
 
   useEffect(() => {
     if (isFocused) {
-      console.log('Screen just got focused', revs, yets);
+      // console.log('Screen just got focused', revs, yets);
     } else {
-      console.log('Screen just lost focus', revs, yets);
+      // console.log('Screen just lost focus', revs, yets);
       setDocuments(null);
       setDocuments2(null);
       route.params = null;
@@ -184,21 +183,25 @@ function Map({route}) {
             style={styles.button}
             onPress={() => toggleFavorites()}
             title="Favorites"
+            color={!favoritesHidden ? '#34B75F' : '#000000'}
           />
           <Button
             style={styles.button}
             onPress={() => toggleYetToReview()}
             title="Want to go"
+            color={!yetToReviewHidden ? '#34B75F' : '#000000'}
           />
           <Button
             style={styles.button}
             onPress={() => toggleReviewed()}
             title="Reviewed"
+            color={!reviewedHidden ? '#34B75F' : '#000000'}
           />
           <Button
             style={styles.button}
             onPress={() => setModalVisible(!modalVisible)}
             title="Add Marker"
+            color={'#34B75F'}
           />
         </View>
       </View>

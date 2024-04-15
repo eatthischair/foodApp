@@ -54,7 +54,7 @@ const UserProfile = ({route, navigation}) => {
         // console.log('User document:', documentSnapshot.data());
         return documentSnapshot.data(); // Returns the document data
       } else {
-        console.log('No document found with username:', username);
+        // console.log('No document found with username:', username);
         return null; // Handle the case where the document does not exist
       }
     } catch (error) {
@@ -168,7 +168,11 @@ const UserProfile = ({route, navigation}) => {
         <Text style={styles.gridItem}>Following</Text>
       </View>
       <View style={styles.grid}>
-        <Text style={styles.BigNums}>{revs ? revs.length : 0}</Text>
+        <Text
+          style={styles.BigNums}
+          onPress={() => navigation.navigate('Reviews', {revs: revs})}>
+          {revs ? revs.length : 0}
+        </Text>
         <Text
           style={styles.BigNums}
           onPress={() => {
@@ -190,22 +194,22 @@ const UserProfile = ({route, navigation}) => {
       </View>
       <View style={styles.favorites}>
         <CustomTouchable
-          title="Favorites"
+          title="Chewiest"
           onPress={() => navigation.navigate('Reviews', {revs: favs})}
         />
         <CustomTouchable
-          title="Yet To Review"
+          title="Yet To Chew"
           onPress={() => navigation.navigate('Reviews', {revs: yets})}
         />
         <CustomTouchable
-          title="Reviewed"
+          title="Chewed"
           onPress={() => navigation.navigate('Reviews', {revs: revs})}
         />
-        <CustomTouchable title="Sign Out" onPress={() => handleLogout()} />
         <CustomTouchable
           title="Edit Profile"
           onPress={() => navigation.navigate('Edit Profile')}
         />
+        <CustomTouchable title="Sign Out" onPress={() => handleLogout()} />
       </View>
     </ScrollView>
   );

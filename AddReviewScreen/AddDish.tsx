@@ -11,21 +11,12 @@ import {
   Dimensions,
 } from 'react-native';
 import {RatingInput} from 'react-native-stock-star-rating';
+import {useUser} from '../UserContext'; // Path to your UserContext
 
-// import {TouchableOpacity} from 'react-native';
 const {width, height} = Dimensions.get('window');
 
 function AddDish({route, navigation}) {
-  const CustomTouchable = ({title, onPress}) => {
-    return (
-      <TouchableOpacity
-        style={styles.buttons}
-        onPress={onPress}
-        activeOpacity={0.8}>
-        <Text style={styles.buttonText}>{title}</Text>
-      </TouchableOpacity>
-    );
-  };
+  const {CustomTouchable} = useUser();
   const {onAddDish} = route.params;
   const handleSubmit = () => {
     let dishObj = {

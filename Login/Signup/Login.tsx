@@ -16,7 +16,7 @@ const Login = ({route}) => {
     if (route.params?.email) {
       setEmail(route.params.email);
       setUsername(route.params.username);
-      console.log('USERNAME IN LOGIN', route.params.username);
+      // console.log('USERNAME IN LOGIN', route.params.username);
       // setPassword(route.params.password);
     }
   }, [route.params]);
@@ -25,7 +25,7 @@ const Login = ({route}) => {
     auth()
       .signInWithEmailAndPassword(email, password)
       .then(() => {
-        console.log('User signed in!');
+        // console.log('User signed in!');
         Alert.alert('Signup Success', 'You are successfully signed in!', [
           {
             text: 'OK',
@@ -35,6 +35,14 @@ const Login = ({route}) => {
         ]);
       })
       .catch(error => {
+        Alert.alert('Signup Failed', 'The email or password is incorrect', [
+          {
+            text: 'OK',
+
+            // onPress: () => console.log(navigation.getState()),
+          },
+        ]);
+
         console.error(error);
       });
   };
