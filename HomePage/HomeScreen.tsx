@@ -15,6 +15,9 @@ import {useUser} from '../UserContext'; // Path to your UserContext
 import firestore from '@react-native-firebase/firestore';
 import {styles} from '../AppStyles';
 
+import GetLocation from '../MiscFuns/GetLocation';
+
+import FindUsernameByEmail from '../DatabaseCalls/index.js';
 const {width, height} = Dimensions.get('window');
 const HomeScreen = ({route, navigation}) => {
   const {CustomTouchable} = useUser();
@@ -23,12 +26,38 @@ const HomeScreen = ({route, navigation}) => {
     navigation.navigate(screenName);
   };
 
+  // useEffect(() => {
+  //   GetLocation();
+  // }, []);
+
+  // async function findUsernameByEmail(email) {
+  //   // simulate fetching username from database
+  //   return new Promise(resolve =>
+  //     setTimeout(() => resolve('username123'), 1000),
+  //   );
+  // }
+
+  function processUsername(username) {
+    console.log('Processing username:', username);
+  }
+
   useEffect(() => {
     // console.log('route in home', route, route.params);
     if (route.params?.username) {
       updateDisplayName(route.params?.username);
+    } else {
+      async function getUsernameAndProcess() {
+        const username = await FindUsernameByEmail(route.params?.email);
+        processUsername(username);
+      }
+      getUsernameAndProcess();
     }
   }, [route.params]);
+
+  // useEffect(() => {
+  //   // console.log('route in home', route, route.params);
+  //   updateDisplayName('testapr9');
+  // }, []);
 
   function updateDisplayName(newDisplayName) {
     const user = auth().currentUser;

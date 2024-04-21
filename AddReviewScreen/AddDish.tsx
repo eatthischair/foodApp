@@ -10,7 +10,9 @@ import {
   StyleSheet,
   Dimensions,
 } from 'react-native';
-import {RatingInput} from 'react-native-stock-star-rating';
+// import {RatingInput} from 'react-native-stock-star-rating';
+import Stars from 'react-native-stars';
+
 import {useUser} from '../UserContext'; // Path to your UserContext
 
 const {width, height} = Dimensions.get('window');
@@ -75,12 +77,16 @@ function AddDish({route, navigation}) {
       {ratings.map((item, index) => (
         <React.Fragment key={index}>
           <Text style={styles.buttonText}>{item.label}</Text>
-          <RatingInput
-            rating={item.value}
-            setRating={newValue => updateRating(index, newValue)}
-            size={40}
-            maxStars={5}
-            bordered={false}
+          <Stars
+            half={true}
+            default={0}
+            update={newValue => updateRating(index, newValue)}
+            spacing={6}
+            starSize={50}
+            count={5}
+            fullStar={require('../android/app/src/main/res/drawable/Stars/starFilled.png')}
+            emptyStar={require('../android/app/src/main/res/drawable/Stars/starEmpty.png')}
+            halfStar={require('../android/app/src/main/res/drawable/Stars/starHalf.png')}
           />
         </React.Fragment>
       ))}

@@ -28,7 +28,7 @@ const ReviewCaller = async (collectionName, username) => {
   } catch (error) {
     console.error(`Error fetching documents from ${collectionName}: `, error);
   } finally {
-    console.log('RETURN DOCS IN REVIEW CALLER', documents);
+    // console.log('RETURN DOCS IN REVIEW CALLER', documents);
     return documents;
   }
 };

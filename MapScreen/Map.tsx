@@ -13,6 +13,7 @@ import {
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 import MapModal from './MapModal';
+import ReviewModal from './ReviewModal';
 import {useUser} from '../UserContext'; // Path to your UserContext
 import GetCurrentUser from '../MiscFuns/GetCurrentUser';
 import ReviewCaller from '../DatabaseCalls/ReviewCaller';
@@ -24,6 +25,7 @@ const {width, height} = Dimensions.get('window');
 function Map({route}) {
   const [documents, setDocuments] = useState([]);
   const [documents2, setDocuments2] = useState([]);
+  const [documents3, setDocuments3] = useState([]);
 
   const [revs, setRevs] = useState(route.params?.revs);
   const [yets, setYets] = useState(route.params?.yets);
@@ -37,15 +39,16 @@ function Map({route}) {
   const [favorites, setFavorites] = useState([]);
   const [favoritesCopy, setFavoritesCopy] = useState([]);
 
-  // const fetchData = async (collectionName, setDocumentsFunction, setCopy) => {
-  //   const docs = await ReviewCaller(collectionName, GetCurrentUser());
-  //   setDocumentsFunction(docs);
-  //   setCopy(docs);
-  // };
-
-  //maybe separate useeffects for setting contexts revs and yets??
   const isFocused = useIsFocused();
   const navigation = useNavigation();
+
+  const [selectedMarker, setSelectedMarker] = useState(null);
+
+  // When a marker is pressed
+  const handleMarkerPress = marker => {
+    setSelectedMarker(marker); // Set the selected marker
+    setReviewModalVisible(true); // Open the modal
+  };
 
   useFocusEffect(
     useCallback(() => {
@@ -57,12 +60,15 @@ function Map({route}) {
           revs = route.params.revs;
           yets = route.params.yets;
         }
-        setDocuments(revs);
-        setReviewedDocsCopy(revs);
+        let revsNoFavs = revs?.filter(item => item.favorite === false);
+        let favs = revs?.filter(item => item.favorite);
+        // console.log('revs no favs', revsNoFavs);
+        setDocuments(revsNoFavs);
+        setReviewedDocsCopy(revsNoFavs);
         setDocuments2(yets);
         setYetToReviewDocsCopy(yets);
-        let favs = revs?.filter(item => item.favorite);
         setFavorites(favs);
+        setDocuments3(favs);
       };
       fetchData();
     }, [route.params]), // Depend on route.params
@@ -89,6 +95,7 @@ function Map({route}) {
   }, [navigation]);
 
   const [modalVisible, setModalVisible] = useState(false);
+  const [reviewModalVisible, setReviewModalVisible] = useState(false);
 
   const toggleYetToReview = () => {
     if (!yetToReviewHidden) {
@@ -110,12 +117,9 @@ function Map({route}) {
 
   const toggleFavorites = () => {
     if (!favoritesHidden) {
-      //if favs are showing
-      // setFavorites([]);
-      //set docs back to docs
-      setDocuments(favorites);
+      setDocuments3([]);
     } else {
-      setDocuments(reviewedDocsCopy);
+      setDocuments3(favorites);
     }
     setFavoritesHidden(!favoritesHidden);
   };
@@ -142,6 +146,24 @@ function Map({route}) {
             </Pressable>
           </View>
         </Modal>
+
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={reviewModalVisible}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+            setReviewModalVisible(!reviewModalVisible);
+          }}>
+          <View style={styles.modalView}>
+            <ReviewModal review={selectedMarker}></ReviewModal>
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => setReviewModalVisible(!reviewModalVisible)}>
+              <Text style={styles.textStyle}>Go Bacc</Text>
+            </Pressable>
+          </View>
+        </Modal>
         <MapView
           style={styles.map}
           initialRegion={{
@@ -159,13 +181,15 @@ function Map({route}) {
                     longitude: marker.coords.lng,
                   }}
                   title={marker.placeName}
-                  // description={marker.Cuisine}
+                  // description={marker.ratings}
+                  onPress={() => handleMarkerPress(marker)}
                 />
               ))
             : ''}
           {documents2
             ? documents2.map((marker, index) => (
                 <Marker
+                  style={{width: width / 2, height: height / 2}}
                   key={index}
                   coordinate={{
                     latitude: marker.coords.lat,
@@ -173,7 +197,22 @@ function Map({route}) {
                   }}
                   title={marker.placeName}
                   description={marker.Cuisine}
-                  icon={image}
+                  pinColor={'#154BE5'}
+                />
+              ))
+            : ''}
+          {documents3
+            ? documents3.map((marker, index) => (
+                <Marker
+                  style={{width: width / 2, height: height / 2}}
+                  key={index}
+                  coordinate={{
+                    latitude: marker.coords.lat,
+                    longitude: marker.coords.lng,
+                  }}
+                  title={marker.placeName}
+                  description={marker.Cuisine}
+                  pinColor={'#f59042'}
                 />
               ))
             : ''}

@@ -32,7 +32,7 @@ const RenderFollowList = ({route}) => {
             borderBottomColor: '#ccc',
             backgroundColor: '#eaeaea', // Conditional background color
           }}>
-          <Text>{item}</Text>
+          <Text style={styles.username}>{item}</Text>
         </TouchableOpacity>
       )}
     />
@@ -41,6 +41,9 @@ const RenderFollowList = ({route}) => {
 
 const styles = StyleSheet.create({
   ratingsObj: {},
+  username: {
+    fontSize: 20,
+  },
 });
 
 export default RenderFollowList;

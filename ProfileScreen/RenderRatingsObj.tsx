@@ -9,7 +9,9 @@ import {
   FlatList,
   Dimensions,
 } from 'react-native';
-import {Rating} from 'react-native-stock-star-rating';
+// import {Rating} from 'react-native-stock-star-rating';
+
+import Stars from 'react-native-stars';
 
 const RenderRatingsObj = ({ratings}) => {
   console.log('RENDERATINGSOBJS REVS', ratings);
@@ -21,7 +23,16 @@ const RenderRatingsObj = ({ratings}) => {
       renderItem={({item}) => (
         <View style={styles.row}>
           <Text>{item.label}</Text>
-          <Rating stars={item.value}></Rating>
+          <Stars
+            display={item.value}
+            spacing={8}
+            count={5}
+            starSize={40}
+            fullStar={require('../android/app/src/main/res/drawable/Stars/starFilled.png')}
+            halfStar={require('../android/app/src/main/res/drawable/Stars/starHalf.png')}
+            emptyStar={require('../android/app/src/main/res/drawable/Stars/starEmpty.png')}
+
+          />
         </View>
       )}
     />

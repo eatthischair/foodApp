@@ -186,6 +186,8 @@ function AddNewReviewScreen({route, navigation}) {
       fontSize: 30,
       justifyContent: 'center',
       alignItems: 'center',
+      margin: 20,
+      padding: 10,
     },
     buttons: {
       alignItems: 'center', // Center children horizontally
@@ -225,6 +227,9 @@ function AddNewReviewScreen({route, navigation}) {
     myEmptyStarStyle: {
       color: 'white',
     },
+    textInput: {
+      fontSize: 20,
+    }
   });
 
   const ratingCompleted = rating => {
@@ -242,6 +247,7 @@ function AddNewReviewScreen({route, navigation}) {
       }}
       scrollEnabled={true}>
       <TextInput
+        style={styles.textInput}
         placeholder="Search for restaurants..."
         onChangeText={text => setQuery(text)}
         value={query}
@@ -279,23 +285,15 @@ function AddNewReviewScreen({route, navigation}) {
           )}
         />
       )}
-      {/* <Rating
-        showRating
-        type={'custom'}
-        ratingBackgroundColor={'#ffffff'}
-        ratingColor={'#000000'}
-        minValue={1}
-        fractions={1}
-        onFinishRating={() => ratingCompleted()}></Rating> */}
       {ratings.map((item, index) => (
         <React.Fragment key={index}>
           <Text style={styles.buttonText}>{item.label}</Text>
           <Stars
             half={true}
-            default={2.5}
+            default={0}
             update={newValue => updateRating(index, newValue)}
-            spacing={4}
-            starSize={40}
+            spacing={6}
+            starSize={50}
             count={5}
             fullStar={require('../android/app/src/main/res/drawable/Stars/starFilled.png')}
             emptyStar={require('../android/app/src/main/res/drawable/Stars/starEmpty.png')}
@@ -304,23 +302,6 @@ function AddNewReviewScreen({route, navigation}) {
         </React.Fragment>
       ))}
 
-      <Text style={styles.buttonText}>Overall Rating</Text>
-      {ratings.map((item, index) => (
-        <React.Fragment key={index}>
-          <Text style={styles.buttonText}>{item.label}</Text>
-          <Stars
-            half={true}
-            default={2.5}
-            update={newValue => updateRating(index, newValue)}
-            spacing={4}
-            starSize={40}
-            count={5}
-            fullStar={require('../android/app/src/main/res/drawable/Stars/starFilled.png')}
-            emptyStar={require('../android/app/src/main/res/drawable/Stars/starEmpty.png')}
-            halfStar={require('../android/app/src/main/res/drawable/Stars/starHalf.png')}
-          />
-        </React.Fragment>
-      ))}
       <TextInput
         style={styles.textBox}
         placeholder="Share details of your own experience of this place"

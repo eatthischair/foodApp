@@ -26,7 +26,7 @@ const Login = ({route}) => {
       .signInWithEmailAndPassword(email, password)
       .then(() => {
         // console.log('User signed in!');
-        Alert.alert('Signup Success', 'You are successfully signed in!', [
+        Alert.alert('Sign in Success', 'You are successfully signed in!', [
           {
             text: 'OK',
             onPress: () => navigation.navigate('Tabs', {email: email}),

@@ -30,7 +30,7 @@ const FindFriends = ({route}) => {
       let newDocs = docs.map(item => {
         return item.username;
       });
-      console.log('DOCS IN FIDN FRIENDS', newDocs);
+      // console.log('DOCS IN FIDN FRIENDS', newDocs);
       setResults(newDocs);
     } catch (error) {
       console.error(`Error fetching documents from users: `, error);
@@ -62,6 +62,9 @@ const FindFriends = ({route}) => {
 };
 
 const styles = StyleSheet.create({
+  username: {
+    fontSize: 40,
+  },
   container: {
     flex: 1,
     paddingTop: 20,
@@ -75,7 +78,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   itemText: {
-    fontSize: 16,
+    fontSize: 20,
     padding: 10,
   },
 });

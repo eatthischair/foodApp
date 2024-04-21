@@ -136,7 +136,7 @@ const ViewFriendsProfile = ({route, navigation}) => {
     <ScrollView style={styles.container}>
       <View style={styles.profileHeader}>
         <Image
-          source={require('../android/app/src/main/res/drawable/ProfilePics/pic2.jpeg')}
+          source={require('../android/app/src/main/res/drawable/ProfilePics/pic2.jpg')}
           style={styles.profileImage}
         />
         <Text

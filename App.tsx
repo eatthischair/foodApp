@@ -156,12 +156,6 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 20,
   },
-  container: {
-    flex: 1,
-    backgroundColor: '#ADD8E6', // Example color: Light Blue
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
 });
 
 export default App;
