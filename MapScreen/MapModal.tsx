@@ -15,6 +15,8 @@ import {
 } from 'react-native';
 import axios from 'axios';
 import {useUser} from '../UserContext'; // Path to your UserContext
+import GetDataAsync from '../MiscFuns/GetDataAsync';
+import StoreDataAsync from '../MiscFuns/StoreDataAsync';
 
 const MapModal = () => {
   const [query, setQuery] = useState('');
@@ -23,12 +25,14 @@ const MapModal = () => {
   const [placeId, setPlaceId] = useState('');
   const [coords, setCoords] = useState('');
 
+  const {contextYets, setContextYets} = useUser();
+
   const {username} = useUser();
 
   const googlePlacesApiUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json`;
   let placesList;
   const fetchPlaces = async searchQuery => {
-    console.log('fetchplaces in mapmodal running');
+    // console.log('fetchplaces in mapmodal running');
     if (searchQuery.length < 3) return; // Don't search for too short strings
     //later add an error msgf
 
@@ -45,7 +49,7 @@ const MapModal = () => {
 
       if (response.data && response.data.predictions) {
         placesList = response.data.predictions;
-        console.log('REUSLTS', response.data.predictions);
+        // console.log('REUSLTS', response.data.predictions);
         setResults(response.data.predictions);
       }
     } catch (error) {
@@ -89,7 +93,9 @@ const MapModal = () => {
           firestore()
             .collection('test2')
             .add(sendObj)
-            .then(() => {});
+            .then(() => {
+              updateAsyncStore(sendObj);
+            });
         } else {
           console.error('Place Details request failed:', data.status);
         }
@@ -97,9 +103,15 @@ const MapModal = () => {
       .catch(error => console.error('Error:', error));
   };
 
+  const updateAsyncStore = async sendObj => {
+    let yets = await GetDataAsync('yets');
+    let newYets = [...yets, sendObj];
+    StoreDataAsync(null, newYets);
+  };
   return (
     <View>
-      <TextInput style={{fontSize: 20}}
+      <TextInput
+        style={{fontSize: 20}}
         placeholder="Search for restaurants..."
         onChangeText={text => setQuery(text)}
         value={query}

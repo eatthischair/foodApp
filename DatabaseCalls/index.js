@@ -1,7 +1,7 @@
 import AddFollower from './AddFollower';
-import ReviewCaller from './ReviewCaller.tsx';
+import ReviewCaller from './ReviewCaller';
 import UserCaller from './UserCaller.tsx';
-import FindUsernameByEmail from './FindUsernameByEmail.js';
+import FindUsernameByEmail from './FindUsernameByEmail';
 
 export {default as AddFollower} from './AddFollower';
 export {default as ReviewCaller} from './ReviewCaller';

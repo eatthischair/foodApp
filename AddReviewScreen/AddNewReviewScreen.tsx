@@ -1,34 +1,28 @@
 /* eslint-disable react/self-closing-comp */
 import React, {useState, useEffect} from 'react';
 import {
-  View,
   ScrollView,
   FlatList,
   Text,
   TextInput,
-  Button,
   TouchableOpacity,
-  StyleSheet,
-  Dimensions,
   Alert,
 } from 'react-native';
-
-// import {SearchBar} from 'react-native-elements';
-// import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import axios from 'axios';
 import firestore from '@react-native-firebase/firestore';
 import {useUser} from '../UserContext'; // Path to your UserContext
-import {Rating, AirbnbRating} from 'react-native-ratings';
-import {RatingInput} from 'react-native-stock-star-rating';
+
 import Stars from 'react-native-stars';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import styles from './AddNewRevStyles';
+import GetDataAsync from '../MiscFuns/GetDataAsync';
+import StoreDataAsync from '../MiscFuns/StoreDataAsync';
 
 function AddNewReviewScreen({route, navigation}) {
   const {CustomTouchable} = useUser();
-  const [searchQuery, setSearchQuery] = useState('');
-  const [filteredData, setFilteredData] = useState([]);
+  // const [searchQuery, setSearchQuery] = useState('');
+  // const [filteredData, setFilteredData] = useState([]);
 
-  const {userId, setUserId} = useUser();
+  // const {userId, setUserId} = useUser();
   const {username} = useUser();
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
@@ -38,9 +32,9 @@ function AddNewReviewScreen({route, navigation}) {
   const [searchCompleted, setSearchCompleted] = useState(false);
   const [text, setText] = useState('');
   const [favorite, setFavorite] = useState(false);
+  const [tags, setTags] = useState('');
 
   const googlePlacesApiUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json`;
-  let placesList;
 
   const [dishes, setDishes] = useState([]);
   const addDishCallback = newDishData => {
@@ -82,7 +76,6 @@ function AddNewReviewScreen({route, navigation}) {
     }
   });
 
-  // console.log('USERNAME IN ADD NEW REVIEW', username);
   const initialRatings = [
     {label: 'Overall', value: 0},
     {label: 'Server Helpfulness', value: 0},
@@ -117,8 +110,8 @@ function AddNewReviewScreen({route, navigation}) {
       favorite,
       username,
       createdAt: new Date(),
+      tags: tags !== undefined ? tags?.split(',') : [],
     };
-    // console.log('SENDOBJ', sendObj);
 
     firestore()
       .collection('test1')
@@ -129,6 +122,7 @@ function AddNewReviewScreen({route, navigation}) {
         setCoords('');
         setRatings(initialRatings);
         setText('');
+        updateAsyncStore(sendObj);
         Alert.alert('Review Posted', 'Your Review Was Posted!!!!!', [
           {
             text: 'OK',
@@ -138,12 +132,14 @@ function AddNewReviewScreen({route, navigation}) {
       });
   };
 
+  const updateAsyncStore = async sendObj => {
+    let revs = await GetDataAsync('revs');
+    let newRevs = [...revs, sendObj];
+    StoreDataAsync(newRevs, null);
+  };
   const apiKey = 'AIzaSyCvOCWqc-IOvr5C7FZo7IO8oIvSz5aR6Hk'; // API Key
 
-  //service quality
-
   const handleOnPress = item => {
-    // console.log('item', item.description, item.place_id, item);
     setPlaceName(item.description);
     setPlaceId(item.place_id);
     setSearchCompleted(true);
@@ -157,7 +153,6 @@ function AddNewReviewScreen({route, navigation}) {
         if (data.status === 'OK') {
           const placeDetails = data.result;
           const coordinates = placeDetails.geometry.location;
-          // console.log('Coordinates:', coordinates);
           setCoords(coordinates);
           // Use these coordinates to place a marker on the map
         } else {
@@ -167,84 +162,10 @@ function AddNewReviewScreen({route, navigation}) {
       .catch(error => console.error('Error:', error));
   };
 
-  const {width, height} = Dimensions.get('window');
-
-  // const CustomTouchable = ({title, onPress}) => {
-  //   return (
-  //     <TouchableOpacity
-  //       style={styles.buttons}
-  //       onPress={onPress}
-  //       activeOpacity={0.8}>
-  //       <Text style={styles.buttonText}>{title}</Text>
-  //     </TouchableOpacity>
-  //   );
-  // };
-
-  const styles = StyleSheet.create({
-    buttonText: {
-      color: 'black',
-      fontSize: 30,
-      justifyContent: 'center',
-      alignItems: 'center',
-      margin: 20,
-      padding: 10,
-    },
-    buttons: {
-      alignItems: 'center', // Center children horizontally
-      justifyContent: 'center', // Center children vertically
-      paddingVertical: 10,
-      paddingHorizontal: 20,
-      borderRadius: 5,
-      color: 'blue',
-      height: height / 15,
-      width: width / 1.5,
-      // textAlign: 'center',
-      backgroundColor: '#03a9fc',
-      marginVertical: 3,
-    },
-    textBox: {
-      // display: 'flex',
-      height: height / 8,
-      width: width / 1.5,
-      borderColor: 'black',
-      borderWidth: 2,
-      justifyContent: 'center',
-      alignItems: 'center',
-      fontSize: 20,
-    },
-    searchBar: {
-      width: width / 2,
-    },
-    listBox: {},
-    myStarStyle: {
-      // color: 'yellow',
-      backgroundColor: 'transparent',
-      textShadowColor: 'black',
-      textShadowOffset: {width: 1, height: 1},
-      textShadowRadius: 2,
-      height: 300,
-    },
-    myEmptyStarStyle: {
-      color: 'white',
-    },
-    textInput: {
-      fontSize: 20,
-    }
-  });
-
-  const ratingCompleted = rating => {
-    console.log('Rating is: ' + rating);
-  };
   return (
     <ScrollView
       // eslint-disable-next-line react-native/no-inline-styles
-      contentContainerStyle={{
-        // flex: 1,
-        alignItems: 'center',
-        // justifyContent: 'center',
-        marginTop: 20,
-        padding: 20, // Other styles for the content container can also go here
-      }}
+      contentContainerStyle={styles.ScrollView}
       scrollEnabled={true}>
       <TextInput
         style={styles.textInput}
@@ -265,17 +186,11 @@ function AddNewReviewScreen({route, navigation}) {
         <FlatList
           data={results}
           keyExtractor={item => item.place_id}
-          renderItem={(
-            {item}, // {({item}) => <Text onPress={setPlaceName(item.description)}>{item.description}</Text>}
-          ) => (
+          renderItem={({item}) => (
             <TouchableOpacity
               onPress={() => handleOnPress(item)}
               style={
-                ({
-                  padding: 20,
-                  borderBottomWidth: 1,
-                  borderBottomColor: '#ccc',
-                },
+                (styles.TouchableOpacity,
                 item.description === placeName
                   ? {backgroundColor: '#eaeaea'}
                   : {}) // Conditional background color
@@ -307,6 +222,12 @@ function AddNewReviewScreen({route, navigation}) {
         placeholder="Share details of your own experience of this place"
         value={text}
         onChangeText={newText => setText(newText)}
+      />
+      <TextInput
+        style={styles.textBox}
+        placeholder="Add Tags (separate by comma)"
+        value={tags}
+        onChangeText={newText => setTags(newText)}
       />
       <CustomTouchable title=" + Chewiest" onPress={() => setFavorite(true)} />
       <CustomTouchable title="Submit" onPress={handleSubmit} />

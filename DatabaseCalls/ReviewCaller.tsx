@@ -1,7 +1,7 @@
 import firestore from '@react-native-firebase/firestore';
 
 const ReviewCaller = async (collectionName, username) => {
-  // console.log('REVIEW CALLER PARAMS', collectionName, username);
+  console.log('REVIEW CALLER PARAMS', collectionName, username);
   let documents;
   try {
     const querySnapshot = await firestore()

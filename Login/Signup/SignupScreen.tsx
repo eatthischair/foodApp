@@ -28,12 +28,12 @@ const SignupScreen = () => {
           .doc(username)
           .get();
         if (userDoc.exists) {
-          console.log('Username already exists. Choose a different username.');
+          // console.log('Username already exists. Choose a different username.');
           return null; // Or throw an error or handle as appropriate for your app
         }
 
         await firestore().collection('users').doc(username).set(userData);
-        console.log('Document added with username as ID: ', username);
+        // console.log('Document added with username as ID: ', username);
         setUserId(username); // Assuming `setUserId` updates state or context with the new user ID
 
         return username; // Return the username used as the document ID

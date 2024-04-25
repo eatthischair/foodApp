@@ -1,23 +1,26 @@
-import {
-  View,
-  StyleSheet,
-  Dimensions,
-  Text,
-  Button,
-  Modal,
-  Pressable,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Dimensions} from 'react-native';
 
 import auth from '@react-native-firebase/auth';
 import {useContext, useEffect} from 'react';
 import {useUser} from '../UserContext'; // Path to your UserContext
-import firestore from '@react-native-firebase/firestore';
+// import firestore from '@react-native-firebase/firestore';
 import {styles} from '../AppStyles';
 
-import GetLocation from '../MiscFuns/GetLocation';
+// import GetLocation from '../MiscFuns/GetLocation';
 
-import FindUsernameByEmail from '../DatabaseCalls/index.js';
+// import FindUsernameByEmail from '../DatabaseCalls/index.js';
+import UpdateContext from '../MiscFuns/UpdateContext';
+import {
+  useFocusEffect,
+  useIsFocused,
+  useNavigation,
+} from '@react-navigation/native';
+
+import ReviewCaller from '../DatabaseCalls/ReviewCaller';
+// import ReviewCaller from '../DatabaseCalls/index.js';
+import GetCurrentUser from '../MiscFuns/GetCurrentUser';
+import StoreDataAsync from '../MiscFuns/StoreDataAsync';
+
 const {width, height} = Dimensions.get('window');
 const HomeScreen = ({route, navigation}) => {
   const {CustomTouchable} = useUser();
@@ -26,9 +29,26 @@ const HomeScreen = ({route, navigation}) => {
     navigation.navigate(screenName);
   };
 
-  // useEffect(() => {
-  //   GetLocation();
-  // }, []);
+  const isFocused = useIsFocused();
+  useEffect(() => {
+    // Define an async function inside useEffect
+
+    const fetchData = async () => {
+      let user = GetCurrentUser();
+      let revs = await ReviewCaller('test1', user).catch(
+        'revs not working boss',
+      );
+      console.log('inside fetch data, boss');
+      let yets = await ReviewCaller('test2', user);
+      StoreDataAsync(revs, yets);
+      console.log('async stored');
+    };
+
+    if (isFocused) {
+      console.log('is focused, boss');
+      fetchData();
+    }
+  }, [isFocused]);
 
   // async function findUsernameByEmail(email) {
   //   // simulate fetching username from database

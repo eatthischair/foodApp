@@ -19,10 +19,15 @@ import GetCurrentUser from '../MiscFuns/GetCurrentUser';
 import ReviewCaller from '../DatabaseCalls/ReviewCaller';
 import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import {useNavigation} from '@react-navigation/native';
+// import UpdateContext from '../MiscFuns/UpdateContext';
+import StoreDataAsync from '../MiscFuns/StoreDataAsync';
+import GetDataAsync from '../MiscFuns/GetDataAsync';
 
 const {width, height} = Dimensions.get('window');
 
 function Map({route}) {
+  const {contextRevs, setContextRevs, contextYets, setContextYets} = useUser();
+
   const [documents, setDocuments] = useState([]);
   const [documents2, setDocuments2] = useState([]);
   const [documents3, setDocuments3] = useState([]);
@@ -37,7 +42,6 @@ function Map({route}) {
 
   const [favoritesHidden, setFavoritesHidden] = useState(false);
   const [favorites, setFavorites] = useState([]);
-  const [favoritesCopy, setFavoritesCopy] = useState([]);
 
   const isFocused = useIsFocused();
   const navigation = useNavigation();
@@ -53,16 +57,30 @@ function Map({route}) {
   useFocusEffect(
     useCallback(() => {
       const fetchData = async () => {
-        let revs = await ReviewCaller('test1', GetCurrentUser());
-        let yets = await ReviewCaller('test2', GetCurrentUser());
-        // console.log('DATATOSET', revs);
+        console.log('triggered, boss');
+        // let revs = await ReviewCaller('test1', GetCurrentUser());
+        // let yets = await ReviewCaller('test2', GetCurrentUser());
+
+        let revs = await GetDataAsync('revs');
+        let yets = await GetDataAsync('yets');
+        // console.log('data from async', revs, yets);
+
         if (route.params?.revs) {
+          console.log('REVS AND YETS FROM FRIENDS BOSS', route.params);
           revs = route.params.revs;
           yets = route.params.yets;
         }
+
+        // if (contextRevs.length > revs.length) {
+        //   revs = contextRevs;
+        // }
+        // if (contextYets.length > yets.length) {
+        //   yets = contextYets;
+        // }
         let revsNoFavs = revs?.filter(item => item.favorite === false);
         let favs = revs?.filter(item => item.favorite);
-        // console.log('revs no favs', revsNoFavs);
+        // console.log('Setting state for documents:', revsNoFavs);
+        // console.log('Setting state for documents2:', yets);
         setDocuments(revsNoFavs);
         setReviewedDocsCopy(revsNoFavs);
         setDocuments2(yets);
@@ -76,11 +94,12 @@ function Map({route}) {
 
   useEffect(() => {
     if (isFocused) {
-      // console.log('Screen just got focused', revs, yets);
+      console.log('Screen just got focused');
     } else {
       // console.log('Screen just lost focus', revs, yets);
       setDocuments(null);
       setDocuments2(null);
+      setDocuments3(null);
       route.params = null;
     }
   }, [isFocused]);
@@ -96,6 +115,20 @@ function Map({route}) {
 
   const [modalVisible, setModalVisible] = useState(false);
   const [reviewModalVisible, setReviewModalVisible] = useState(false);
+
+  const updateYets = newYets => {
+    setDocuments2(newYets);
+  };
+  useEffect(() => {
+    const getYets = async () => {
+      let yets = await GetDataAsync('yets');
+      updateYets(yets);
+    };
+    if (!modalVisible) {
+      console.log('meme!!!! lol');
+      getYets();
+    }
+  }, [modalVisible]);
 
   const toggleYetToReview = () => {
     if (!yetToReviewHidden) {
@@ -222,19 +255,19 @@ function Map({route}) {
             style={styles.button}
             onPress={() => toggleFavorites()}
             title="Favorites"
-            color={!favoritesHidden ? '#34B75F' : '#000000'}
+            color={!favoritesHidden ? '#cf610c' : '#000000'}
           />
           <Button
             style={styles.button}
             onPress={() => toggleYetToReview()}
             title="Want to go"
-            color={!yetToReviewHidden ? '#34B75F' : '#000000'}
+            color={!yetToReviewHidden ? '#121fde' : '#000000'}
           />
           <Button
             style={styles.button}
             onPress={() => toggleReviewed()}
             title="Reviewed"
-            color={!reviewedHidden ? '#34B75F' : '#000000'}
+            color={!reviewedHidden ? '#db1d3c' : '#000000'}
           />
           <Button
             style={styles.button}

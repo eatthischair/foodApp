@@ -25,7 +25,7 @@ const AddFollower = async (followerUsername, followeeUsername) => {
       });
     });
 
-    console.log('Follow status updated successfully');
+    // console.log('Follow status updated successfully');
   } catch (error) {
     console.error('Error updating follow status:', error);
   }

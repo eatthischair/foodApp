@@ -6,10 +6,15 @@ const UserContext = createContext();
 export const useUser = () => useContext(UserContext);
 
 export const UserProvider = ({children}) => {
-  const [revs, setRevs] = useState(null);
-  const [yets, setYets] = useState(null);
+  // const [contextRevs, setContextRevs] = useState(null);
+  const contextRevs = createContext(null);
+  const contextYets = createContext(null);
+
+  // const [contextYets, setContextYets] = useState(null);
   const [userId, setUserId] = useState(null);
   const [username, setUsername] = useState(null);
+  const [favs, setFavs] = useState(null);
+
   const CustomTouchable = ({title, onPress}) => {
     return (
       <TouchableOpacity
@@ -24,15 +29,15 @@ export const UserProvider = ({children}) => {
   return (
     <UserContext.Provider
       value={{
-        revs,
-        setRevs,
-        yets,
-        setYets,
+        contextRevs,
+        contextYets,
         userId,
         setUserId,
         username,
         setUsername,
         CustomTouchable,
+        favs,
+        setFavs,
       }}>
       {children}
     </UserContext.Provider>

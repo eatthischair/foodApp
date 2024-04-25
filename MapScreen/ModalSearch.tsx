@@ -30,7 +30,7 @@ const ModalSearch = () => {
       if (data.status === 'OK') {
         const placeDetails = data.result;
         const coordinates = placeDetails.geometry.location;
-        console.log('Coordinates:', coordinates);
+        // console.log('Coordinates:', coordinates);
         setCoords(coordinates);
         // Use these coordinates to place a marker on the map
       } else {
