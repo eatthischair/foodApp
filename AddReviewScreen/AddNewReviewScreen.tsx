@@ -13,16 +13,12 @@ import firestore from '@react-native-firebase/firestore';
 import {useUser} from '../UserContext'; // Path to your UserContext
 
 import Stars from 'react-native-stars';
-import styles from './AddNewRevStyles';
+import {styles, initialRatings} from './AddNewRevStyles';
 import GetDataAsync from '../MiscFuns/GetDataAsync';
 import StoreDataAsync from '../MiscFuns/StoreDataAsync';
 
 function AddNewReviewScreen({route, navigation}) {
   const {CustomTouchable} = useUser();
-  // const [searchQuery, setSearchQuery] = useState('');
-  // const [filteredData, setFilteredData] = useState([]);
-
-  // const {userId, setUserId} = useUser();
   const {username} = useUser();
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
@@ -38,12 +34,11 @@ function AddNewReviewScreen({route, navigation}) {
 
   const [dishes, setDishes] = useState([]);
   const addDishCallback = newDishData => {
-    // console.log('newidhsdata', newDishData, dishes);
     setDishes(prevDishes => [...prevDishes, newDishData]);
   };
 
   const fetchPlaces = async searchQuery => {
-    if (searchQuery.length < 3) return; // Don't search for too short strings
+    if (searchQuery.length < 3) return;
     //later add an error msg
     try {
       const response = await axios.get(googlePlacesApiUrl, {
@@ -57,7 +52,6 @@ function AddNewReviewScreen({route, navigation}) {
       });
 
       if (response.data && response.data.predictions) {
-        // console.log('RESTAURANT RESULTS', response.data.predictions);
         placesList = response.data.predictions;
         setResults(response.data.predictions);
       }
@@ -70,24 +64,12 @@ function AddNewReviewScreen({route, navigation}) {
     if (query && query.length >= 3 && !searchCompleted) {
       const timerId = setTimeout(() => {
         fetchPlaces(query);
-      }, 500); // Debounce the API call
+      }, 500);
 
       return () => clearTimeout(timerId);
     }
   });
 
-  const initialRatings = [
-    {label: 'Overall', value: 0},
-    {label: 'Server Helpfulness', value: 0},
-    {label: 'Timeliness of Service', value: 0},
-    {label: 'Eagerness to Revisit', value: 0},
-    {label: 'Cleanliness', value: 0},
-    {label: 'Bang for Buck', value: 0},
-    {label: 'Music', value: 0},
-    {label: 'Noise Level', value: 0},
-    {label: 'Crowd Management', value: 0},
-    {label: 'Vibe', value: 0},
-  ];
   const [ratings, setRatings] = React.useState(initialRatings);
 
   const updateRating = (index, newValue) => {
@@ -137,7 +119,7 @@ function AddNewReviewScreen({route, navigation}) {
     let newRevs = [...revs, sendObj];
     StoreDataAsync(newRevs, null);
   };
-  const apiKey = 'AIzaSyCvOCWqc-IOvr5C7FZo7IO8oIvSz5aR6Hk'; // API Key
+  const apiKey = 'AIzaSyCvOCWqc-IOvr5C7FZo7IO8oIvSz5aR6Hk';
 
   const handleOnPress = item => {
     setPlaceName(item.description);

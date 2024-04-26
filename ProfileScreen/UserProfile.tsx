@@ -1,31 +1,12 @@
 import React from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  Image,
-  ScrollView,
-  TouchableOpacity,
-  Dimensions,
-} from 'react-native';
-
+import {View, Text, Image, ScrollView, TouchableOpacity} from 'react-native';
 import {useEffect, useState} from 'react';
-
 import auth from '@react-native-firebase/auth';
-import {useNavigation} from '@react-navigation/native';
-
-import {useUser} from '../UserContext'; // Path to your UserContext
-import RenderList from './RenderList';
-// import UserCaller from '../DatabaseCalls/UserCaller';
 import firestore from '@react-native-firebase/firestore';
 import ReviewCaller from '../DatabaseCalls/ReviewCaller';
-import RenderFollowList from './RenderFollowList';
-const {width, height} = Dimensions.get('window');
+import {styles} from './Styles';
 
 const UserProfile = ({route, navigation}) => {
-  // const {revs, setRevs} = useUser();
-  // const {yets, setYets} = useUser();
-
   const [revs, setRevs] = useState(null);
   const [yets, setYets] = useState(null);
   const [favs, setFavs] = useState(null);
@@ -40,7 +21,6 @@ const UserProfile = ({route, navigation}) => {
     followers: 1,
     following: 1,
     reviews: 1,
-    // Add more user fields as needed
   });
 
   const UserCaller = async username => {
@@ -103,7 +83,6 @@ const UserProfile = ({route, navigation}) => {
     const fetchYets = async () => {
       try {
         let yetss = await ReviewCaller('test2', getCurrentUser()?.displayName);
-        // console.log('User yetss in userprofile:', yetss);
         setYets(yetss);
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -111,17 +90,6 @@ const UserProfile = ({route, navigation}) => {
     };
     fetchYets();
   }, []);
-
-  // Placeholder user data
-  const user = {
-    firstName: 'Jane',
-    lastName: 'Doe',
-    bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus.',
-    profileImage: 'https://via.placeholder.com/150',
-    email: 'johndoe@example.com',
-    location: 'New York, USA',
-    // Add more user fields as needed
-  };
 
   const handleLogout = async () => {
     try {
@@ -155,12 +123,9 @@ const UserProfile = ({route, navigation}) => {
         </Text>
       </View>
       <View style={styles.profileDetails}>
-        {/* <Text style={styles.bio}>{user.bio}</Text> */}
         <Text style={styles.detail}>
           Email: {userInfo ? userInfo.email : ''}
         </Text>
-        {/* <Text style={styles.detail}>Location: {user.location}</Text> */}
-        {/* Add more user details here */}
       </View>
       <View style={styles.grid}>
         <Text style={styles.gridItem}>Reviews</Text>
@@ -214,73 +179,5 @@ const UserProfile = ({route, navigation}) => {
     </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  grid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
-  },
-  gridItem: {
-    fontSize: 15,
-    color: 'black',
-  },
-  BigNums: {
-    color: 'black',
-    fontSize: 20,
-    marginBottom: 10,
-    marginTop: 10,
-  },
-  favorites: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  buttons: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    color: 'white',
-    borderRadius: 8,
-    height: height / 10,
-    width: width,
-    textAlign: 'center',
-    backgroundColor: '#000000',
-    marginVertical: 3,
-  },
-  buttonText: {
-    fontSize: 20,
-    color: '#ffffff',
-  },
-  container: {
-    flex: 1,
-    margin: 10,
-  },
-  profileHeader: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    margin: 10,
-  },
-  profileImage: {
-    width: 150,
-    height: 150,
-    borderRadius: 75, // Makes image round
-  },
-  name: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginTop: 10,
-  },
-  profileDetails: {
-    marginTop: 20,
-  },
-  bio: {
-    fontSize: 16,
-    marginBottom: 10,
-  },
-  detail: {
-    fontSize: 16,
-    marginBottom: 5,
-  },
-});
 
 export default UserProfile;

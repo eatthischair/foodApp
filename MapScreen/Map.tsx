@@ -1,15 +1,7 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import firestore from '@react-native-firebase/firestore';
+// import firestore from '@react-native-firebase/firestore';
 import MapView, {Marker} from 'react-native-maps';
-import {
-  View,
-  StyleSheet,
-  Dimensions,
-  Text,
-  Button,
-  Modal,
-  Pressable,
-} from 'react-native';
+import {View, Dimensions, Text, Button, Modal, Pressable} from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 import MapModal from './MapModal';
@@ -23,11 +15,11 @@ import {useNavigation} from '@react-navigation/native';
 import StoreDataAsync from '../MiscFuns/StoreDataAsync';
 import GetDataAsync from '../MiscFuns/GetDataAsync';
 
+import {styles} from './MapStyles';
+
 const {width, height} = Dimensions.get('window');
 
 function Map({route}) {
-  const {contextRevs, setContextRevs, contextYets, setContextYets} = useUser();
-
   const [documents, setDocuments] = useState([]);
   const [documents2, setDocuments2] = useState([]);
   const [documents3, setDocuments3] = useState([]);
@@ -48,7 +40,6 @@ function Map({route}) {
 
   const [selectedMarker, setSelectedMarker] = useState(null);
 
-  // When a marker is pressed
   const handleMarkerPress = marker => {
     setSelectedMarker(marker); // Set the selected marker
     setReviewModalVisible(true); // Open the modal
@@ -57,30 +48,16 @@ function Map({route}) {
   useFocusEffect(
     useCallback(() => {
       const fetchData = async () => {
-        console.log('triggered, boss');
-        // let revs = await ReviewCaller('test1', GetCurrentUser());
-        // let yets = await ReviewCaller('test2', GetCurrentUser());
-
         let revs = await GetDataAsync('revs');
         let yets = await GetDataAsync('yets');
-        // console.log('data from async', revs, yets);
 
         if (route.params?.revs) {
           console.log('REVS AND YETS FROM FRIENDS BOSS', route.params);
           revs = route.params.revs;
           yets = route.params.yets;
         }
-
-        // if (contextRevs.length > revs.length) {
-        //   revs = contextRevs;
-        // }
-        // if (contextYets.length > yets.length) {
-        //   yets = contextYets;
-        // }
-        let revsNoFavs = revs?.filter(item => item.favorite === false);
+        let revsNoFavs = revs?.filter(item => !item.favorite);
         let favs = revs?.filter(item => item.favorite);
-        // console.log('Setting state for documents:', revsNoFavs);
-        // console.log('Setting state for documents2:', yets);
         setDocuments(revsNoFavs);
         setReviewedDocsCopy(revsNoFavs);
         setDocuments2(yets);
@@ -89,14 +66,13 @@ function Map({route}) {
         setDocuments3(favs);
       };
       fetchData();
-    }, [route.params]), // Depend on route.params
+    }, [route.params]),
   );
 
   useEffect(() => {
     if (isFocused) {
       console.log('Screen just got focused');
     } else {
-      // console.log('Screen just lost focus', revs, yets);
       setDocuments(null);
       setDocuments2(null);
       setDocuments3(null);
@@ -280,79 +256,5 @@ function Map({route}) {
     </GestureHandlerRootView>
   );
 }
-
-const styles = StyleSheet.create({
-  scrollView: {
-    flexGrow: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 50,
-  },
-  container: {
-    ...StyleSheet.absoluteFillObject,
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 50, // Adjust based on your UI
-  },
-  map: {
-    ...StyleSheet.absoluteFillObject,
-    flex: 1,
-  },
-  buttonContainer: {
-    position: 'absolute',
-    top: 0, // Adjust based on your needs
-    left: 0, // Adjust based on your needs
-    flexDirection: 'row', // Align children horizontally
-    justifyContent: 'flex-start',
-    gap: 10,
-    height: height / 25,
-    width: width / 3,
-  },
-  centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 22,
-  },
-  modalView: {
-    height: height / 1.2,
-    margin: 20,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 35,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  button: {
-    borderRadius: 50,
-    padding: 10,
-    elevation: 2,
-    fontSize: 30,
-  },
-  buttonOpen: {
-    backgroundColor: '#F194FF',
-  },
-  buttonClose: {
-    backgroundColor: '#2196F3',
-  },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-    fontSize: 30,
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: 'center',
-  },
-});
 
 export default Map;

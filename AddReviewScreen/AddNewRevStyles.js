@@ -1,7 +1,37 @@
 import {StyleSheet, Dimensions} from 'react-native';
 const {width, height} = Dimensions.get('window');
 
-const styles = StyleSheet.create({
+export const initialRatings = [
+  {label: 'Overall', value: 0},
+  {label: 'Server Helpfulness', value: 0},
+  {label: 'Timeliness of Service', value: 0},
+  {label: 'Eagerness to Revisit', value: 0},
+  {label: 'Cleanliness', value: 0},
+  {label: 'Bang for Buck', value: 0},
+  {label: 'Music', value: 0},
+  {label: 'Noise Level', value: 0},
+  {label: 'Crowd Management', value: 0},
+  {label: 'Vibe', value: 0},
+];
+export const addDishStyles = StyleSheet.create({
+  buttonText: {
+    color: 'black',
+    fontSize: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  textBox: {
+    // display: 'flex',
+    height: height / 8,
+    width: width / 2,
+    borderColor: 'black',
+    borderWidth: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
+
+export const styles = StyleSheet.create({
   buttonText: {
     color: 'black',
     fontSize: 30,
@@ -62,5 +92,3 @@ const styles = StyleSheet.create({
     padding: 20,
   },
 });
-
-export default styles;
