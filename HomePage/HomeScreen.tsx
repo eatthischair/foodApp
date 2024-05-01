@@ -1,6 +1,5 @@
-import {View, Dimensions} from 'react-native';
+import {View, Dimensions, Platform} from 'react-native';
 
-import auth from '@react-native-firebase/auth';
 import {useContext, useEffect} from 'react';
 import {useUser} from '../UserContext'; // Path to your UserContext
 // import firestore from '@react-native-firebase/firestore';
@@ -8,8 +7,7 @@ import {styles} from '../AppStyles';
 
 // import GetLocation from '../MiscFuns/GetLocation';
 
-// import FindUsernameByEmail from '../DatabaseCalls/index.js';
-import UpdateContext from '../MiscFuns/UpdateContext';
+// import UpdateContext from '../MiscFuns/UpdateContext';
 import {
   useFocusEffect,
   useIsFocused,
@@ -17,11 +15,19 @@ import {
 } from '@react-navigation/native';
 
 import ReviewCaller from '../DatabaseCalls/ReviewCaller';
-// import ReviewCaller from '../DatabaseCalls/index.js';
 import GetCurrentUser from '../MiscFuns/GetCurrentUser';
 import StoreDataAsync from '../MiscFuns/StoreDataAsync';
+import {Button, lightColors, createTheme, ThemeProvider} from '@rneui/themed';
 
-const {width, height} = Dimensions.get('window');
+const theme = createTheme({
+  lightColors: {
+    ...Platform.select({
+      default: lightColors.platform.android,
+      ios: lightColors.platform.ios,
+    }),
+  },
+});
+
 const HomeScreen = ({route, navigation}) => {
   const {CustomTouchable} = useUser();
 
@@ -50,52 +56,6 @@ const HomeScreen = ({route, navigation}) => {
     }
   }, [isFocused]);
 
-  // async function findUsernameByEmail(email) {
-  //   // simulate fetching username from database
-  //   return new Promise(resolve =>
-  //     setTimeout(() => resolve('username123'), 1000),
-  //   );
-  // }
-
-  function processUsername(username) {
-    console.log('Processing username:', username);
-  }
-
-  useEffect(() => {
-    // console.log('route in home', route, route.params);
-    if (route.params?.username) {
-      updateDisplayName(route.params?.username);
-    } else {
-      async function getUsernameAndProcess() {
-        const username = await FindUsernameByEmail(route.params?.email);
-        processUsername(username);
-      }
-      getUsernameAndProcess();
-    }
-  }, [route.params]);
-
-  // useEffect(() => {
-  //   // console.log('route in home', route, route.params);
-  //   updateDisplayName('testapr9');
-  // }, []);
-
-  function updateDisplayName(newDisplayName) {
-    const user = auth().currentUser;
-
-    if (user) {
-      user
-        .updateProfile({
-          displayName: newDisplayName,
-        })
-        .then(() => {
-          // console.log('Display name updated!', route.params.username);
-          // Optionally, update the local state or perform other actions after the update
-        })
-        .catch(error => {
-          console.error('Error updating display name:', error);
-        });
-    }
-  }
   return (
     <View style={styles.Homecontainer}>
       <CustomTouchable

@@ -13,13 +13,12 @@ import firestore from '@react-native-firebase/firestore';
 import {useUser} from '../UserContext'; // Path to your UserContext
 
 import Stars from 'react-native-stars';
-import {styles, initialRatings} from './AddNewRevStyles';
+import {styles} from './AddNewRevStyles';
 import GetDataAsync from '../MiscFuns/GetDataAsync';
 import StoreDataAsync from '../MiscFuns/StoreDataAsync';
 
 function AddNewReviewScreen({route, navigation}) {
   const {CustomTouchable} = useUser();
-  const {username} = useUser();
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [placeName, setPlaceName] = useState('');
@@ -69,8 +68,19 @@ function AddNewReviewScreen({route, navigation}) {
       return () => clearTimeout(timerId);
     }
   });
-
-  const [ratings, setRatings] = React.useState(initialRatings);
+  const initialRatings = [
+    {label: 'Overall', value: 0},
+    {label: 'Server Helpfulness', value: 0},
+    {label: 'Timeliness of Service', value: 0},
+    {label: 'Eagerness to Revisit', value: 0},
+    {label: 'Cleanliness', value: 0},
+    {label: 'Bang for Buck', value: 0},
+    {label: 'Music', value: 0},
+    {label: 'Noise Level', value: 0},
+    {label: 'Crowd Management', value: 0},
+    {label: 'Vibe', value: 0},
+  ];
+  const [ratings, setRatings] = useState(initialRatings);
 
   const updateRating = (index, newValue) => {
     const newRatings = ratings.map((item, i) => {
@@ -81,7 +91,15 @@ function AddNewReviewScreen({route, navigation}) {
     });
     setRatings(newRatings);
   };
+
+  const {username} = useUser();
   const handleSubmit = () => {
+    setPlaceName('');
+    setPlaceId('');
+    setCoords('');
+    console.log('initial ratings', initialRatings);
+    setRatings([...initialRatings]);
+    setText('');
     let sendObj = {
       placeName,
       placeId,
@@ -94,16 +112,10 @@ function AddNewReviewScreen({route, navigation}) {
       createdAt: new Date(),
       tags: tags !== undefined ? tags?.split(',') : [],
     };
-
     firestore()
       .collection('test1')
       .add(sendObj)
       .then(() => {
-        setPlaceName('');
-        setPlaceId('');
-        setCoords('');
-        setRatings(initialRatings);
-        setText('');
         updateAsyncStore(sendObj);
         Alert.alert('Review Posted', 'Your Review Was Posted!!!!!', [
           {
@@ -160,7 +172,6 @@ function AddNewReviewScreen({route, navigation}) {
         onPress={() =>
           navigation.navigate('AddDish', {onAddDish: addDishCallback})
         }></CustomTouchable>
-      <Text>Dishes</Text>
       <Text>{placeName}</Text>
       {placeName ? (
         ''
@@ -187,6 +198,7 @@ function AddNewReviewScreen({route, navigation}) {
           <Text style={styles.buttonText}>{item.label}</Text>
           <Stars
             half={true}
+            key={item.value}
             default={0}
             update={newValue => updateRating(index, newValue)}
             spacing={6}

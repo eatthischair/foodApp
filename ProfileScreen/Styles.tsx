@@ -37,6 +37,7 @@ export const styles = StyleSheet.create({
     fontSize: 20,
     color: '#ffffff',
   },
+
   container: {
     flex: 1,
     margin: 10,

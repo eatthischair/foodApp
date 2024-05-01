@@ -5,6 +5,7 @@ const GetDataAsync = async dataName => {
   try {
     const userDataJson = await AsyncStorage.getItem(dataName);
     if (userDataJson !== null) {
+      console.log('revs from async', userDataJson);
       return JSON.parse(userDataJson);
     }
     throw new Error('No local data found');

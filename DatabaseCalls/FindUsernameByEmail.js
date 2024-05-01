@@ -1,12 +1,15 @@
 import firestore from '@react-native-firebase/firestore';
-import firebase from 'firebase/app';
+// import firebase from 'firebase/app';
 
 async function FindUsernameByEmail(email) {
-  const db = firebase.firestore();
-
+  // const db = firebase.firestore();
+  console.log('in findusername by email, boss', email);
   try {
-    const usersRef = db.collection('users');
+    // const usersRef = db.collection('users');
+    const usersRef = firestore().collection('users');
     const snapshot = await usersRef.where('email', '==', email).get();
+
+    // const snapshot = await usersRef.where('email', '==', email).get();
 
     if (snapshot.empty) {
       console.log('No matching documents.');

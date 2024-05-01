@@ -94,6 +94,8 @@ function Map({route}) {
 
   const updateYets = newYets => {
     setDocuments2(newYets);
+    setYetToReviewHidden(false);
+    setYetToReviewDocsCopy(newYets);
   };
   useEffect(() => {
     const getYets = async () => {

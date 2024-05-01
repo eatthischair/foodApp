@@ -30,6 +30,7 @@ import firestore from '@react-native-firebase/firestore';
 import FindFriends from './HomePage/FindFriends';
 import ViewFriendsProfile from './ProfileScreen/ViewFriendsProfile';
 import RenderFollowList from './ProfileScreen/RenderFollowList';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const {width, height} = Dimensions.get('window');
 

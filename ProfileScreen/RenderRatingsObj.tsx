@@ -13,8 +13,8 @@ import {
 
 import Stars from 'react-native-stars';
 
-const RenderRatingsObj = ({ratings}) => {
-  console.log('RENDERATINGSOBJS REVS', ratings);
+const RenderRatingsObj = ({ratings, style}) => {
+  // console.log('RENDERATINGSOBJS REVS', ratings);
 
   return (
     <FlatList
@@ -31,7 +31,6 @@ const RenderRatingsObj = ({ratings}) => {
             fullStar={require('../android/app/src/main/res/drawable/Stars/starFilled.png')}
             halfStar={require('../android/app/src/main/res/drawable/Stars/starHalf.png')}
             emptyStar={require('../android/app/src/main/res/drawable/Stars/starEmpty.png')}
-
           />
         </View>
       )}

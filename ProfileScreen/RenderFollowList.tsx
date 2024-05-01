@@ -30,7 +30,7 @@ const RenderFollowList = ({route}) => {
             padding: 20,
             borderBottomWidth: 1,
             borderBottomColor: '#ccc',
-            backgroundColor: '#eaeaea', // Conditional background color
+            backgroundColor: '#ffffff', // Conditional background color
           }}>
           <Text style={styles.username}>{item}</Text>
         </TouchableOpacity>

@@ -26,4 +26,8 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 50, // Adjust based on your UI
   },
+  App: {
+    flex: 1,
+    backgroundColor: '#9dd3fa', // Set your desired background color here
+  },
 });
