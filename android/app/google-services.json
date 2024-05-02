@@ -7,9 +7,47 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:1086911555864:android:220a78c5ae501e7ff4566d",
+        "android_client_info": {
+          "package_name": "com.newcompanyname.Chew"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZGV6hhk2deubTsEyug_OBvknjOhPGvEQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:1086911555864:android:3e0da32aaf59f732f4566d",
         "android_client_info": {
-          "package_name": "com.newcompanyname.foodapp"
+          "package_name": "com.newcompanyname.Chew"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZGV6hhk2deubTsEyug_OBvknjOhPGvEQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1086911555864:android:2ee6241a97d9b397f4566d",
+        "android_client_info": {
+          "package_name": "com.newcompanyname.Chew"
         }
       },
       "oauth_client": [],

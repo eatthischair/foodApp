@@ -13,11 +13,20 @@ export const styles = StyleSheet.create({
     width: width / 1.5,
     textAlign: 'center',
     backgroundColor: '#03a9fc',
-    marginVertical: 3,
+    marginVertical: 10,
   },
   HomebuttonText: {
     color: 'white',
     fontSize: 30,
+  },
+  MyChew: {
+    backgroundColor: '#696D7D',
+  },
+  Map: {
+    backgroundColor: '#68B0AB',
+  },
+  FindFriends: {
+    backgroundColor: '#8FC0A9',
   },
   Homecontainer: {
     ...StyleSheet.absoluteFillObject,
@@ -25,6 +34,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 50, // Adjust based on your UI
+    backgroundColor: '#fff8e7',
   },
   App: {
     flex: 1,

@@ -1,7 +1,15 @@
 import React, {useState, useEffect, useCallback} from 'react';
 // import firestore from '@react-native-firebase/firestore';
 import MapView, {Marker} from 'react-native-maps';
-import {View, Dimensions, Text, Button, Modal, Pressable} from 'react-native';
+import {
+  View,
+  Dimensions,
+  Text,
+  Button,
+  Modal,
+  Pressable,
+  Alert,
+} from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 import MapModal from './MapModal';
@@ -136,7 +144,6 @@ function Map({route}) {
   };
 
   // eslint-disable-next-line react/no-unstable-nested-components
-  const image = require('../android/app/src/main/res/drawable/ProfilePics/green-dot.png');
   return (
     <GestureHandlerRootView style={{flex: 1}}>
       <View style={styles.container}>
@@ -157,7 +164,7 @@ function Map({route}) {
             </Pressable>
           </View>
         </Modal>
-
+        {/*
         <Modal
           animationType="slide"
           transparent={true}
@@ -174,7 +181,7 @@ function Map({route}) {
               <Text style={styles.textStyle}>Go Bacc</Text>
             </Pressable>
           </View>
-        </Modal>
+        </Modal> */}
         <MapView
           style={styles.map}
           initialRegion={{
@@ -232,7 +239,7 @@ function Map({route}) {
           <Button
             style={styles.button}
             onPress={() => toggleFavorites()}
-            title="Favorites"
+            title="Chewiest"
             color={!favoritesHidden ? '#cf610c' : '#000000'}
           />
           <Button
@@ -250,7 +257,7 @@ function Map({route}) {
           <Button
             style={styles.button}
             onPress={() => setModalVisible(!modalVisible)}
-            title="Add Marker"
+            title="+ Want To Go"
             color={'#34B75F'}
           />
         </View>

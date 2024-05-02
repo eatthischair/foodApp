@@ -18,6 +18,7 @@ import RenderRatingsObj from './RenderRatingsObj';
 // const {width, height} = Dimensions.get('window');
 const RenderList = ({route}) => {
   const {revs} = route.params;
+  const {dontSortAndGroup} = route.params;
   let toggleExpanded = revs.map(rev => {
     {
       expanded: false;
@@ -189,12 +190,14 @@ const RenderList = ({route}) => {
 
   useEffect(() => {
     let consolidatedPlaces;
-    if (!revsSorted) {
+    if (!revsSorted && !dontSortAndGroup) {
       let sorted = sortRevs(revs);
       // let consolidated = consolidateDups(sorted);
       consolidatedPlaces = consolidateDups(sorted);
       // let processed = processGroup(consolidatedPlaces);
       // console.log('consolidatedPlaces', consolidatedPlaces);
+    } else {
+      consolidatedPlaces = revs;
     }
     setConsolidatedRevs(consolidatedPlaces);
   }, [revsSorted]);

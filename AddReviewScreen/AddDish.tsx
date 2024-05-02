@@ -36,8 +36,9 @@ function AddDish({route, navigation}) {
   };
 
   return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#fffbf2'}}>
       <TextInput
+        style={addDishStyles.buttonText}
         placeholder="Dish name"
         onChangeText={text => setQuery(text)}
         value={query}
@@ -59,6 +60,7 @@ function AddDish({route, navigation}) {
         </React.Fragment>
       ))}
       <TextInput
+        style={addDishStyles.buttonText}
         placeholder="Comments"
         value={comments}
         onChangeText={text => setComments(text)}

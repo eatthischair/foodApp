@@ -40,6 +40,20 @@ export const styles = StyleSheet.create({
     margin: 20,
     padding: 10,
   },
+  Homebuttons: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: 'blue',
+    borderRadius: 8,
+    height: height / 10,
+    width: width / 1.5,
+    textAlign: 'center',
+    backgroundColor: '#03a9fc',
+    marginVertical: 10,
+  },
+  Chewiest: {
+    backgroundColor: '#696D7D',
+  },
   buttons: {
     alignItems: 'center', // Center children horizontally
     justifyContent: 'center', // Center children vertically
@@ -90,5 +104,6 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 20,
     padding: 20,
+    backgroundColor: '#fff8e7',
   },
 });

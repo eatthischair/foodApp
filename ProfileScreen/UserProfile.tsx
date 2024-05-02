@@ -21,6 +21,7 @@ const UserProfile = ({route, navigation}) => {
     followers: 1,
     following: 1,
     reviews: 1,
+    username: 'foodLover',
   });
 
   const UserCaller = async username => {
@@ -101,12 +102,9 @@ const UserProfile = ({route, navigation}) => {
     }
   };
 
-  const CustomTouchable = ({title, onPress}) => {
+  const CustomTouchable = ({title, onPress, style = styles.buttons}) => {
     return (
-      <TouchableOpacity
-        style={styles.buttons}
-        onPress={onPress}
-        activeOpacity={0.8}>
+      <TouchableOpacity style={style} onPress={onPress} activeOpacity={0.8}>
         <Text style={styles.buttonText}>{title}</Text>
       </TouchableOpacity>
     );
@@ -123,9 +121,10 @@ const UserProfile = ({route, navigation}) => {
         </Text>
       </View>
       <View style={styles.profileDetails}>
-        <Text style={styles.detail}>
+        <Text style={styles.detail}>@{userInfo ? userInfo.username : ''}</Text>
+        {/* <Text style={styles.detail}>
           Email: {userInfo ? userInfo.email : ''}
-        </Text>
+        </Text> */}
       </View>
       <View style={styles.grid}>
         <Text style={styles.gridItem}>Reviews</Text>
@@ -161,14 +160,19 @@ const UserProfile = ({route, navigation}) => {
         <CustomTouchable
           title="Chewiest"
           onPress={() => navigation.navigate('Reviews', {revs: favs})}
+          style={[styles.buttons, styles.Chewiest]}
         />
         <CustomTouchable
           title="Yet To Chew"
-          onPress={() => navigation.navigate('Reviews', {revs: yets})}
+          onPress={() =>
+            navigation.navigate('Reviews', {revs: yets, dontSortAndGroup: true})
+          }
+          style={[styles.buttons, styles.YetToChew]}
         />
         <CustomTouchable
           title="Chewed"
           onPress={() => navigation.navigate('Reviews', {revs: revs})}
+          style={[styles.buttons, styles.Chewed]}
         />
         <CustomTouchable
           title="Edit Profile"

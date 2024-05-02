@@ -3,7 +3,7 @@ import {View, Dimensions, Platform} from 'react-native';
 import {useContext, useEffect} from 'react';
 import {useUser} from '../UserContext'; // Path to your UserContext
 // import firestore from '@react-native-firebase/firestore';
-import {styles} from '../AppStyles';
+import {styles} from './AppStyles';
 
 // import GetLocation from '../MiscFuns/GetLocation';
 
@@ -61,11 +61,17 @@ const HomeScreen = ({route, navigation}) => {
       <CustomTouchable
         title="My Chew"
         onPress={() => handleNavigation('Profile')}
+        style={[styles.Homebuttons, styles.MyChew]}
       />
-      <CustomTouchable title="Map" onPress={() => handleNavigation('Map')} />
+      <CustomTouchable
+        title="Map"
+        onPress={() => handleNavigation('Map')}
+        style={[styles.Homebuttons, styles.Map]}
+      />
       <CustomTouchable
         title="Find Friends"
         onPress={() => handleNavigation('Find Friends')}
+        style={[styles.Homebuttons, styles.FindFriends]}
       />
       {/* <CustomTouchable
         title="Friends Chew"

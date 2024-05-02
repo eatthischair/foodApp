@@ -198,7 +198,7 @@ function AddNewReviewScreen({route, navigation}) {
           <Text style={styles.buttonText}>{item.label}</Text>
           <Stars
             half={true}
-            key={item.value}
+            // key={item.value}
             default={0}
             update={newValue => updateRating(index, newValue)}
             spacing={6}
@@ -223,7 +223,11 @@ function AddNewReviewScreen({route, navigation}) {
         value={tags}
         onChangeText={newText => setTags(newText)}
       />
-      <CustomTouchable title=" + Chewiest" onPress={() => setFavorite(true)} />
+      <CustomTouchable
+        title=" + Chewiest"
+        onPress={() => setFavorite(true)}
+        style={[styles.Homebuttons, styles.Chewiest]}
+      />
       <CustomTouchable title="Submit" onPress={handleSubmit} />
     </ScrollView>
   );

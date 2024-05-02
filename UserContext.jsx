@@ -1,5 +1,5 @@
 import React, {createContext, useContext, useState} from 'react';
-import {styles} from './AppStyles.js';
+import {styles} from './HomePage/AppStyles.js';
 import {TouchableOpacity, Text} from 'react-native';
 const UserContext = createContext();
 
@@ -15,12 +15,9 @@ export const UserProvider = ({children}) => {
   const [username, setUsername] = useState(null);
   const [favs, setFavs] = useState(null);
 
-  const CustomTouchable = ({title, onPress}) => {
+  const CustomTouchable = ({title, onPress, style = styles.Homebuttons}) => {
     return (
-      <TouchableOpacity
-        style={styles.Homebuttons}
-        onPress={onPress}
-        activeOpacity={0.8}>
+      <TouchableOpacity style={style} onPress={onPress} activeOpacity={0.8}>
         <Text style={styles.HomebuttonText}>{title}</Text>
       </TouchableOpacity>
     );

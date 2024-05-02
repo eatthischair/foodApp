@@ -22,25 +22,37 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  Chewiest: {
+    backgroundColor: '#696D7D',
+  },
+  YetToChew: {
+    backgroundColor: '#68B0AB',
+  },
+  Chewed: {
+    backgroundColor: '#8FC0A9',
+  },
+  SignOut: {
+    backgroundColor: '#8FC0A9',
+  },
   buttons: {
     justifyContent: 'center',
     alignItems: 'center',
     color: 'white',
-    borderRadius: 8,
+    borderRadius: 10,
     height: height / 10,
-    width: width,
+    width: width - 50,
     textAlign: 'center',
     backgroundColor: '#000000',
-    marginVertical: 3,
+    marginVertical: 20,
   },
   buttonText: {
     fontSize: 20,
     color: '#ffffff',
   },
-
   container: {
     flex: 1,
     margin: 10,
+    backgroundColor: '#fffbf2',
   },
   profileHeader: {
     alignItems: 'center',
@@ -65,8 +77,13 @@ export const styles = StyleSheet.create({
     marginBottom: 10,
   },
   detail: {
-    fontSize: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: 20,
     marginBottom: 5,
+  },
+  screen: {
+    backgroundColor: '#12ff00',
   },
 });
 

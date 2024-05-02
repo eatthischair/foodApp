@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from "react-native";
+import {StyleSheet, Dimensions} from 'react-native';
 const {width, height} = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
@@ -27,7 +27,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     gap: 10,
     height: height / 25,
-    width: width / 3,
+    width: 100,
   },
   centeredView: {
     flex: 1,
@@ -55,7 +55,7 @@ export const styles = StyleSheet.create({
     borderRadius: 50,
     padding: 10,
     elevation: 2,
-    fontSize: 30,
+    fontSize: 20,
   },
   buttonOpen: {
     backgroundColor: '#F194FF',
@@ -73,4 +73,4 @@ export const styles = StyleSheet.create({
     marginBottom: 15,
     textAlign: 'center',
   },
-})
+});
