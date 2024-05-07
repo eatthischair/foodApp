@@ -8,14 +8,22 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   gridItem: {
-    fontSize: 15,
+    fontSize: 20,
     color: 'black',
+    // borderBlockColor: '#fcedc7',
+    // borderWidth: 2,
+    flexGrow: 1,
+    textAlign: 'center',
   },
   BigNums: {
     color: 'black',
     fontSize: 20,
     marginBottom: 10,
     marginTop: 10,
+    // borderBlockColor: '#fcedc7',
+    // borderWidth: 2,
+    flexGrow: 1,
+    textAlign: 'center',
   },
   favorites: {
     display: 'flex',

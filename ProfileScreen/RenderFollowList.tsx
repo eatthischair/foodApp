@@ -25,7 +25,9 @@ const RenderFollowList = ({route}) => {
       keyExtractor={(item, index) => index.toString()}
       renderItem={({item, index}) => (
         <TouchableOpacity
-          onPress={() => navigation.navigate('FriendsProfile', {username: item})}
+          onPress={() =>
+            navigation.navigate('FriendsProfile', {username: item})
+          }
           style={{
             padding: 20,
             borderBottomWidth: 1,

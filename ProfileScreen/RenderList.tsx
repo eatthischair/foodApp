@@ -203,7 +203,7 @@ const RenderList = ({route}) => {
   }, [revsSorted]);
 
   return (
-    <View>
+    <View s>
       <FlatList
         data={consolidatedRevs}
         keyExtractor={(item, index) => index.toString()}
@@ -226,7 +226,9 @@ const RenderList = ({route}) => {
                               {item.length - 1 === index ? (
                                 <Text style={styles.buttonText}>Average</Text>
                               ) : (
-                                <Text style={styles.buttonText}>Review {index + 1}</Text>
+                                <Text style={styles.buttonText}>
+                                  Review {index + 1}
+                                </Text>
                               )}
                             </TouchableOpacity>
                             {index === expandedNestedIndex ? (

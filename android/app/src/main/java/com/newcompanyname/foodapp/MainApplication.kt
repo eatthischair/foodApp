@@ -1,4 +1,4 @@
-package com.newcompanyname.Chew
+package com.newcompanyname.Chewd
 
 import android.app.Application
 import com.facebook.react.PackageList

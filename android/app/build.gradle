@@ -75,13 +75,13 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.newcompanyname.Chew"
+    namespace "com.newcompanyname.Chewd"
     defaultConfig {
-        applicationId "com.newcompanyname.Chew"
+        applicationId "com.newcompanyname.Chewd"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 3
-        versionName "1.0.2"
+        versionCode 9
+        versionName "1.0.3"
     }
     signingConfigs {
         debug {

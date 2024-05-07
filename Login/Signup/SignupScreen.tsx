@@ -73,7 +73,7 @@ const SignupScreen = () => {
     <View>
       <TextInput placeholder="Email" value={email} onChangeText={setEmail} />
       <TextInput
-        placeholder="Username"
+        placeholder="Maybe use the same @ as your IG or Twitter :)"
         value={username}
         onChangeText={setUsername}
       />

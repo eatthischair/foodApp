@@ -60,7 +60,7 @@ function Map({route}) {
         let yets = await GetDataAsync('yets');
 
         if (route.params?.revs) {
-          console.log('REVS AND YETS FROM FRIENDS BOSS', route.params);
+          // console.log('REVS AND YETS FROM FRIENDS BOSS', route.params);
           revs = route.params.revs;
           yets = route.params.yets;
         }
@@ -79,7 +79,7 @@ function Map({route}) {
 
   useEffect(() => {
     if (isFocused) {
-      console.log('Screen just got focused');
+      // console.log('Screen just got focused');
     } else {
       setDocuments(null);
       setDocuments2(null);
@@ -111,7 +111,7 @@ function Map({route}) {
       updateYets(yets);
     };
     if (!modalVisible) {
-      console.log('meme!!!! lol');
+      // console.log('meme!!!! lol');
       getYets();
     }
   }, [modalVisible]);
@@ -245,7 +245,7 @@ function Map({route}) {
           <Button
             style={styles.button}
             onPress={() => toggleYetToReview()}
-            title="Want to go"
+            title="Yet2Chew"
             color={!yetToReviewHidden ? '#121fde' : '#000000'}
           />
           <Button
@@ -257,7 +257,7 @@ function Map({route}) {
           <Button
             style={styles.button}
             onPress={() => setModalVisible(!modalVisible)}
-            title="+ Want To Go"
+            title="+Yet2Chew"
             color={'#34B75F'}
           />
         </View>

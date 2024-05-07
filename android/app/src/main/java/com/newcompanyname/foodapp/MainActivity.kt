@@ -1,4 +1,4 @@
-package com.newcompanyname.Chew
+package com.newcompanyname.Chewd
 import android.os.Bundle;
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

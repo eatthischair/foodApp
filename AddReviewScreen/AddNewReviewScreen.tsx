@@ -16,7 +16,8 @@ import Stars from 'react-native-stars';
 import {styles} from './AddNewRevStyles';
 import GetDataAsync from '../MiscFuns/GetDataAsync';
 import StoreDataAsync from '../MiscFuns/StoreDataAsync';
-
+import {DeleteMatchingYets} from '../DatabaseCalls';
+import DeleteFromAsyncStorage from '../MiscFuns/DeleteFromAsyncStorage';
 function AddNewReviewScreen({route, navigation}) {
   const {CustomTouchable} = useUser();
   const [query, setQuery] = useState('');
@@ -97,7 +98,7 @@ function AddNewReviewScreen({route, navigation}) {
     setPlaceName('');
     setPlaceId('');
     setCoords('');
-    console.log('initial ratings', initialRatings);
+    // console.log('initial ratings', initialRatings);
     setRatings([...initialRatings]);
     setText('');
     let sendObj = {
@@ -117,6 +118,8 @@ function AddNewReviewScreen({route, navigation}) {
       .add(sendObj)
       .then(() => {
         updateAsyncStore(sendObj);
+        DeleteMatchingYets(sendObj.placeName, sendObj.username);
+        DeleteFromAsyncStorage(sendObj.placeName, sendObj.username);
         Alert.alert('Review Posted', 'Your Review Was Posted!!!!!', [
           {
             text: 'OK',
@@ -216,12 +219,16 @@ function AddNewReviewScreen({route, navigation}) {
         placeholder="Share details of your own experience of this place"
         value={text}
         onChangeText={newText => setText(newText)}
+        multiline={true}
+        numberOfLines={2}
       />
       <TextInput
         style={styles.textBox}
         placeholder="Add Tags (separate by comma)"
         value={tags}
         onChangeText={newText => setTags(newText)}
+        multiline={true}
+        numberOfLines={2}
       />
       <CustomTouchable
         title=" + Chewiest"

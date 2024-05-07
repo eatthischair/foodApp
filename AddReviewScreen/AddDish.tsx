@@ -36,7 +36,13 @@ function AddDish({route, navigation}) {
   };
 
   return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#fffbf2'}}>
+    <View
+      style={{
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#fffbf2',
+      }}>
       <TextInput
         style={addDishStyles.buttonText}
         placeholder="Dish name"

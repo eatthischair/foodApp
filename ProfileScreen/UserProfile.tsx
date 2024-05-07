@@ -127,9 +127,29 @@ const UserProfile = ({route, navigation}) => {
         </Text> */}
       </View>
       <View style={styles.grid}>
-        <Text style={styles.gridItem}>Reviews</Text>
-        <Text style={styles.gridItem}>Followers</Text>
-        <Text style={styles.gridItem}>Following</Text>
+        <Text
+          style={styles.gridItem}
+          onPress={() => navigation.navigate('Reviews', {revs: revs})}>
+          Reviews
+        </Text>
+        <Text
+          style={styles.gridItem}
+          onPress={() => {
+            navigation.navigate('Followers/Following', {
+              follow: userInfo.followers,
+            });
+          }}>
+          Followers
+        </Text>
+        <Text
+          style={styles.gridItem}
+          onPress={() => {
+            navigation.navigate('Followers/Following', {
+              follow: userInfo.following,
+            });
+          }}>
+          Following
+        </Text>
       </View>
       <View style={styles.grid}>
         <Text
@@ -178,7 +198,11 @@ const UserProfile = ({route, navigation}) => {
           title="Edit Profile"
           onPress={() => navigation.navigate('Edit Profile')}
         />
-        <CustomTouchable title="Sign Out" onPress={() => handleLogout()} />
+        <CustomTouchable
+          title="Sign Out"
+          onPress={() => handleLogout()}
+          style={[styles.buttons, styles.Chewed]}
+        />
       </View>
     </ScrollView>
   );
