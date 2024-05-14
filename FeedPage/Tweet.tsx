@@ -15,9 +15,13 @@ const Tweet = ({tweet}) => {
           source={require('../android/app/src/main/res/drawable/ProfilePics/pic1.jpeg')}
           style={styles.profileImage}
         />
-        <Text style={styles.author}>{tweet.author}</Text>
+        <Text allowFontScaling={true} style={styles.author}>
+          {tweet.author}
+        </Text>
       </View>
-      <Text style={styles.content}>{tweet.content}</Text>
+      <Text allowFontScaling={true} style={styles.content}>
+        {tweet.content}
+      </Text>
       <Image
         source={require('../android/app/src/main/res/drawable/FoodPics/pic1.webp')}
         style={styles.image}

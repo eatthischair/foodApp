@@ -17,8 +17,8 @@ import YetToReviewScreen from './YetToReviewScreen';
 // import {UserProvider} from './UserContext'; // Import the provider
 import UserProfile from './ProfileScreen/UserProfile';
 import auth from '@react-native-firebase/auth';
-import Login from './Login/Signup/Login';
-import SignupScreen from './Login/Signup/SignupScreen';
+import Login from './Login/Login';
+import SignupScreen from './Login/SignupScreen';
 import Feed from './FeedPage/Feed';
 import Map from './MapScreen/Map';
 import RenderList from './ProfileScreen/RenderList';

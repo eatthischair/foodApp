@@ -214,7 +214,9 @@ const RenderList = ({route}) => {
                 <TouchableOpacity
                   onPress={() => expandRev(index)}
                   style={styles.button}>
-                  <Text style={styles.buttonText}>{item[0].placeName}</Text>
+                  <Text allowFontScaling={true} style={styles.buttonText}>
+                    {item[0].placeName}
+                  </Text>
                   {index === expandedIndex ? (
                     <View style={styles.container}>
                       {item.map((rev, index) => {
@@ -224,9 +226,15 @@ const RenderList = ({route}) => {
                               onPress={() => expandNestedRev(index)}
                               style={styles.button}>
                               {item.length - 1 === index ? (
-                                <Text style={styles.buttonText}>Average</Text>
+                                <Text
+                                  allowFontScaling={true}
+                                  style={styles.buttonText}>
+                                  Average
+                                </Text>
                               ) : (
-                                <Text style={styles.buttonText}>
+                                <Text
+                                  allowFontScaling={true}
+                                  style={styles.buttonText}>
                                   Review {index + 1}
                                 </Text>
                               )}
@@ -258,7 +266,9 @@ const RenderList = ({route}) => {
               <TouchableOpacity
                 onPress={() => expandRev(index)}
                 style={styles.button}>
-                <Text style={styles.buttonText}>{item.placeName}</Text>
+                <Text allowFontScaling={true} style={styles.buttonText}>
+                  {item.placeName}
+                </Text>
                 {index === expandedIndex ? (
                   <View style={styles.ratingsObj}>
                     <RenderRatingsObj ratings={item.ratings}></RenderRatingsObj>
@@ -290,6 +300,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 20,
+    color: 'black',
   },
   container: {},
 });

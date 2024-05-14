@@ -4,8 +4,8 @@ import auth from '@react-native-firebase/auth';
 
 import {useNavigation} from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
-import {useUser} from '../../UserContext'; // Path to your UserContext
-
+import {useUser} from '../UserContext'; // Path to your UserContext
+import {styles} from '../HomePage/AppStyles';
 const SignupScreen = () => {
   const navigation = useNavigation();
 
@@ -71,11 +71,20 @@ const SignupScreen = () => {
 
   return (
     <View>
-      <TextInput placeholder="Email" value={email} onChangeText={setEmail} />
+      <TextInput
+        placeholder="Email"
+        value={email}
+        onChangeText={setEmail}
+        placeholderTextColor="#000000"
+        style={styles.TextInput}
+      />
+
       <TextInput
         placeholder="Maybe use the same @ as your IG or Twitter :)"
         value={username}
         onChangeText={setUsername}
+        style={styles.TextInput}
+        placeholderTextColor="#000000"
       />
 
       <TextInput
@@ -83,10 +92,13 @@ const SignupScreen = () => {
         value={password}
         secureTextEntry
         onChangeText={setPassword}
+        placeholderTextColor="#000000"
       />
-      {error ? <Text>{error}</Text> : null}
+      {error ? <Text allowFontScaling={true}>{error}</Text> : null}
       <Button title="Sign Up" onPress={handleSignUp} />
-      <Text>Already have an account?</Text>
+      <Text allowFontScaling={true} style={styles.TextInput}>
+        Already have an account?
+      </Text>
       <Button
         title="Login"
         onPress={() => navigation.navigate('Login')}></Button>

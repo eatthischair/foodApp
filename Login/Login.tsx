@@ -3,9 +3,9 @@ import {Button, TextInput, View, Alert, Text} from 'react-native';
 import auth from '@react-native-firebase/auth';
 
 import {useNavigation} from '@react-navigation/native';
-import {FindUsernameByEmail} from '../../DatabaseCalls';
-import UpdateDisplayName from '../../MiscFuns/UpdateDisplayName';
-
+import {FindUsernameByEmail} from '../DatabaseCalls';
+import UpdateDisplayName from '../MiscFuns/UpdateDisplayName';
+import {styles} from '../HomePage/AppStyles';
 const Login = ({route}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -16,7 +16,7 @@ const Login = ({route}) => {
 
   const findUsernameAsync = async () => {
     const findUsername = await FindUsernameByEmail(email).then(data => {
-      console.log('in findusernameasync, boss', data);
+      // console.log('in findusernameasync, boss', data);
     });
     return findUsername;
   };
@@ -33,11 +33,11 @@ const Login = ({route}) => {
     try {
       // Attempt to sign in
       await auth().signInWithEmailAndPassword(email, password);
-      console.log('User signed in!');
+      // console.log('User signed in!');
 
       // Once signed in, fetch the username
       const username = await FindUsernameByEmail(email);
-      console.log('Username found:', username);
+      // console.log('Username found:', username);
       UpdateDisplayName(username);
 
       // Success alert and navigation reset
@@ -101,15 +101,23 @@ const Login = ({route}) => {
 
   return (
     <View>
-      <TextInput placeholder="Email" value={email} onChangeText={setEmail} />
+      <TextInput
+        placeholder="Email"
+        value={email}
+        onChangeText={setEmail}
+        style={styles.TextInput}
+        placeholderTextColor="#000000"
+      />
       <TextInput
         placeholder="Password"
         value={password}
         onChangeText={setPassword}
         secureTextEntry
+        style={styles.TextInput}
+        placeholderTextColor="#000000"
       />
       <Button title="Login" onPress={handleLogin} />
-      <Text>Don't have an account?</Text>
+      <Text allowFontScaling={true}>Don't have an account?</Text>
       <Button
         title="Sign Up"
         onPress={() => navigation.navigate('Sign Up')}></Button>

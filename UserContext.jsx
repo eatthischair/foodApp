@@ -18,7 +18,9 @@ export const UserProvider = ({children}) => {
   const CustomTouchable = ({title, onPress, style = styles.Homebuttons}) => {
     return (
       <TouchableOpacity style={style} onPress={onPress} activeOpacity={0.8}>
-        <Text style={styles.HomebuttonText}>{title}</Text>
+        <Text allowFontScaling={true} style={styles.HomebuttonText}>
+          {title}
+        </Text>
       </TouchableOpacity>
     );
   };

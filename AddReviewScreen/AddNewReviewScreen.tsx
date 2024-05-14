@@ -175,7 +175,7 @@ function AddNewReviewScreen({route, navigation}) {
         onPress={() =>
           navigation.navigate('AddDish', {onAddDish: addDishCallback})
         }></CustomTouchable>
-      <Text>{placeName}</Text>
+      <Text allowFontScaling={true}>{placeName}</Text>
       {placeName ? (
         ''
       ) : (
@@ -191,14 +191,16 @@ function AddNewReviewScreen({route, navigation}) {
                   ? {backgroundColor: '#eaeaea'}
                   : {}) // Conditional background color
               }>
-              <Text>{item.description}</Text>
+              <Text allowFontScaling={true}>{item.description}</Text>
             </TouchableOpacity>
           )}
         />
       )}
       {ratings.map((item, index) => (
         <React.Fragment key={index}>
-          <Text style={styles.buttonText}>{item.label}</Text>
+          <Text allowFontScaling={true} style={styles.buttonText}>
+            {item.label}
+          </Text>
           <Stars
             half={true}
             // key={item.value}

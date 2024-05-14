@@ -78,11 +78,13 @@ const EditProfile = ({route}) => {
         id: '1', // acts as primary key, should be unique and non-empty string
         label: 'Public',
         value: 'Public',
+        labelStyle: styles.Text, // This sets the style for the label text
       },
       {
         id: '2',
         label: 'Private',
         value: 'Private',
+        labelStyle: styles.Text, // This sets the style for the label text
       },
     ],
     [],
@@ -94,16 +96,19 @@ const EditProfile = ({route}) => {
         id: '1', // acts as primary key, should be unique and non-empty string
         label: 'High School',
         value: 'High School',
+        labelStyle: styles.Text, // This sets the style for the label text
       },
       {
         id: '2',
         label: 'Bachelors',
         value: 'Bachelors',
+        labelStyle: styles.Text, // This sets the style for the label text
       },
       {
         id: '3',
         label: 'Masters',
         value: 'Masters',
+        labelStyle: styles.Text, // This sets the style for the label text
       },
     ],
     [],
@@ -142,12 +147,14 @@ const EditProfile = ({route}) => {
         onChangeText={setFirstName}
         placeholder="First Name"
         style={styles.input}
+        placeholderTextColor={'black'}
       />
       <TextInput
         value={lastName}
         onChangeText={setLastName}
         placeholder="Last Name"
         style={styles.input}
+        placeholderTextColor={'black'}
       />
       {/* <Text>Age Range</Text>
       <View style={styles.box}>
@@ -186,7 +193,7 @@ const EditProfile = ({route}) => {
         />
       </View> */}
       <View>
-        <Text>Profile Visibility</Text>
+        <Text style={styles.Text}>Profile Visibility</Text>
         <RadioGroup
           radioButtons={radioButtons}
           onPress={setSelectedId}
@@ -194,7 +201,7 @@ const EditProfile = ({route}) => {
         />
       </View>
       <View>
-        <Text>Level of Chewology</Text>
+        <Text style={styles.Text}>Level of Chewology</Text>
         <RadioGroup
           radioButtons={radioButtons2}
           onPress={setSelectedId1}
@@ -267,6 +274,9 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 20,
     color: '#ffffff',
+  },
+  Text: {
+    color: 'black',
   },
 });
 

@@ -22,7 +22,9 @@ const RenderRatingsObj = ({ratings, style}) => {
       keyExtractor={item => item.place_id}
       renderItem={({item}) => (
         <View style={styles.row}>
-          <Text>{item.label}</Text>
+          <Text allowFontScaling={true} style={styles.Text}>
+            {item.label}
+          </Text>
           <Stars
             display={item.value}
             spacing={8}
@@ -43,6 +45,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 10, // Adjust the spacing between rows as needed
+  },
+  Text: {
+    color: 'black',
   },
 });
 

@@ -48,10 +48,13 @@ function AddDish({route, navigation}) {
         placeholder="Dish name"
         onChangeText={text => setQuery(text)}
         value={query}
+        placeholderTextColor="#000000"
       />
       {ratings.map((item, index) => (
         <React.Fragment key={index}>
-          <Text style={addDishStyles.buttonText}>{item.label}</Text>
+          <Text allowFontScaling={true} style={addDishStyles.buttonText}>
+            {item.label}
+          </Text>
           <Stars
             half={true}
             default={0}
@@ -70,6 +73,7 @@ function AddDish({route, navigation}) {
         placeholder="Comments"
         value={comments}
         onChangeText={text => setComments(text)}
+        placeholderTextColor="#000000"
       />
       <CustomTouchable title="Submit" onPress={() => handleSubmit()} />
     </View>

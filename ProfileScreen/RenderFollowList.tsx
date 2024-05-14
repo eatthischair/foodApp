@@ -34,7 +34,9 @@ const RenderFollowList = ({route}) => {
             borderBottomColor: '#ccc',
             backgroundColor: '#ffffff', // Conditional background color
           }}>
-          <Text style={styles.username}>{item}</Text>
+          <Text allowFontScaling={true} style={styles.username}>
+            {item}
+          </Text>
         </TouchableOpacity>
       )}
     />

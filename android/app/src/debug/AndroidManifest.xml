@@ -14,5 +14,9 @@ package="com.newcompanyname.Chewd"
         android:usesCleartextTraffic="true"
         tools:targetApi="28"
         tools:ignore="GoogleAppIndexingWarning"/>
+<application
+    android:theme="@style/AppTheme">
+    ...
+</application>
 
 </manifest>

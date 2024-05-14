@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {View, TextInput, FlatList, Text, StyleSheet} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import {useNavigation} from '@react-navigation/native';
+// import {styles} from './AppStyles';
 
 const FindFriends = ({route}) => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -43,12 +44,14 @@ const FindFriends = ({route}) => {
         value={searchQuery}
         onChangeText={text => setSearchQuery(text)}
         placeholder="Search..."
+        placeholderTextColor="#000000"
       />
       <FlatList
         data={results}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({item}) => (
           <Text
+            allowFontScaling={true}
             onPress={() =>
               navigation.navigate('FriendsProfile', {username: item})
             }
@@ -76,6 +79,7 @@ const styles = StyleSheet.create({
     padding: 10,
     margin: 10,
     borderRadius: 5,
+    color: 'black',
   },
   itemText: {
     fontSize: 20,

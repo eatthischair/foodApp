@@ -44,14 +44,14 @@ const HomeScreen = ({route, navigation}) => {
       let revs = await ReviewCaller('test1', user).catch(
         'revs not working boss',
       );
-      console.log('inside fetch data, boss');
+      // console.log('inside fetch data, boss');
       let yets = await ReviewCaller('test2', user);
       StoreDataAsync(revs, yets);
-      console.log('async stored');
+      // console.log('async stored');
     };
 
     if (isFocused) {
-      console.log('is focused, boss');
+      // console.log('is focused, boss');
       fetchData();
     }
   }, [isFocused]);

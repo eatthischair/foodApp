@@ -126,7 +126,9 @@ const ViewFriendsProfile = ({route, navigation}) => {
   const CustomTouchable = ({title, onPress, style = styles.buttons}) => {
     return (
       <TouchableOpacity style={style} onPress={onPress} activeOpacity={0.8}>
-        <Text style={styles.buttonText}>{title}</Text>
+        <Text allowFontScaling={true} style={styles.buttonText}>
+          {title}
+        </Text>
       </TouchableOpacity>
     );
   };
@@ -138,20 +140,25 @@ const ViewFriendsProfile = ({route, navigation}) => {
           style={styles.profileImage}
         />
         <Text
+          allowFontScaling={true}
           style={
             styles.name
           }>{`${userInfo.firstName} ${userInfo.lastName}`}</Text>
       </View>
       <View style={styles.profileDetails}>
-        <Text style={styles.detail}>@{userInfo ? userInfo.username : ''}</Text>
+        <Text allowFontScaling={true} style={styles.detail}>
+          @{userInfo ? userInfo.username : ''}
+        </Text>
       </View>
       <View style={styles.grid}>
         <Text
+          allowFontScaling={true}
           style={styles.gridItem}
           onPress={() => navigation.navigate('Reviews', {revs: revs})}>
           Reviews
         </Text>
         <Text
+          allowFontScaling={true}
           style={styles.gridItem}
           onPress={() => {
             navigation.navigate('Followers/Following', {
@@ -161,6 +168,7 @@ const ViewFriendsProfile = ({route, navigation}) => {
           Followers
         </Text>
         <Text
+          allowFontScaling={true}
           style={styles.gridItem}
           onPress={() => {
             navigation.navigate('Followers/Following', {
@@ -171,8 +179,11 @@ const ViewFriendsProfile = ({route, navigation}) => {
         </Text>
       </View>
       <View style={styles.grid}>
-        <Text style={styles.BigNums}>{revs ? revs.length : 0}</Text>
+        <Text allowFontScaling={true} style={styles.BigNums}>
+          {revs ? revs.length : 0}
+        </Text>
         <Text
+          allowFontScaling={true}
           style={styles.BigNums}
           onPress={() => {
             navigation.navigate('Followers/Following', {
@@ -182,6 +193,7 @@ const ViewFriendsProfile = ({route, navigation}) => {
           {userInfo ? userInfo.followers.length : 0}
         </Text>
         <Text
+          allowFontScaling={true}
           style={styles.BigNums}
           onPress={() => {
             navigation.navigate('Followers/Following', {

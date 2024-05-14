@@ -63,7 +63,7 @@ const Autocomplete = () => {
                 ? {backgroundColor: '#eaeaea'}
                 : {}) // Conditional background color
             }>
-            <Text>{item.description}</Text>
+            <Text allowFontScaling={true} >{item.description}</Text>
           </TouchableOpacity>
         )}
       />

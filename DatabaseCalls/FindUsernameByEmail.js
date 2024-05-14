@@ -3,7 +3,7 @@ import firestore from '@react-native-firebase/firestore';
 
 async function FindUsernameByEmail(email) {
   // const db = firebase.firestore();
-  console.log('in findusername by email, boss', email);
+  // console.log('in findusername by email, boss', email);
   try {
     // const usersRef = db.collection('users');
     const usersRef = firestore().collection('users');
@@ -18,13 +18,13 @@ async function FindUsernameByEmail(email) {
 
     let username = null;
     snapshot.forEach(doc => {
-      console.log(doc.id, '=>', doc.data());
+      // console.log(doc.id, '=>', doc.data());
       username = doc.data().username;
     });
-    console.log('USERNAME IN FINDUSERNAMEBYEMAIL', username);
+    // console.log('USERNAME IN FINDUSERNAMEBYEMAIL', username);
     return username;
   } catch (error) {
-    console.error('Error fetching user data:', error);
+    // console.error('Error fetching user data:', error);
     return null;
   }
 }

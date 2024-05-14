@@ -40,4 +40,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#9dd3fa', // Set your desired background color here
   },
+  TextInput: {
+    color: 'black',
+  },
 });

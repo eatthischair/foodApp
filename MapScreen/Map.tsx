@@ -160,7 +160,9 @@ function Map({route}) {
             <Pressable
               style={[styles.button, styles.buttonClose]}
               onPress={() => setModalVisible(!modalVisible)}>
-              <Text style={styles.textStyle}>Go Back</Text>
+              <Text allowFontScaling={true} style={styles.textStyle}>
+                Go Back
+              </Text>
             </Pressable>
           </View>
         </Modal>
