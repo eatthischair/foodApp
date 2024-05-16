@@ -10,6 +10,7 @@ import {
   Alert,
 } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
+import {RFValue} from 'react-native-responsive-fontsize';
 
 // import { Picker } from '@react-native-picker/picker';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -76,14 +77,14 @@ const EditProfile = ({route}) => {
     () => [
       {
         id: '1', // acts as primary key, should be unique and non-empty string
-        label: 'Public',
-        value: 'Public',
+        label: 'Public (Open Book, share my reviews with everyone)',
+        value: 'Public (Open Book, share my reviews with everyone)',
         labelStyle: styles.Text, // This sets the style for the label text
       },
       {
         id: '2',
-        label: 'Private',
-        value: 'Private',
+        label: 'Private (Invite Only, reviews and followers)',
+        value: 'Private (Invite Only, reviews and followers)',
         labelStyle: styles.Text, // This sets the style for the label text
       },
     ],
@@ -94,20 +95,34 @@ const EditProfile = ({route}) => {
     () => [
       {
         id: '1', // acts as primary key, should be unique and non-empty string
-        label: 'High School',
-        value: 'High School',
+        label:
+          'Highschool (limited experience/exposure or not too focused on it)',
+        value:
+          'Highschool (limited experience/exposure or not too focused on it)',
         labelStyle: styles.Text, // This sets the style for the label text
       },
       {
         id: '2',
-        label: 'Bachelors',
-        value: 'Bachelors',
+        label:
+          'Bachelors (experimented a little, developing taste buds for more adventures, basic ability to review, pretty opinionated, hard to be objective with food)',
+        value:
+          'Bachelors (experimented a little, developing taste buds for more adventures, basic ability to review, pretty opinionated, hard to be objective with food)',
         labelStyle: styles.Text, // This sets the style for the label text
       },
       {
         id: '3',
-        label: 'Masters',
-        value: 'Masters',
+        label:
+          'Masters (lived, loved, knows there is more to explore, can review giving details and specifics)',
+        value:
+          'Masters (lived, loved, knows there is more to explore, can review giving details and specifics)',
+        labelStyle: styles.Text, // This sets the style for the label text
+      },
+      {
+        id: '4',
+        label:
+          'Doctorate (describe specific flavors or ingredients, reviews in detail, can also be truly objective in review, even give credit for flavors I don’t like but quality worth noting)',
+        value:
+          'Doctorate (describe specific flavors or ingredients, reviews in detail, can also be truly objective in review, even give credit for flavors I don’t like but quality worth noting)',
         labelStyle: styles.Text, // This sets the style for the label text
       },
     ],
@@ -192,7 +207,7 @@ const EditProfile = ({route}) => {
           modal={true}
         />
       </View> */}
-      <View>
+      <View style={styles.innerContainer}>
         <Text style={styles.Text}>Profile Visibility</Text>
         <RadioGroup
           radioButtons={radioButtons}
@@ -220,6 +235,12 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
   },
+  innerContainer: {
+    height: height * 0.2, // 50% of screen height
+    width: '80%', // 80% of screen width (optional)
+    // backgroundColor: 'lightgray',
+    justifyContent: 'center',
+  },
   box: {
     margin: 40,
   },
@@ -229,6 +250,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 20,
     borderRadius: 5,
+    color: 'black',
   },
   picker: {
     marginBottom: 20,
@@ -277,6 +299,12 @@ const styles = StyleSheet.create({
   },
   Text: {
     color: 'black',
+    flex: 1,
+    // backgroundColor: 'white',
+    margin: 5,
+    justifyContent: 'center',
+    fontSize: RFValue(14),
+    alignItems: 'center',
   },
 });
 

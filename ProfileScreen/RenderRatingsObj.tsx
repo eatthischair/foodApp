@@ -33,6 +33,7 @@ const RenderRatingsObj = ({ratings, style}) => {
             fullStar={require('../android/app/src/main/res/drawable/Stars/starFilled.png')}
             halfStar={require('../android/app/src/main/res/drawable/Stars/starHalf.png')}
             emptyStar={require('../android/app/src/main/res/drawable/Stars/starEmpty.png')}
+            disabled={true}
           />
         </View>
       )}

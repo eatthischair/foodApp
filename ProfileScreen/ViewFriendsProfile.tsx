@@ -179,7 +179,10 @@ const ViewFriendsProfile = ({route, navigation}) => {
         </Text>
       </View>
       <View style={styles.grid}>
-        <Text allowFontScaling={true} style={styles.BigNums}>
+        <Text
+          allowFontScaling={true}
+          style={styles.BigNums}
+          onPress={() => navigation.navigate('Reviews', {revs: revs})}>
           {revs ? revs.length : 0}
         </Text>
         <Text

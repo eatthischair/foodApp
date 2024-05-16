@@ -238,30 +238,32 @@ function Map({route}) {
             : ''}
         </MapView>
         <View style={styles.buttonContainer}>
-          <Button
-            style={styles.button}
-            onPress={() => toggleFavorites()}
-            title="Chewiest"
-            color={!favoritesHidden ? '#cf610c' : '#000000'}
-          />
-          <Button
-            style={styles.button}
-            onPress={() => toggleYetToReview()}
-            title="Yet2Chew"
-            color={!yetToReviewHidden ? '#121fde' : '#000000'}
-          />
-          <Button
-            style={styles.button}
-            onPress={() => toggleReviewed()}
-            title="Reviewed"
-            color={!reviewedHidden ? '#db1d3c' : '#000000'}
-          />
-          <Button
-            style={styles.button}
-            onPress={() => setModalVisible(!modalVisible)}
-            title="+Yet2Chew"
-            color={'#34B75F'}
-          />
+          <View style={styles.buttonRow}>
+            <Button
+              // style={styles.button}
+              onPress={() => toggleFavorites()}
+              title="Chewiest"
+              color={!favoritesHidden ? '#cf610c' : '#000000'}
+            />
+            <Button
+              // style={styles.button}
+              onPress={() => toggleYetToReview()}
+              title="Yet2Chew"
+              color={!yetToReviewHidden ? '#121fde' : '#000000'}
+            />
+            <Button
+              // style={styles.button}
+              onPress={() => toggleReviewed()}
+              title="Chew'd"
+              color={!reviewedHidden ? '#db1d3c' : '#000000'}
+            />
+            <Button
+              // style={styles.button}
+              onPress={() => setModalVisible(!modalVisible)}
+              title="+Yet2Chew"
+              color={'#34B75F'}
+            />
+          </View>
         </View>
       </View>
     </GestureHandlerRootView>

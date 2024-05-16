@@ -18,6 +18,7 @@ import GetDataAsync from '../MiscFuns/GetDataAsync';
 import StoreDataAsync from '../MiscFuns/StoreDataAsync';
 import {DeleteMatchingYets} from '../DatabaseCalls';
 import DeleteFromAsyncStorage from '../MiscFuns/DeleteFromAsyncStorage';
+import {RFValue} from 'react-native-responsive-fontsize';
 function AddNewReviewScreen({route, navigation}) {
   const {CustomTouchable} = useUser();
   const [query, setQuery] = useState('');
@@ -113,20 +114,24 @@ function AddNewReviewScreen({route, navigation}) {
       createdAt: new Date(),
       tags: tags !== undefined ? tags?.split(',') : [],
     };
-    firestore()
-      .collection('test1')
-      .add(sendObj)
-      .then(() => {
-        updateAsyncStore(sendObj);
-        DeleteMatchingYets(sendObj.placeName, sendObj.username);
-        DeleteFromAsyncStorage(sendObj.placeName, sendObj.username);
-        Alert.alert('Review Posted', 'Your Review Was Posted!!!!!', [
-          {
-            text: 'OK',
-            onPress: () => navigation.navigate('Map'),
-          },
-        ]);
-      });
+    if (!sendObj.placeName) {
+      Alert.alert('Please choose a restaurant name');
+    } else {
+      firestore()
+        .collection('test1')
+        .add(sendObj)
+        .then(() => {
+          updateAsyncStore(sendObj);
+          DeleteMatchingYets(sendObj.placeName, sendObj.username);
+          DeleteFromAsyncStorage(sendObj.placeName, sendObj.username);
+          Alert.alert('Review Posted', 'Your Review Was Posted!!!!!', [
+            {
+              text: 'OK',
+              onPress: () => navigation.navigate('Map'),
+            },
+          ]);
+        });
+    }
   };
 
   const updateAsyncStore = async sendObj => {
@@ -169,13 +174,18 @@ function AddNewReviewScreen({route, navigation}) {
         placeholder="Search for restaurants..."
         onChangeText={text => setQuery(text)}
         value={query}
+        placeholderTextColor="#000000"
       />
       <CustomTouchable
         title="Add Dish"
         onPress={() =>
           navigation.navigate('AddDish', {onAddDish: addDishCallback})
         }></CustomTouchable>
-      <Text allowFontScaling={true}>{placeName}</Text>
+      <Text
+        allowFontScaling={true}
+        style={{color: 'black', fontSize: RFValue(14)}}>
+        {placeName}
+      </Text>
       {placeName ? (
         ''
       ) : (
@@ -191,7 +201,11 @@ function AddNewReviewScreen({route, navigation}) {
                   ? {backgroundColor: '#eaeaea'}
                   : {}) // Conditional background color
               }>
-              <Text allowFontScaling={true}>{item.description}</Text>
+              <Text
+                allowFontScaling={true}
+                style={{color: 'black', fontSize: RFValue(14)}}>
+                {item.description}
+              </Text>
             </TouchableOpacity>
           )}
         />
@@ -218,11 +232,12 @@ function AddNewReviewScreen({route, navigation}) {
 
       <TextInput
         style={styles.textBox}
-        placeholder="Share details of your own experience of this place"
+        placeholder="Expand here on your own experience"
         value={text}
         onChangeText={newText => setText(newText)}
         multiline={true}
         numberOfLines={2}
+        placeholderTextColor="#000000"
       />
       <TextInput
         style={styles.textBox}
@@ -231,6 +246,7 @@ function AddNewReviewScreen({route, navigation}) {
         onChangeText={newText => setTags(newText)}
         multiline={true}
         numberOfLines={2}
+        placeholderTextColor="#000000"
       />
       <CustomTouchable
         title=" + Chewiest"

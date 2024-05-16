@@ -1,5 +1,6 @@
 import {StyleSheet, Dimensions} from 'react-native';
 const {width, height} = Dimensions.get('window');
+import {RFValue} from 'react-native-responsive-fontsize';
 
 export const styles = StyleSheet.create({
   scrollView: {
@@ -20,14 +21,25 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   buttonContainer: {
-    position: 'absolute',
-    top: 0, // Adjust based on your needs
-    left: 0, // Adjust based on your needs
-    flexDirection: 'row', // Align children horizontally
+    flex: 1,
     justifyContent: 'flex-start',
-    gap: 10,
-    height: height / 25,
-    width: 100,
+    alignItems: 'center',
+    paddingTop: 10,
+  },
+  buttonRow: {
+    // position: 'absolute',
+    // top: 0, // Adjust based on your needs
+    // left: 10, // Adjust based on your needs
+    // flexDirection: 'row', // Align children horizontally
+    // justifyContent: 'flex-start',
+    // gap: 10,
+    // height: height / 20,
+    // width: 100,
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    paddingHorizontal: 10,
   },
   centeredView: {
     flex: 1,
@@ -52,10 +64,15 @@ export const styles = StyleSheet.create({
     elevation: 5,
   },
   button: {
-    borderRadius: 50,
-    padding: 10,
-    elevation: 2,
-    fontSize: 20,
+    flexShrink: 1, // Ensure the text will not overflow
+
+    // borderRadius: 50,
+    // padding: 10,
+    // elevation: 2,
+    // fontSize: RFValue(20),
+    flex: 1,
+    marginHorizontal: 5,
+    paddingHorizontal: 20,
   },
   buttonOpen: {
     backgroundColor: '#F194FF',
@@ -67,7 +84,7 @@ export const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
-    fontSize: 30,
+    fontSize: RFValue(30),
   },
   modalText: {
     marginBottom: 15,

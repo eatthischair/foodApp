@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
   ratingsObj: {},
   username: {
     fontSize: 20,
+    color: 'black',
   },
 });
 

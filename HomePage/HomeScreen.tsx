@@ -41,6 +41,7 @@ const HomeScreen = ({route, navigation}) => {
 
     const fetchData = async () => {
       let user = GetCurrentUser();
+      console.log('USER', user);
       let revs = await ReviewCaller('test1', user).catch(
         'revs not working boss',
       );

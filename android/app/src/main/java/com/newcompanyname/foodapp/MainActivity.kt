@@ -21,9 +21,7 @@ class MainActivity : ReactActivity() {
       DefaultReactActivityDelegate(this, mainComponentName, fabricEnabled)
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO) // Forcing light mode
-        // AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES) // Forcing dark mode
-        // setContentView(R.layout.activity_main) // Ensure you set the content view if you have one
-    }
+    super.onCreate(null)
+
+  }
 }

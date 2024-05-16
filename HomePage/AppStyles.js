@@ -1,6 +1,7 @@
 // AppStyles.js
 import {Dimensions} from 'react-native';
 import {StyleSheet} from 'react-native';
+import {RFValue} from 'react-native-responsive-fontsize';
 
 const {width, height} = Dimensions.get('window');
 export const styles = StyleSheet.create({
@@ -17,7 +18,7 @@ export const styles = StyleSheet.create({
   },
   HomebuttonText: {
     color: 'white',
-    fontSize: 30,
+    fontSize: RFValue(30),
   },
   MyChew: {
     backgroundColor: '#696D7D',

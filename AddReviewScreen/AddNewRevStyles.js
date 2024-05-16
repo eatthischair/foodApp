@@ -1,5 +1,6 @@
 import {StyleSheet, Dimensions} from 'react-native';
 const {width, height} = Dimensions.get('window');
+import {RFValue} from 'react-native-responsive-fontsize';
 
 export const initialRatings = [
   {label: 'Overall', value: 0},
@@ -21,13 +22,13 @@ export const addDishStyles = StyleSheet.create({
     alignItems: 'center',
   },
   textBox: {
-    // display: 'flex',
     height: height / 8,
     width: width / 2,
     borderColor: 'black',
     borderWidth: 2,
     justifyContent: 'center',
     alignItems: 'center',
+    color: 'black',
   },
 });
 
@@ -76,6 +77,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     fontSize: 20,
+    color: 'black',
   },
   searchBar: {
     width: width / 2,
@@ -94,6 +96,7 @@ export const styles = StyleSheet.create({
   },
   textInput: {
     fontSize: 20,
+    color: 'black',
   },
   TouchableOpacity: {
     padding: 20,
