@@ -31,6 +31,7 @@ import FindFriends from './HomePage/FindFriends';
 import ViewFriendsProfile from './ProfileScreen/ViewFriendsProfile';
 import RenderFollowList from './ProfileScreen/RenderFollowList';
 import {SafeAreaView} from 'react-native-safe-area-context';
+// import {Provider as PaperProvider, Button, Text} from 'react-native-paper';
 
 const {width, height} = Dimensions.get('window');
 
@@ -113,6 +114,7 @@ function App(): React.JSX.Element {
   const Stack = createNativeStackNavigator();
 
   return (
+    // <PaperProvider>
     <NavigationContainer>
       {/* <Stack.Navigator initialRouteName="Sign Up"> */}
       <Stack.Navigator>
@@ -138,6 +140,7 @@ function App(): React.JSX.Element {
         <Tab.Screen name="AddDish" component={AddDish} />
       </Stack.Navigator>
     </NavigationContainer>
+    // </PaperProvider>
   );
 }
 

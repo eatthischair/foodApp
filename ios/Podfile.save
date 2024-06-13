@@ -1,3 +1,4 @@
+
 # Resolve react_native_pods.rb with node to allow for hoisting
 require Pod::Executable.execute_command('node', ['-p',
   'require.resolve(
@@ -28,13 +29,10 @@ end
 target 'foodApp' do
   config = use_native_modules!
 
-    # Add this line to use modular headers globally
-    use_modular_headers!
-
   use_react_native!(
     :path => config[:reactNativePath],
     # Enables Flipper.
-    #npm
+    #
     # Note that if you have use_frameworks! enabled, Flipper will not work and
     # you should disable the next line.
     :flipper_configuration => flipper_config,

@@ -12,11 +12,7 @@ import {
 import firestore from '@react-native-firebase/firestore';
 import {RFValue} from 'react-native-responsive-fontsize';
 
-// import { Picker } from '@react-native-picker/picker';
-import DropDownPicker from 'react-native-dropdown-picker';
 import RadioGroup from 'react-native-radio-buttons-group';
-
-import Slider from '@react-native-community/slider';
 
 const {width, height} = Dimensions.get('window');
 
