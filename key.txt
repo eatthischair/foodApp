@@ -1,0 +1,7 @@
+      // [
+      //   "react-native-maps",
+      //   {
+      //     "iosGoogleMapsApiKey": "AIzaSyBDghZ5zrxvIDIDkwOfZFaIdTGppZPMKkI",
+      //     "androidGoogleMapsApiKey": "AIzaSyAZGV6hhk2deubTsEyug_OBvknjOhPGvEQ"
+      //   }
+      // ]
