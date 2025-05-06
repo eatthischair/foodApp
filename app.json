@@ -10,15 +10,24 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.foodApp"
+      "bundleIdentifier": "com.anonymous.foodApp",
+      "config": {
+        "googleMapsApiKey": "AIzaSyAECMWy6lMRmO4WgSPg_U_P4W-WDW0YANE"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyA8dWgseYV669BRnXad0eFb4b2VYeb6fYs"
+        }
+      },
       "package": "com.anonymous.foodApp"
     },
+
     "web": {
       "bundler": "metro",
       "output": "static",
