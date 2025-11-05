@@ -32,7 +32,6 @@ const MapModal = () => {
   const googlePlacesApiUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json`;
   let placesList;
   const fetchPlaces = async searchQuery => {
-    // console.log('fetchplaces in mapmodal running');
     if (searchQuery.length < 3) return; // Don't search for too short strings
     //later add an error msgf
 
@@ -49,10 +48,11 @@ const MapModal = () => {
 
       if (response.data && response.data.predictions) {
         placesList = response.data.predictions;
-        // console.log('REUSLTS', response.data.predictions);
+        console.log('REUSLTS', response.data.predictions);
         setResults(response.data.predictions);
       }
     } catch (error) {
+      console.log('error fetching results', error);
       console.error(error);
     }
   };
@@ -65,7 +65,7 @@ const MapModal = () => {
 
       return () => clearTimeout(timerId);
     }
-  });
+  }, [query]);
 
   const handleOnPress = item => {
     const apiKey = 'AIzaSyCvOCWqc-IOvr5C7FZo7IO8oIvSz5aR6Hk'; // API Key
@@ -111,7 +111,7 @@ const MapModal = () => {
   return (
     <View>
       <TextInput
-        style={{fontSize: 20}}
+        style={{fontSize: 20, color: 'black'}}
         placeholder="Search for restaurants..."
         onChangeText={text => setQuery(text)}
         value={query}
